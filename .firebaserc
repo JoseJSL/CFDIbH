@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "cfdibh": {
+      "hosting": {
+        "cfdibh": [
+          "cfdibh"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "cfdibh"
+  }
+}

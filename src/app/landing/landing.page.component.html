@@ -1,0 +1,5 @@
+<mat-toolbar>
+    <button mat-button [routerLink]="['login']">Ingresa</button>
+    <button mat-button [routerLink]="['register']">Registrate</button>
+    <input type="file" multiple (change)="readXML($event)">
+</mat-toolbar>
