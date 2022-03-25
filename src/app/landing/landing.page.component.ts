@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Egreso, Ingreso, Traslado } from '../service/cfdi';
 import { XMLReaderService } from '../service/xml-reader.service';
 
 @Component({
@@ -14,6 +15,21 @@ export class LandingPage implements OnInit {
   }
 
   async readXML($ev: any){
-    console.log(await this.XMLReader.readMultiple($ev.target.files));
+
+    const multiData = await this.XMLReader.readMultiple($ev.target.files);
+
+    multiData.forEach(data => {
+      switch(data._TipoDeComprobante){
+        case("I"):
+          console.log(new Ingreso(data));
+          break;
+        case("E"):
+          console.log(new Egreso(data));
+          break;
+        case("T"):
+          console.log(new Traslado(data));
+          break;
+      }
+    });
   }
 }
