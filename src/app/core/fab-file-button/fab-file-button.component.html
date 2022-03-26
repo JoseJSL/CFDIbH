@@ -1,0 +1,5 @@
+<button mat-fab [color]="buttonColor" (click)="input.click()">
+    <mat-icon [color]="iconColor">{{iconName}}</mat-icon>
+    <label *ngIf="label">{{label}}</label>
+    <input #input (change)="readFiles($event)" type="file" accept="text/xml" multiple>
+</button>

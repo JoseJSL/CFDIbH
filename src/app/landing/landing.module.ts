@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
 
 import { LandingRoutingModule } from './landing-routing.module';
 import { LandingPage } from './landing.page.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-
+import { CoreModule } from '../core/core.module';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -21,7 +20,7 @@ import { RegisterComponent } from './register/register.component';
     LandingRoutingModule,
     MatToolbarModule,
     MatButtonModule,
-    MatDividerModule
+    CoreModule,
   ]
 })
 export class LandingModule { }

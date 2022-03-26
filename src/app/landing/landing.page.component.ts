@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Egreso, Ingreso, Traslado } from '../service/cfdi';
 import { XMLReaderService } from '../service/xml-reader.service';
 
 @Component({
@@ -9,27 +8,7 @@ import { XMLReaderService } from '../service/xml-reader.service';
 })
 export class LandingPage implements OnInit {
 
-  constructor(private XMLReader: XMLReaderService) { }
+  constructor() { }
 
-  ngOnInit(): void {
-  }
-
-  async readXML($ev: any){
-
-    const multiData = await this.XMLReader.readMultiple($ev.target.files);
-
-    multiData.forEach(data => {
-      switch(data._TipoDeComprobante){
-        case("I"):
-          console.log(new Ingreso(data));
-          break;
-        case("E"):
-          console.log(new Egreso(data));
-          break;
-        case("T"):
-          console.log(new Traslado(data));
-          break;
-      }
-    });
-  }
+  ngOnInit(): void { }
 }
