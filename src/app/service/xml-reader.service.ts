@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { XMLParser, X2jOptions, XMLBuilder } from 'fast-xml-parser';
+import { BucketService } from './bucket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class XMLReaderService {
     attributeNamePrefix : '_',
   };
 
-  constructor() {
+  constructor(private bucket: BucketService) {
     this.parser = new XMLParser(this.parserOptions);
   }
 
@@ -32,7 +33,7 @@ export class XMLReaderService {
 
     return filesData;
   }
-
+  
   private async getFileData(file: File): Promise<string>{
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
