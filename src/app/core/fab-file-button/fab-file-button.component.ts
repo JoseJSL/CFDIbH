@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
 import { XMLReaderService } from 'src/app/service/xml-reader.service';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'fab-file-button',
@@ -13,33 +15,45 @@ export class FabFileButtonComponent implements OnInit {
   @Input() iconName!: string | undefined;
   @Input() label: string | undefined;
 
-  public ParsedFiles: any[] = [];
   public CFDIArray: (Ingreso | Egreso | Traslado)[] = [];
 
-  constructor(private XMLReader: XMLReaderService) { }
+  constructor(private XMLReader: XMLReaderService, private matDialog: MatDialog) { }
 
   ngOnInit(): void {}
 
   async readFiles($ev: any){
-    this.ParsedFiles = await this.XMLReader.readMultiple($ev.target.files);
-    try{
+    this.CFDIArray = []
+    const files: File[] = $ev.target.files;
+    const parsedFiles: any[] = await this.XMLReader.readMultiple(files);
+    let i, n: number = 0;
 
-      this.ParsedFiles.forEach(data => {
-        switch(data._TipoDeComprobante){
+    try{
+      for(i = 0; i < files.length; i ++){
+        n = i;
+        switch(parsedFiles[i]._TipoDeComprobante){
           case("I"):
-            console.log(new Ingreso(data));
+           this.CFDIArray.push(new Ingreso(parsedFiles[i]));
             break;
           case("E"):
-            console.log(new Egreso(data));
+            this.CFDIArray.push(new Egreso(parsedFiles[i]));
             break;
           case("T"):
-            console.log(new Traslado(data));
+            this.CFDIArray.push(new Traslado(parsedFiles[i]));
             break;
+        }
+      }
+
+      console.log(this.CFDIArray);
+    } catch(e){
+      const dialog = this.matDialog.open(DialogComponent, {
+        data: {
+          title: 'Error al agregar archivos.',
+          content: 'Ocurrió un error con el archivo ' + files[n].name,
+          acceptText: 'Ok',
         }
       });
 
-    } catch(e){
-      console.log()
+      dialog.afterClosed().subscribe(result => console.log(result));
     }
   }
 

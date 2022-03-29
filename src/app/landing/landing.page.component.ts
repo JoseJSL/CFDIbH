@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { XMLReaderService } from '../service/xml-reader.service';
 
 @Component({
   selector: 'app-landing.page',

@@ -44,4 +44,13 @@ export class BucketService {
       );
     });
   }
+
+  async deleteXml(userUID: string, _Folio: string): Promise<boolean>{
+    this.storage.ref(`XML/${userUID}/${_Folio}`).delete().subscribe(
+      sucess => { return true },
+      error => { return false },
+    );
+
+    return true;
+  }
 }
