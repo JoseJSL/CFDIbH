@@ -1,7 +1,7 @@
-<mat-toolbar>
-    <button class="logo-icon" mat-button [routerLink]="['']"><img src="../../favicon.ico"></button>
-    <span class="spacer"></span>
-    <icon-button [routerLink]="['login']" buttonColor="primary" label="Ingresa" iconName="person" iconColor="primary"></icon-button>
-    <icon-button [routerLink]="['register']" buttonColor="primary" label="Regístrate"></icon-button>
-    <fab-file-button buttonColor="primary" iconName="note_add"></fab-file-button>
-</mat-toolbar>
+<landing-toolbar></landing-toolbar>
+
+<fab-file-button buttonColor="primary" iconName="note_add" (documentsData)="updateDocuments($event)"></fab-file-button>
+
+<div>
+    <cfdi-table #documentTable id="documentTable"></cfdi-table>
+</div>

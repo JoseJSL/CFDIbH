@@ -1,2 +1,30 @@
-<mat-toolbar></mat-toolbar>
-<p>login works!</p>
+<landing-toolbar></landing-toolbar>
+
+<div class="content">
+    <div class="leftSide">
+        <img src="../../../favicon.ico">
+    </div>
+    <div class="rightSide">
+        <mat-toolbar>
+            <mat-tab-group>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <icon-button iconName="person" buttonColor="primary" iconColor="primary" label="Soy una persona física"></icon-button>
+                    </ng-template>
+                    <div>
+                        Contenido persona
+                    </div>
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <icon-button iconName="account_balance" buttonColor="primary" iconColor="primary" label="empresa"></icon-button>
+                    </ng-template>
+                    <div class="registerContent">
+                        Contenido empresa
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-toolbar>
+    </div>
+</div>

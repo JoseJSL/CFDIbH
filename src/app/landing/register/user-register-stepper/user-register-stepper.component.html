@@ -1,0 +1,67 @@
+<mat-stepper orientation="vertical" [linear]="true" #personStepper>
+    <mat-step [editable]="isEditable" errorMessage="Hay errores en algunos campos" [stepControl]="emailGroup">
+        <ng-template matStepLabel>Datos de registro</ng-template>
+
+        <form class="registerForm" [formGroup]="emailGroup">
+            <mat-form-field>
+                <mat-label>Correo electrónico</mat-label>
+                <input autocomplete="email" matInput formControlName="email" placeholder="ejemplo@dominio.com" type="email" required>
+                <mat-error *ngIf="!emailGroup.controls['email'].valid">Correo electrónico no válido</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field>
+                <mat-label>Contraseña</mat-label>
+                <input #pass autocomplete="new-password" matInput formControlName="password" placeholder="Al menos 8 caracteres" type="password" minlength="8" required>
+                <mat-error *ngIf="emailGroup.controls['password'].hasError('required')">Ingrese una contraseña</mat-error>
+                <mat-error *ngIf="emailGroup.controls['password'].hasError('minlength') && !emailGroup.controls['password'].hasError('required')">La contraseña debe contener al menos 8 caracteres</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Repetir contraseña</mat-label>
+                <input #repeatPass autocomplete="new-password" matInput formControlName="repeatPassword" placeholder="**********" type="password" minlength="8" required>
+                <mat-error *ngIf="emailGroup.controls['password'].valid && emailGroup.controls['repeatPassword'].errors?.['equals']">Las contraseñas no coinciden</mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button matStepperNext color="primary">Continuar</button>
+        </form>
+    </mat-step>
+
+    <mat-step [editable]="isEditable" errorMessage="Hay errores en algunos campos" [stepControl]="userData">
+        <ng-template matStepLabel>Datos del usuario</ng-template>
+
+        <form class="registerForm" [formGroup]="userData" (ngSubmit)="createNewAccountant()">
+            <mat-form-field>
+                <mat-label>Nombre(s)</mat-label>
+                <input autocomplete="given-name" matInput formControlName="firstName" placeholder="Nombre(s)" type="text" required>
+                <mat-error *ngIf="userData.controls['firstName'].hasError('required')">Ingrese un nombre</mat-error>
+                <mat-error *ngIf="userData.controls['firstName'].hasError('pattern') && !userData.controls['firstName'].hasError('required')">El nombre no puede contener números ni símbolos</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Apellido(s)</mat-label>
+                <input autocomplete="family-name" matInput formControlName="lastName" placeholder="Apellido(s)" type="text" required>
+                <mat-error *ngIf="userData.controls['lastName'].hasError('required')">Ingrese un apellido</mat-error>
+                <mat-error *ngIf="userData.controls['lastName'].hasError('pattern') && !userData.controls['firstName'].hasError('required')">El apellido no puede contener números ni símbolos</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Clave RFC</mat-label>
+                <input autocomplete="none" matInput formControlName="RFC" placeholder="Ej. MELJ9505281J5" type="text" minlength="13" required>
+                <mat-error *ngIf="!userData.controls['RFC'].valid">Ingrese un RFC válido</mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button matStepperNext color="primary">Enviar mensaje de confirmación</button>
+        </form>
+    </mat-step>
+
+    <mat-step [editable]="false">
+        <ng-template matStepLabel>Verificación de correo electrónico</ng-template>
+
+        <form class="registerForm">
+            <mat-form-field>
+                <mat-label>Código de verificación</mat-label>
+                <input autocomplete="given-name" matInput formControlName="firstName" placeholder="Código de verificación de X caracteres" type="text" required>
+            </mat-form-field>
+        </form>
+    </mat-step>
+</mat-stepper>

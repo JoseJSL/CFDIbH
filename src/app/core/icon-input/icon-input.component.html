@@ -1,0 +1,12 @@
+<mat-form-field>
+    <mat-label *ngIf="label">
+        <mat-icon *ngIf="iconName">{{iconName}}</mat-icon>
+        <label>{{label}}</label>
+    </mat-label>
+    <input 
+        #actualInput 
+        matInput
+        [placeholder]="placeholder ? placeholder : ''"
+        [type]="type ? type : 'text'"
+    >
+</mat-form-field>

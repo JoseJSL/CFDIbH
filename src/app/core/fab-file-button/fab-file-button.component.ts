@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
 import { XMLReaderService } from 'src/app/service/xml-reader.service';
 import { DialogComponent } from '../dialog/dialog.component';
@@ -9,15 +10,18 @@ import { DialogComponent } from '../dialog/dialog.component';
   templateUrl: './fab-file-button.component.html',
   styleUrls: ['./fab-file-button.component.scss']
 })
+
 export class FabFileButtonComponent implements OnInit {
   @Input() buttonColor: 'primary' | 'accent' | 'warn' | undefined;
   @Input() iconColor: 'primary' | 'accent' | 'warn' | undefined;
   @Input() iconName!: string | undefined;
   @Input() label: string | undefined;
 
+  @Output() documentsData = new EventEmitter<(Ingreso | Egreso | Traslado)[]>(); 
+
   public CFDIArray: (Ingreso | Egreso | Traslado)[] = [];
 
-  constructor(private XMLReader: XMLReaderService, private matDialog: MatDialog) { }
+  constructor(private XMLReader: XMLReaderService, private matDialog: MatDialog, private matSnackBar: MatSnackBar) { }
 
   ngOnInit(): void {}
 
@@ -42,8 +46,19 @@ export class FabFileButtonComponent implements OnInit {
             break;
         }
       }
+      this.documentsData.emit(this.CFDIArray);
 
-      console.log(this.CFDIArray);
+      if(this.CFDIArray.length > 0){
+        const message = this.CFDIArray.length == 1 ? 
+          'Se agregó 1 archivo con éxito.' :
+          `Se han agregado ${this.CFDIArray.length} archivos con éxito.`;
+          
+        this.matSnackBar.open(
+          message,
+          undefined,
+          { duration: 2000, },
+        );
+      }
     } catch(e){
       const dialog = this.matDialog.open(DialogComponent, {
         data: {
@@ -55,6 +70,9 @@ export class FabFileButtonComponent implements OnInit {
 
       dialog.afterClosed().subscribe(result => console.log(result));
     }
+
+    console.log(this.CFDIArray);
+
   }
 
 }

@@ -7,18 +7,24 @@ button{
     align-items: center;
     height: 100%;
 
-    label{
-        margin-left: 5px;
-    }
-}
-
-@media (max-width: 576px) {
-    button mat-icon{
+    mat-icon{
         display: none;
     }
 
     label{
         margin-left: 0;
+    }
+}
+
+@media (min-width: 576px) {
+    button {
+        mat-icon{
+            display: inline-block;
+        }
+
+        label{
+            margin-left: 5px;
+        }
     }
 }
 
