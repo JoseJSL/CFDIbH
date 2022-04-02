@@ -26,31 +26,23 @@
         </form>
     </mat-step>
 
-    <mat-step [editable]="isEditable" errorMessage="Hay errores en algunos campos" [stepControl]="userData">
-        <ng-template matStepLabel>Datos del usuario</ng-template>
+    <mat-step [editable]="isEditable" errorMessage="Hay errores en algunos campos" [stepControl]="enterpriseData">
+        <ng-template matStepLabel>Datos de la empresa</ng-template>
 
-        <form class="registerForm" [formGroup]="userData" (ngSubmit)="createNewAccountant()">
+        <form class="registerForm" [formGroup]="enterpriseData" (ngSubmit)="createNewEnterprise()">
             <mat-form-field>
-                <mat-label>Nombre(s)</mat-label>
-                <input autocomplete="given-name" matInput formControlName="firstName" placeholder="Nombre(s)" type="text" required>
-                <mat-error *ngIf="userData.controls['firstName'].hasError('required')">Ingrese un nombre</mat-error>
-                <mat-error *ngIf="userData.controls['firstName'].hasError('pattern') && !userData.controls['firstName'].hasError('required')">El nombre no puede contener números ni símbolos</mat-error>
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>Apellido(s)</mat-label>
-                <input autocomplete="family-name" matInput formControlName="lastName" placeholder="Apellido(s)" type="text" required>
-                <mat-error *ngIf="userData.controls['lastName'].hasError('required')">Ingrese un apellido</mat-error>
-                <mat-error *ngIf="userData.controls['lastName'].hasError('pattern') && !userData.controls['firstName'].hasError('required')">El apellido no puede contener números ni símbolos</mat-error>
+                <mat-label>Razón social</mat-label>
+                <input autocomplete="none" matInput formControlName="name" placeholder="Nombre de la empresa" type="text" required>
+                <mat-error *ngIf="enterpriseData.controls['name'].hasError('required')">Ingrese el nombre de la empresa</mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Clave RFC</mat-label>
-                <input autocomplete="none" matInput formControlName="RFC" placeholder="Ej. MELJ9505281J5" type="text" minlength="13" required>
-                <mat-error *ngIf="!userData.controls['RFC'].valid">Ingrese un RFC válido</mat-error>
+                <input autocomplete="none" matInput formControlName="RFC" placeholder="Ej. MEL9505281J5" type="text" minlength="13" required>
+                <mat-error *ngIf="!enterpriseData.controls['RFC'].valid">Ingrese un RFC válido</mat-error>
             </mat-form-field>
 
-            <button mat-raised-button matStepperNext color="primary">Crear usuario</button>
+            <button mat-raised-button matStepperNext color="primary">Crear empresa</button>
         </form>
     </mat-step>
 </mat-stepper>

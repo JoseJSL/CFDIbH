@@ -17,6 +17,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { UserRegisterStepperComponent } from './register/user-register-stepper/user-register-stepper.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { EnterpriseRegisterStepperComponent } from './register/enterprise-register-stepper/enterprise-register-stepper.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     RegisterComponent,
     ToolbarComponent,
     UserRegisterStepperComponent,
+    EnterpriseRegisterStepperComponent,
   ],
   imports: [
     CommonModule,

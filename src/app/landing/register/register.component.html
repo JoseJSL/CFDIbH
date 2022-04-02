@@ -1,6 +1,5 @@
 <landing-toolbar></landing-toolbar>
 
-
 <div class="content">
     <div class="leftSide">
         <img src="../../../favicon.ico">
@@ -12,15 +11,14 @@
                     <icon-button iconName="person" buttonColor="primary" iconColor="primary" label="Soy una persona física"></icon-button>
                 </ng-template>
 
-                <user-register-stepper></user-register-stepper>
+                <user-register-stepper [routeAfterRegister]="['/']"></user-register-stepper>
             </mat-tab>
             <mat-tab>
                 <ng-template mat-tab-label>
                     <icon-button iconName="account_balance" buttonColor="primary" iconColor="primary" label="Soy una empresa"></icon-button>
                 </ng-template>
-                <form class="registerForm">
-                    Contenido empresa
-                </form>
+
+                <enterprise-register-stepper [routeAfterRegister]="['/']"></enterprise-register-stepper>
             </mat-tab>
         </mat-tab-group>
     </div>
