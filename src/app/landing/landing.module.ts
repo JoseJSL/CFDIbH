@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
-import { ToolbarComponent } from './toolbar/toolbar.component';
+import { LandingToolbarComponent } from './toolbar/toolbar.component';
 import { UserRegisterStepperComponent } from './register/user-register-stepper/user-register-stepper.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -24,7 +24,7 @@ import { EnterpriseRegisterStepperComponent } from './register/enterprise-regist
     LandingPage,
     LoginComponent,
     RegisterComponent,
-    ToolbarComponent,
+    LandingToolbarComponent,
     UserRegisterStepperComponent,
     EnterpriseRegisterStepperComponent,
   ],

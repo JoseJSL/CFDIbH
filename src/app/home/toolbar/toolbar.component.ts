@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'landing-toolbar',
+  selector: 'home-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class LandingToolbarComponent implements OnInit {
+export class HomeToolbarComponent implements OnInit {
 
   constructor() { }
 

@@ -54,7 +54,10 @@ export class Ingreso implements CFDIIngreso {
         if(!data.Conceptos[0]){
             data.Conceptos = [ data.Conceptos.Concepto ];
         }
-        
+
+        data._SubTotal = Number.parseFloat(data._SubTotal);
+        data._Fecha = new Date(data._Fecha);
+
         return data;
     }
 }
@@ -121,6 +124,9 @@ export class Egreso implements CFDIEgreso {
           data.CfdiRelacionados.CfdiRelacionado = [ data.CfdiRelacionados.CfdiRelacionado, ];
         } 
 
+        data._SubTotal = Number.parseFloat(data._SubTotal);
+        data._Fecha = new Date(data._Fecha);
+
         return data;
     }
 }
@@ -180,7 +186,11 @@ export class Traslado implements CFDITraslado {
         if(!data.Conceptos[0]){
             data.Conceptos = [data.Conceptos.Concepto];
         }
-      
+
+        data._Fecha = new Date(data._Fecha);
+        data._SubTotal = Number.parseFloat(data._SubTotal);
+        data.Complemento.TimbreFiscalDigital._FechaTimbrado = new Date(data.Complemento.TimbreFiscalDigital._FechaTimbrado);
+
         return data;
     }
 }

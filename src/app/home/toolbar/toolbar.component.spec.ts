@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LandingToolbarComponent } from './toolbar.component';
+import { HomeToolbarComponent } from './toolbar.component';
 
-describe('LandingToolbarComponent', () => {
-  let component: LandingToolbarComponent;
-  let fixture: ComponentFixture<LandingToolbarComponent>;
+describe('HomeToolbarComponent', () => {
+  let component: HomeToolbarComponent;
+  let fixture: ComponentFixture<HomeToolbarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LandingToolbarComponent ]
+      declarations: [ HomeToolbarComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LandingToolbarComponent);
+    fixture = TestBed.createComponent(HomeToolbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

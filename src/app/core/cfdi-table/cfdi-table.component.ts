@@ -12,6 +12,7 @@ export class CfdiTableComponent implements OnInit {
   @ViewChild('dataTable') dataTable!: MatTable<any>;
   @Input() inputData: (Ingreso | Egreso | Traslado)[] = [];
   public tableColumns: string[] = ['concepto', 'emisor', 'receptor', 'subtotal'];
+
   constructor() { }
 
   ngOnInit(): void { }
@@ -37,6 +38,12 @@ export class CfdiTableComponent implements OnInit {
         }
         break;
     }
+
+    this.dataTable.renderRows();
+  }
+
+  formatAsMoney(quantity: number) : string{
+    return '$' + quantity.toFixed(2);;
   }
 
 }
