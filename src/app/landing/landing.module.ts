@@ -18,6 +18,8 @@ import { UserRegisterStepperComponent } from './register/user-register-stepper/u
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { EnterpriseRegisterStepperComponent } from './register/enterprise-register-stepper/enterprise-register-stepper.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -39,9 +41,11 @@ import { EnterpriseRegisterStepperComponent } from './register/enterprise-regist
     MatInputModule,
     MatFormFieldModule,
     MatStepperModule,
+    MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    MatRadioModule,
   ]
 })
 export class LandingModule { }

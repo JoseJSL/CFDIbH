@@ -68,8 +68,26 @@ export class UserModuleService {
     
   }
 
-  loginWithEmail(){
+  async loginWithEmailAndPassword(email: string, password: string, userType: 'Accountant' | 'Enterprise'): Promise<Accountant | Enterprise | undefined>{
+    try{
+      const credentials = await this.auth.signInWithEmailAndPassword(email, password);
 
+      if(!credentials.user) throw new Error();
+
+      const uid = credentials.user.uid;
+
+      const doc = await this.afs.collection<Accountant | Enterprise>(userType).doc(uid).ref.get();
+
+      if((doc as any).FirstName && userType == 'Accountant'){
+        throw new Error();
+      } else if((doc as any).Name && userType === 'Enterprise'){
+        throw new Error();
+      }
+      return doc.data();
+    } catch(e) {
+      await this.auth.signOut();
+      return undefined;
+    }
   }
 
   logOut(){

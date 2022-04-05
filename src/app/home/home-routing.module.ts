@@ -11,7 +11,7 @@ const routes: Routes = [
         path: 'profile',
       },
       {
-        path: 'xmls',
+        path: 'xmls', //Qué podrá hacer aquí?
         children:[
           {
             path: ':cfdi', //Ver un solo CFDI ampliado

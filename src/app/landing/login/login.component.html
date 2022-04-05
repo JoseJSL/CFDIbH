@@ -1,30 +1,22 @@
-<landing-toolbar></landing-toolbar>
+<h1 mat-dialog-title>Inicia sesión</h1>
+<mat-dialog-content>
+    <form class="loginForm" [formGroup]="loginForm" (submit)="tryLogin()">
+        <mat-form-field class="textField">
+            <mat-label>Correo electrónico</mat-label>
+            <input autocomplete="email" matInput formControlName="email" placeholder="ejemplo@dominio.com" type="email" required>
+            <mat-error *ngIf="!loginForm.controls['email'].valid">Correo electrónico no válido</mat-error>
+        </mat-form-field>
+    
+        <mat-form-field class="textField">
+            <mat-label>Contraseña</mat-label>
+            <input autocomplete="current-password" matInput formControlName="password" placeholder="********" type="password" required>
+        </mat-form-field>
 
-<div class="content">
-    <div class="leftSide">
-        <img src="../../../favicon.ico">
-    </div>
-    <div class="rightSide">
-        <mat-toolbar>
-            <mat-tab-group>
-                <mat-tab>
-                    <ng-template mat-tab-label>
-                        <icon-button iconName="person" buttonColor="primary" iconColor="primary" label="Soy una persona física"></icon-button>
-                    </ng-template>
-                    <div>
-                        Contenido persona
-                    </div>
-                </mat-tab>
+        <mat-radio-group required value="Accountant" formControlName="userType">
+            <mat-radio-button value="Accountant">Usuario</mat-radio-button>
+            <mat-radio-button value="Enterprise">Empresa</mat-radio-button>
+        </mat-radio-group>
 
-                <mat-tab>
-                    <ng-template mat-tab-label>
-                        <icon-button iconName="account_balance" buttonColor="primary" iconColor="primary" label="empresa"></icon-button>
-                    </ng-template>
-                    <div class="registerContent">
-                        Contenido empresa
-                    </div>
-                </mat-tab>
-            </mat-tab-group>
-        </mat-toolbar>
-    </div>
-</div>
+        <button mat-raised-button color="primary">Ingresar</button>
+    </form>
+</mat-dialog-content>

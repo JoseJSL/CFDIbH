@@ -41,18 +41,32 @@ export class Ingreso implements CFDIIngreso {
 
     private asIncome(data: any): CFDIIngreso {   
 
-        if(!data.Impuestos[0]){
-            data.Impuestos = [ data.Impuestos, ];
-        }
+        if(data.Impuestos){
+            if(!data.Impuestos[0]){
+                data.Impuestos = [ data.Impuestos, ];
+            }
 
-        for(let i = 0; i < data.Impuestos.length; i++){
-            if(!data.Impuestos[i].Traslados[0]){
-                data.Impuestos[i].Traslados = [ data.Impuestos[i].Traslados.Traslado ]
+            for(let i = 0; i < data.Impuestos.length; i++){
+                if(data.Impuestos[i].Traslados){
+                    if(!data.Impuestos[i].Traslados[0]){
+                        data.Impuestos[i].Traslados = [ data.Impuestos[i].Traslados.Traslado ]
+                    }
+                }
             }
         }
-    
-        if(!data.Conceptos[0]){
-            data.Conceptos = [ data.Conceptos.Concepto ];
+
+        if(data.Conceptos){
+            if(!data.Conceptos[0]){
+                if(!data.Conceptos.Concepto.length){
+                    data.Conceptos = [ data.Conceptos.Concepto ];
+                } else {
+                    const tmp = data.Conceptos.Concepto;
+                    data.Conceptos = [];
+                    for(let i = 0; i < tmp.length; i++){
+                        data.Conceptos.push(tmp[i]);
+                    }
+                }
+            }
         }
 
         data._SubTotal = Number.parseFloat(data._SubTotal);
@@ -105,24 +119,42 @@ export class Egreso implements CFDIEgreso {
         this._Version = data._Version;
     }
 
-    public asExpenditure(data: any): CFDIEgreso {    
-        if(!data.Impuestos[0]){
-          data.Impuestos = [ data.Impuestos, ];
-        }
+    public asExpenditure(data: any): CFDIEgreso {
+        if(data.Impuestos){
+            if(!data.Impuestos[0]){
+                data.Impuestos = [ data.Impuestos, ];
+            }
 
-        for(let i = 0; i < data.Impuestos.length; i++){
-            if(!data.Impuestos[i].Traslados[0]){
-                data.Impuestos[i].Traslados = [ data.Impuestos[i].Traslados.Traslado ]
+            for(let i = 0; i < data.Impuestos.length; i++){
+                if(data.Impuestos[i]){
+                    if(!data.Impuestos[i].Traslados[0]){
+                        data.Impuestos[i].Traslados = [ data.Impuestos[i].Traslados.Traslado ]
+                    }   
+                }
             }
         }
-    
-        if(!data.Conceptos[0]){
-          data.Conceptos = [ data.Conceptos.Concepto, ];
-        }
         
-        if(!data.CfdiRelacionados.CfdiRelacionado[0]){
-          data.CfdiRelacionados.CfdiRelacionado = [ data.CfdiRelacionados.CfdiRelacionado, ];
-        } 
+        if(data.Conceptos){
+            if(!data.Conceptos[0]){
+                if(!data.Conceptos.Concepto.length){
+                    data.Conceptos = [ data.Conceptos.Concepto ];
+                } else {
+                    const tmp = data.Conceptos.Concepto;
+                    data.Conceptos = [];
+                    for(let i = 0; i < tmp.length; i++){
+                        data.Conceptos.push(tmp[i]);
+                    }
+                }
+            }
+        }
+
+        if(data.CfdiRelacionados){
+            if(data.CfdiRelacionados.CfdiRelacionado){
+                if(!data.CfdiRelacionados.CfdiRelacionado[0]){
+                    data.CfdiRelacionados.CfdiRelacionado = [ data.CfdiRelacionados.CfdiRelacionado, ];
+                } 
+            }
+        }
 
         data._SubTotal = Number.parseFloat(data._SubTotal);
         data._Fecha = new Date(data._Fecha);
@@ -183,8 +215,18 @@ export class Traslado implements CFDITraslado {
     }
     
     public asTransfer(data: any): CFDITraslado {
-        if(!data.Conceptos[0]){
-            data.Conceptos = [data.Conceptos.Concepto];
+        if(data.Conceptos){
+            if(!data.Conceptos[0]){
+                if(!data.Conceptos.Concepto.length){
+                    data.Conceptos = [ data.Conceptos.Concepto ];
+                } else {
+                    const tmp = data.Conceptos.Concepto;
+                    data.Conceptos = [];
+                    for(let i = 0; i < tmp.length; i++){
+                        data.Conceptos.push(tmp[i]);
+                    }
+                }
+            }
         }
 
         data._Fecha = new Date(data._Fecha);

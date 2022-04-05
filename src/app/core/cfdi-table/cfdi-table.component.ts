@@ -8,6 +8,7 @@ import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
   templateUrl: './cfdi-table.component.html',
   styleUrls: ['./cfdi-table.component.scss']
 })
+
 export class CfdiTableComponent implements OnInit {
   @ViewChild('dataTable') dataTable!: MatTable<any>;
   @Input() inputData: (Ingreso | Egreso | Traslado)[] = [];
@@ -46,4 +47,13 @@ export class CfdiTableComponent implements OnInit {
     return '$' + quantity.toFixed(2);;
   }
 
+  getConcepts(Conceptos: any[]): string{
+    let res = '';
+
+    for(let i = 0; i < Conceptos.length - 1; i++){
+      res += Conceptos[i]._Descripcion + ", ";
+    }
+
+    return res + Conceptos[Conceptos.length  -1]._Descripcion;
+  }
 }
