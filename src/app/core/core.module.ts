@@ -13,6 +13,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { IconInputComponent } from './icon-input/icon-input.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     DialogComponent,
     CfdiTableComponent,
     IconInputComponent,
+    ProgressSpinnerComponent,
   ],
   imports: [
     CommonModule,
@@ -32,12 +35,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatInputModule,
     MatFormFieldModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
   ],
   exports: [
     IconButtonComponent,
     FabFileButtonComponent,
     CfdiTableComponent,
     IconInputComponent,
+    ProgressSpinnerComponent,
   ]
 })
 export class CoreModule { }

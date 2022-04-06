@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { ProgressSpinnerComponent } from 'src/app/core/progress-spinner/progress-spinner.component';
 import { UserModuleService } from 'src/app/service/user-module.service';
 import { environment } from 'src/environments/environment.prod';
 import { CustomValidators } from '../CustomValidators';
@@ -18,7 +20,7 @@ export class EnterpriseRegisterStepperComponent implements OnInit {
   public emailGroup: FormGroup;
   public enterpriseData: FormGroup;
 
-  constructor(private userModule: UserModuleService, private router: Router, private builder: FormBuilder, private matSnackBar: MatSnackBar) { 
+  constructor(private userModule: UserModuleService, private router: Router, private builder: FormBuilder, private matSnackBar: MatSnackBar, private matDialog: MatDialog) { 
     this.emailGroup = this.builder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(environment.regex.noSpace)]],
@@ -38,12 +40,16 @@ export class EnterpriseRegisterStepperComponent implements OnInit {
     if(!this.emailGroup.valid || !this.enterpriseData.valid){
       this.matSnackBar.open('Revise los campos de registro antes de continuar', 'Ok');
     } else {
+      const loading = this.matDialog.open(ProgressSpinnerComponent, { disableClose: true});
+
       const enterprise = await this.userModule.createEnterprise(
         this.emailGroup.controls['email'].value,
         this.emailGroup.controls['password'].value,
         this.enterpriseData.controls['RFC'].value,
         this.enterpriseData.controls['name'].value,
       );
+
+      loading.close();
 
       if(enterprise !== null){
         if(this.routeAfterRegister){

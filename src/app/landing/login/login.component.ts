@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { ProgressSpinnerComponent } from 'src/app/core/progress-spinner/progress-spinner.component';
 import { UserModuleService } from 'src/app/service/user-module.service';
 
 @Component({
@@ -25,11 +26,15 @@ export class LoginComponent implements OnInit {
   }
 
   async tryLogin(){
+    const loading = this.matDialog.open(ProgressSpinnerComponent, { disableClose: true });
+
     const user = await this.userModule.loginWithEmailAndPassword(
       this.loginForm.controls['email'].value,
       this.loginForm.controls['password'].value,
       this.loginForm.controls['userType'].value,
     );
+
+    loading.close();
     
     if(user){
       this.matDialog.closeAll();

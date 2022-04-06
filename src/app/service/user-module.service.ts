@@ -14,6 +14,11 @@ export class UserModuleService {
   async createAccountant(email: string, password: string, rfc: string, firstName: string, lastName: string): Promise<Accountant | null>{
     try{
       const credentials = await this.auth.createUserWithEmailAndPassword(email, password);
+      const birthDate = new Date(
+        Number.parseInt(rfc.slice(4, 6)),
+        Number.parseInt(rfc.slice(6, 8)),
+        Number.parseInt(rfc.slice(8, 10)),
+      );
 
       if(credentials.user === null){
         throw new Error();
@@ -26,6 +31,7 @@ export class UserModuleService {
         JoinDate: new Date(),
         RFC: rfc.toUpperCase(),
         UID: credentials.user!.uid,
+        BirthDate: birthDate,
       }
 
       this.afs.collection('Accountant').doc(accountant.UID).set(accountant);
@@ -38,6 +44,11 @@ export class UserModuleService {
   async createEnterprise(email: string, password: string, rfc: string, name: string): Promise<Enterprise | null>{
     try{
       const credentials = await this.auth.createUserWithEmailAndPassword(email, password);
+      const creationDate = new Date(
+        Number.parseInt(rfc.slice(3, 5)),
+        Number.parseInt(rfc.slice(5, 7)),
+        Number.parseInt(rfc.slice(7, 9)),
+      );
 
       if(credentials.user === null){
         throw new Error();
@@ -50,6 +61,7 @@ export class UserModuleService {
         RFC: rfc.toUpperCase(),
         UID: credentials.user!.uid,
         Accountants: [],
+        CreationDate: creationDate,
       }
 
       this.afs.collection('Enterprise').doc(enterprise.UID).set(enterprise);
