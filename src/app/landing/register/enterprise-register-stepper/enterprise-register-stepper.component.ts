@@ -53,10 +53,10 @@ export class EnterpriseRegisterStepperComponent implements OnInit {
 
       if(enterprise !== null){
         if(this.routeAfterRegister){
-          this.matSnackBar.open('Bienvenido, ' + enterprise.Name + '.', undefined, { duration: 1750 });
+          this.matSnackBar.open('Bienvenido, ' + enterprise.DisplayName + '.', undefined, { duration: 1750 });
           this.router.navigate(this.routeAfterRegister);
         } else {
-          this.matSnackBar.open('Empresa ' + enterprise.Name + ' creada con éxito.', undefined, { duration: 1750});
+          this.matSnackBar.open('Empresa ' + enterprise.DisplayName + ' creada con éxito.', undefined, { duration: 1750});
         }
       } else {
         this.matSnackBar.open('Lo sentimos, ocurrió un error inesperado. Vueva a intentarlo más tarde', 'Ok');

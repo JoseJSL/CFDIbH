@@ -59,7 +59,7 @@ export class UserRegisterStepperComponent implements OnInit {
           this.matSnackBar.open('Bienvenido, ' + accountant.FirstName + '.', undefined, { duration: 1750 });
           this.router.navigate(this.routeAfterRegister);
         } else {
-          this.matSnackBar.open('Usuario ' + accountant.FirstName + 'registrado con éxito.');
+          this.matSnackBar.open('Usuario ' + (accountant.FirstName + ' ' + accountant.LastName) + ' registrado con éxito.');
         }
       } else {
         this.matSnackBar.open('Lo sentimos, ocurrió un error inesperado. Vueva a intentarlo más tarde', 'Ok');

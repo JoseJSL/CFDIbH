@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
@@ -7,11 +8,23 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 })
 export class BucketService {
 
-  constructor(private storage: AngularFireStorage, private http: HttpClient) { }
+  constructor(private storage: AngularFireStorage, private http: HttpClient, private auth: AngularFireAuth) { }
 
-  async uploadXML(userUID: string, file: File, _Folio: string): Promise<string>{
-    const upload = await this.storage.upload(`XML/${userUID}/${_Folio}`, file);
-    return await upload.ref.getDownloadURL();
+  async uploadXML(file: File, _Folio: string): Promise<string>{
+    const user = await this.auth.currentUser;
+
+    if(user){
+      const upload = await this.storage.upload(`XML/${user.uid}/${_Folio}`, file);
+      return await upload.ref.getDownloadURL();
+    } else {
+      return '';
+    }
+  }
+
+  async getCurrentUserXmlUrl(_Folio: string): Promise<string>{
+    const user = await this.auth.currentUser;
+
+    return user ? await this.getUserXmlUrl(user.uid, _Folio) : '';
   }
 
   async getUserXmlUrl(userUID: string, _Folio: string): Promise<string>{
@@ -20,6 +33,12 @@ export class BucketService {
     return new Promise((resolve, reject) => {
       observer.subscribe(url => url? resolve(url) : reject(url));
     });
+  }
+
+  async readAllCurrentUserXML(): Promise<string[]>{
+    const user = await this.auth.currentUser;
+
+    return user ? await this.readAllUserXML(user.uid) : [];
   }
 
   async readAllUserXML(userUID: string): Promise<string[]>{
@@ -48,8 +67,8 @@ export class BucketService {
   async deleteXml(userUID: string, _Folio: string): Promise<boolean>{
     return new Promise((resolve, reject) => {
       this.storage.ref(`XML/${userUID}/${_Folio}`).delete().subscribe(
-        sucess => { resolve(true) },
-        error => { reject(false) },
+        s => { resolve(true) },
+        e => { reject(false) },
       );
     });
   }

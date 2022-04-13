@@ -1,0 +1,16 @@
+mat-toolbar{
+    .spacer{
+        flex: 1 1 auto;
+    }
+    
+    icon-button, .icon-button{
+        height: 80%;
+    }
+    
+    .logo-icon{
+        height: 100%;
+        img{
+            height: 90%;
+        }
+    }
+}

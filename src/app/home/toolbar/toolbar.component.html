@@ -1,3 +1,15 @@
 <mat-toolbar>
-    
+    <a [routerLink]="['/']"  class="logo-icon"><button class="logo-icon" mat-button ><img src="../../favicon.ico"></button></a>
+    <span class="spacer"></span>
+
+    <icon-button [matMenuTriggerFor]="userMenu" *ngIf="user" buttonColor="primary" [label]="user.DisplayName" iconName="person" iconColor="primary"></icon-button>
+
+    <mat-menu #userMenu>
+        <button [routerLink]="['/home', 'profile']" mat-menu-item>
+            <span>Mi perfíl</span>
+        </button>
+        <button (click)="logOut();" mat-menu-item>
+            <span>Cerrar sesión</span>
+        </button>
+    </mat-menu>
 </mat-toolbar>

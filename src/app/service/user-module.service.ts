@@ -32,9 +32,11 @@ export class UserModuleService {
         RFC: rfc.toUpperCase(),
         UID: credentials.user!.uid,
         BirthDate: birthDate,
+        DisplayName: firstName,
       }
 
-      this.afs.collection('Accountant').doc(accountant.UID).set(accountant);
+      await this.afs.collection('Accountant').doc(accountant.UID).set(accountant);
+      //credentials.user!.sendEmailVerification(); -Verificación por correo
       return accountant;
     } catch (e) {
       return null;
@@ -56,12 +58,12 @@ export class UserModuleService {
 
       const enterprise: Enterprise = {
         Email: email,
-        Name: name,
         JoinDate: new Date(),
         RFC: rfc.toUpperCase(),
         UID: credentials.user!.uid,
         Accountants: [],
-        CreationDate: creationDate,
+        BirthDate: creationDate,
+        DisplayName: name,
       }
 
       this.afs.collection('Enterprise').doc(enterprise.UID).set(enterprise);
@@ -97,12 +99,28 @@ export class UserModuleService {
       }
       return doc.data();
     } catch(e) {
+      console.error(e);
       await this.auth.signOut();
       return undefined;
     }
   }
 
-  logOut(){
+  async getCurrentUser(userType: 'Accountant' | 'Enterprise'): Promise<Accountant | Enterprise | undefined>{
+    try{
+      const uid = (await this.auth.currentUser)!.uid;
 
+      return new Promise((resolve, reject) => {
+        this.afs.collection<Accountant>(userType).doc(uid).get().subscribe(doc => {
+          doc.exists ? resolve(doc.data()) : reject(undefined);
+        })
+      });
+    } catch(e){
+      console.error(e);
+      return undefined;
+    }
+  }
+
+  async logOut(){
+    await this.auth.signOut();
   }
 }

@@ -1,17 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AssociatesComponent } from './associates/associates.component';
 import { HomePageComponent } from './home.page.component';
+import { ProfileComponent } from './profile/profile.component';
+import { XmlsPageComponent } from './xmls-page/xmls-page.component';
 
 const routes: Routes = [
   {
-    path: 'home',
+    path: '',
     component: HomePageComponent,
     children:[
       {
         path: 'profile',
+        component: ProfileComponent,
       },
       {
         path: 'xmls', //Qué podrá hacer aquí?
+        component: XmlsPageComponent,
         children:[
           {
             path: ':cfdi', //Ver un solo CFDI ampliado
@@ -20,12 +25,13 @@ const routes: Routes = [
       },
       {
         path: 'associates',
+        component: AssociatesComponent,
         children: [
           {
-            path: ':rfc',
+            path: ':rfc', //Ver un solo 'socio'
             children: [
               {
-                path: 'xmls',
+                path: 'xmls', //Ver los XMLs de un solo socio
                 children: [
                   {
                     path: ':cfdi',
@@ -37,6 +43,11 @@ const routes: Routes = [
         ],
       },
     ],
+  },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full',
   },
 ];
 
