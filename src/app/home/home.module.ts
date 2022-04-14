@@ -11,12 +11,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { ProfileComponent } from './profile/profile.component';
 import { XmlsPageComponent } from './xmls-page/xmls-page.component';
 import { AssociatesComponent } from './associates/associates.component';
-
+import { InitialPageComponent } from './initial-page/initial-page.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { CardTableComponent } from './initial-page/card-table/card-table.component';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
     HomePageComponent, 
-    HomeToolbarComponent, ProfileComponent, XmlsPageComponent, AssociatesComponent,
+    HomeToolbarComponent, ProfileComponent, XmlsPageComponent, AssociatesComponent, InitialPageComponent, CardTableComponent,
   ],
   imports: [
     CommonModule,
@@ -25,6 +29,9 @@ import { AssociatesComponent } from './associates/associates.component';
     MatToolbarModule,
     MatButtonModule,
     MatMenuModule,
+    MatGridListModule,
+    MatCardModule,
+    MatTableModule,
   ]
 })
 export class HomeModule { }

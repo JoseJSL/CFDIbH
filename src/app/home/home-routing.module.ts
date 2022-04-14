@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AssociatesComponent } from './associates/associates.component';
 import { HomePageComponent } from './home.page.component';
+import { InitialPageComponent } from './initial-page/initial-page.component';
 import { ProfileComponent } from './profile/profile.component';
 import { XmlsPageComponent } from './xmls-page/xmls-page.component';
 
@@ -10,6 +11,10 @@ const routes: Routes = [
     path: '',
     component: HomePageComponent,
     children:[
+      {
+        path: '',
+        component: InitialPageComponent,
+      },
       {
         path: 'profile',
         component: ProfileComponent,
