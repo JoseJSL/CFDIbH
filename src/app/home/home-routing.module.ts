@@ -30,20 +30,10 @@ const routes: Routes = [
       },
       {
         path: 'associates',
-        component: AssociatesComponent,
         children: [
           {
             path: ':rfc', //Ver un solo 'socio'
-            children: [
-              {
-                path: 'xmls', //Ver los XMLs de un solo socio
-                children: [
-                  {
-                    path: ':cfdi',
-                  },
-                ],
-              },
-            ],
+            component: InitialPageComponent,
           },
         ],
       },

@@ -1,5 +1,5 @@
-<table *ngIf="inputData.length > 0" #dataTable mat-table [dataSource]="inputData" class="mat-elevation-z8">
-    <tr mat-header-row *matHeaderRowDef="tableColumns"></tr> 
+<table *ngIf="inputData.length > 0 && tableColumns.length > 0" #dataTable mat-table [dataSource]="inputData" class="mat-elevation-z8">
+    <tr class="row-header" mat-header-row *matHeaderRowDef="tableColumns"></tr> 
 
     <ng-container *ngFor="let col of tableColumns; let i = index" [matColumnDef]="col">
         <th mat-header-cell *matHeaderCellDef>{{col}}</th>
@@ -8,3 +8,10 @@
 
     <tr mat-row *matRowDef="let row; columns: tableColumns;"></tr>
 </table>
+
+<div *ngIf="!(inputData.length > 0 && tableColumns.length > 0)" class="noContent mat-elevation-z8">
+    <a [routerLink]="onNoContentReRoute" >
+        <mat-card-title>{{noContentLabel}}</mat-card-title>
+        <mat-card-subtitle>{{noContentSubLabel}}</mat-card-subtitle>
+    </a>
+</div>

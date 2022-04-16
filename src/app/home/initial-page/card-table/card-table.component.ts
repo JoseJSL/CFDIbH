@@ -11,10 +11,12 @@ export class CardTableComponent implements OnInit {
   @ViewChild('dataTable') dataTable!: MatTable<any>;
   @Input() inputData: any[] = [];
   @Input() tableColumns: string[] = [];
+  @Input() noContentLabel: string | undefined;
+  @Input() noContentSubLabel: string | undefined;
+  @Input() onNoContentReRoute: string | any[] | null | undefined;
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
 }

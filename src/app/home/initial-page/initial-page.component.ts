@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-initial-page',
@@ -6,21 +7,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./initial-page.component.scss']
 })
 export class InitialPageComponent implements OnInit {
-  public gridCols: number = window.innerWidth <= 768 ? window.innerWidth <= 576 ? 1 : 2 : 3;
-  public xmlsData: any[] = [
-    {Concepto: 'Uno', Cantidad: '$1000.00'},
-    {Concepto: 'Dos', Cantidad: '$2000.00'},
-    {Concepto: 'Tres', Cantidad: '$3000.00'},
-  ];
+  public xmlsData: any[] = [];
+  public selectedPerson: string | undefined;
   public xmlsCols: string[] = ['Concepto', 'Cantidad'];
-  constructor() { }
 
-  ngOnInit(): void {}
+  constructor(private route: ActivatedRoute) { }
 
-  handleResize(event: any){
-    try{
-      this.gridCols = event.target.innerWidth <= 768 ? event.target.innerWidth <= 576 ? 1 : 2 : 3;
-    } catch(e){ }
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.selectedPerson = params['rfc'] ? params['rfc'] : 'current';
+
+      if(this.selectedPerson == 'current'){
+        this.xmlsData = [
+          {Concepto: 'Uno', Cantidad: '$1000.00'},
+          {Concepto: 'Dos', Cantidad: '$2000.00'},
+          {Concepto: 'Tres', Cantidad: '$3000.00'},
+        ];
+      } else {
+        this.xmlsData = [
+          {Concepto: 'Cuatro', Cantidad: '$4000.00'},
+          {Concepto: 'Cinco', Cantidad: '$5000.00'},
+          {Concepto: 'Seis', Cantidad: '$6000.00'},
+        ];
+      }
+    });
   }
 
 }

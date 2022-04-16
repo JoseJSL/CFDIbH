@@ -1,2 +1,57 @@
-<home-toolbar></home-toolbar>
-<router-outlet></router-outlet>
+<mat-toolbar>
+    <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+    </button>
+
+    <a [routerLink]="['/home']"><button class="logo-icon" mat-button ><img src="../../favicon.ico"></button></a>
+    
+    <span class="spacer"></span>
+    <div *ngIf="user">
+        <icon-button [matMenuTriggerFor]="userMenu"  buttonColor="primary" [label]="user.DisplayName" iconName="person" iconColor="primary"></icon-button>
+
+        <mat-menu #userMenu>
+            <button [routerLink]="['/home', 'profile']" mat-menu-item>
+                <span>Mi perfíl</span>
+            </button>
+            <button (click)="logOut();" mat-menu-item>
+                <span>Cerrar sesión</span>
+            </button>
+        </mat-menu>
+    </div>
+</mat-toolbar>
+
+
+<mat-drawer-container autosize class="home-drawer" (window:resize)="handleResize($event);">
+    <mat-drawer #drawer mode="side" [opened]="shouldDrawerOpen">
+        <mat-selection-list multiple="false" value="test">
+            <a [routerLink]="['/app']">
+                <mat-list-option value="current">
+                    <mat-icon color="primary" mat-list-icon>folder</mat-icon>
+                    <div mat-line>Mis documentos</div>
+                </mat-list-option>
+            </a>
+
+            <mat-divider></mat-divider>
+            <div mat-subheader>Mis asociados</div>
+
+            <a [routerLink]="['/app', 'associates', 'test']">
+                <mat-list-option value="test"> 
+                    <mat-icon mat-list-icon>folder_shared</mat-icon>
+                    <div mat-line>Nombre 1</div>
+                </mat-list-option>
+            </a>
+
+            <mat-list-option>
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div mat-line>Nombre 2</div>
+            </mat-list-option>
+            <mat-list-option>
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div mat-line>Nombre 3</div>
+            </mat-list-option>
+        </mat-selection-list>
+    </mat-drawer>
+
+    <router-outlet></router-outlet>
+
+</mat-drawer-container>

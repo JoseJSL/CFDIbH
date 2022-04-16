@@ -1,0 +1,29 @@
+mat-toolbar{
+    .spacer{
+        flex: 1 1 auto;
+    }
+    
+    icon-button, .icon-button{
+        height: 80%;
+    }
+    
+    .logo-icon{
+        height: 100%;
+        img{
+            height: 90%;
+        }
+    }
+}
+
+.home-drawer{
+    height: 100%;
+
+    mat-drawer{
+        max-width: 200px;
+        height: 100%;
+
+        a{
+            text-decoration: none;
+        }
+    }
+}

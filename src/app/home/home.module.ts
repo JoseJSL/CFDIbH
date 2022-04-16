@@ -5,7 +5,6 @@ import { HomeRoutingModule } from './home-routing.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { HomePageComponent } from './home.page.component';
-import { HomeToolbarComponent } from './toolbar/toolbar.component';
 import { CoreModule } from '../core/core.module';
 import { MatButtonModule } from '@angular/material/button';
 import { ProfileComponent } from './profile/profile.component';
@@ -16,11 +15,19 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { CardTableComponent } from './initial-page/card-table/card-table.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     HomePageComponent, 
-    HomeToolbarComponent, ProfileComponent, XmlsPageComponent, AssociatesComponent, InitialPageComponent, CardTableComponent,
+    ProfileComponent, 
+    XmlsPageComponent, 
+    AssociatesComponent,
+    InitialPageComponent,
+    CardTableComponent,
   ],
   imports: [
     CommonModule,
@@ -32,6 +39,10 @@ import { MatTableModule } from '@angular/material/table';
     MatGridListModule,
     MatCardModule,
     MatTableModule,
+    MatSidenavModule,
+    MatTreeModule,
+    MatListModule,
+    MatIconModule,
   ]
 })
 export class HomeModule { }
