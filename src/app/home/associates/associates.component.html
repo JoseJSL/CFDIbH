@@ -1,1 +1,19 @@
-<p>associates works!</p>
+<mat-tab-group mat-align-tabs="center">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <icon-button iconName="person" buttonColor="primary" iconColor="primary" label="Registrar una persona física"></icon-button>
+        </ng-template>
+
+        <user-register-stepper></user-register-stepper>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <icon-button iconName="account_balance" buttonColor="primary" iconColor="primary" label="Registrar una empresa"></icon-button>
+        </ng-template>
+
+        <enterprise-register-stepper></enterprise-register-stepper>
+    </mat-tab>
+</mat-tab-group>
+
+<mat-list>
+</mat-list>

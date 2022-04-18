@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>Inicia sesión</h1>
 <mat-dialog-content>
-    <form class="loginForm" [formGroup]="loginForm" (submit)="tryLogin()">
+    <form class="loginForm" [formGroup]="loginForm" (ngSubmit)="tryLogin()">
         <mat-form-field class="textField">
             <mat-label>Correo electrónico</mat-label>
             <input autocomplete="email" matInput formControlName="email" placeholder="ejemplo@dominio.com" type="email" required>
@@ -11,11 +11,6 @@
             <mat-label>Contraseña</mat-label>
             <input autocomplete="current-password" matInput formControlName="password" placeholder="********" type="password" required>
         </mat-form-field>
-
-        <mat-radio-group required value="Accountant" formControlName="userType">
-            <mat-radio-button value="Accountant">Usuario</mat-radio-button>
-            <mat-radio-button value="Enterprise">Empresa</mat-radio-button>
-        </mat-radio-group>
 
         <button mat-raised-button color="primary">Ingresar</button>
     </form>

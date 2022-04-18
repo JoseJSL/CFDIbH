@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Accountant, Enterprise } from '../service/user';
+import { Router } from '@angular/router';
+import { Accountant } from '../service/user';
 import { UserModuleService } from '../service/user-module.service';
 
 @Component({
@@ -10,16 +11,21 @@ import { UserModuleService } from '../service/user-module.service';
 export class HomePageComponent implements OnInit {
   public selectedPerson: string = 'current';
   public shouldDrawerOpen: boolean = window.innerWidth >= 768;
-  public user: Accountant | Enterprise | undefined;
+  public user: Accountant | undefined;
 
-  constructor(private userModule: UserModuleService) { }
+  constructor(private userModule: UserModuleService, private router: Router) { }
 
-  async ngOnInit(){
-    this.user = await this.userModule.getCurrentUser('Accountant');
+  ngOnInit(): void{
+    if(this.user === undefined){
+      this.userModule.getCurrentUser().then(v => this.user = v);
+    }
   }
 
   logOut(){
-    this.userModule.logOut();
+    this.userModule.logOut().then(
+      t => this.router.navigate(['/']),
+      f => this.logOut(),
+    );
   }
 
   handleResize(event: any){

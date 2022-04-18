@@ -1,1 +1,3 @@
 <app-card-table [inputData]="xmlsData" [tableColumns]="xmlsCols"></app-card-table>
+
+<fab-file-button buttonColor="primary" iconName="note_add" (documentsData)="onDocumentsLoad($event)"></fab-file-button>

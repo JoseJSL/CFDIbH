@@ -33,4 +33,8 @@ export class InitialPageComponent implements OnInit {
     });
   }
 
+  onDocumentsLoad(docs: any){
+    console.log(docs);
+  }
+
 }

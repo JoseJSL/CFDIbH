@@ -67,12 +67,7 @@ export class FabFileButtonComponent implements OnInit {
           acceptText: 'Ok',
         }
       });
-
-      dialog.afterClosed().subscribe(result => console.log(result));
     }
-
-    console.log(this.CFDIArray);
-
   }
 
 }

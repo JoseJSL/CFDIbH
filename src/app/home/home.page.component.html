@@ -3,14 +3,15 @@
         <mat-icon>menu</mat-icon>
     </button>
 
-    <a [routerLink]="['/home']"><button class="logo-icon" mat-button ><img src="../../favicon.ico"></button></a>
+    <a [routerLink]="['/app']"><button class="logo-icon" mat-button ><img src="../../favicon.ico"></button></a>
     
     <span class="spacer"></span>
+
     <div *ngIf="user">
         <icon-button [matMenuTriggerFor]="userMenu"  buttonColor="primary" [label]="user.DisplayName" iconName="person" iconColor="primary"></icon-button>
 
         <mat-menu #userMenu>
-            <button [routerLink]="['/home', 'profile']" mat-menu-item>
+            <button [routerLink]="['/app', 'profile']" mat-menu-item>
                 <span>Mi perfíl</span>
             </button>
             <button (click)="logOut();" mat-menu-item>
@@ -32,7 +33,15 @@
             </a>
 
             <mat-divider></mat-divider>
-            <div mat-subheader>Mis asociados</div>
+            <div mat-subheader>
+                <label>Mis asociados</label>
+                <span class="spacer"></span>
+
+                <a mat-icon-button [routerLink]="['/app', 'associates']">
+                    <mat-icon mat-list-icon>person_add</mat-icon>
+                </a>
+            </div>
+
 
             <a [routerLink]="['/app', 'associates', 'test']">
                 <mat-list-option value="test"> 

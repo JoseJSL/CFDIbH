@@ -1,4 +1,4 @@
-<mat-stepper [orientation]="orientation" [linear]="true" #personStepper>
+<mat-stepper #stepper [orientation]="orientation" [linear]="true" #personStepper>
     <mat-step [editable]="isEditable" errorMessage="Hay errores en algunos campos" [stepControl]="emailGroup">
         <ng-template matStepLabel>Datos de registro</ng-template>
 

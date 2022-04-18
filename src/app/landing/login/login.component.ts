@@ -31,14 +31,13 @@ export class LoginComponent implements OnInit {
     const user = await this.userModule.loginWithEmailAndPassword(
       this.loginForm.controls['email'].value,
       this.loginForm.controls['password'].value,
-      this.loginForm.controls['userType'].value,
     );
 
     loading.close();
     
     if(user){
       this.matDialog.closeAll();
-      this.router.navigate(['/home']);
+      this.router.navigate(['/app']);
       
       const name = (user as any).Name ? (user as any).Name : (user as any).FirstName;
 

@@ -4,22 +4,8 @@
     <div class="leftSide">
         <img src="../../../favicon.ico">
     </div>
+    
     <div class="rightSide">
-        <mat-tab-group class="register-type" mat-align-tabs="center">
-            <mat-tab>
-                <ng-template mat-tab-label>
-                    <icon-button iconName="person" buttonColor="primary" iconColor="primary" label="Soy una persona física"></icon-button>
-                </ng-template>
-
-                <user-register-stepper [routeAfterRegister]="['/']"></user-register-stepper>
-            </mat-tab>
-            <mat-tab>
-                <ng-template mat-tab-label>
-                    <icon-button iconName="account_balance" buttonColor="primary" iconColor="primary" label="Soy una empresa"></icon-button>
-                </ng-template>
-
-                <enterprise-register-stepper [routeAfterRegister]="['/']"></enterprise-register-stepper>
-            </mat-tab>
-        </mat-tab-group>
+        <user-register-stepper [routeAfterRegister]="['/app']"></user-register-stepper>
     </div>
 </div>

@@ -1,8 +1,9 @@
+.spacer{
+    flex: 1 1 auto;
+}
+
 mat-toolbar{
-    .spacer{
-        flex: 1 1 auto;
-    }
-    
+    height: 64px;
     icon-button, .icon-button{
         height: 80%;
     }
@@ -16,10 +17,10 @@ mat-toolbar{
 }
 
 .home-drawer{
-    height: 100%;
+    height: calc(100% - 64px);
 
     mat-drawer{
-        max-width: 200px;
+        max-width: 250px;
         height: 100%;
 
         a{

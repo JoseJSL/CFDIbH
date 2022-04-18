@@ -19,6 +19,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { LandingModule } from '../landing/landing.module';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatTreeModule,
     MatListModule,
     MatIconModule,
+    LandingModule,
+    MatTabsModule,
   ]
 })
 export class HomeModule { }

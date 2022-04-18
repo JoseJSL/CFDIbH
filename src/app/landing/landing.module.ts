@@ -46,6 +46,10 @@ import { MatRadioModule } from '@angular/material/radio';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatRadioModule,
-  ]
+  ],
+  exports: [
+    UserRegisterStepperComponent,
+    EnterpriseRegisterStepperComponent,
+  ],
 })
 export class LandingModule { }

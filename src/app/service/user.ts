@@ -1,5 +1,13 @@
-export interface Enterprise extends User{
-    Accountants: Accountant[],
+export interface Client {
+    RFC: string,
+    UID: string,
+    AddedDate: Date,
+}
+
+export interface Manager{
+    RFC: string,
+    UID: string,
+    AddedDate: Date,
 }
 
 export interface Accountant extends User{
@@ -7,11 +15,12 @@ export interface Accountant extends User{
     LastName: string,
 }
 
-interface User {
+export interface User {
     UID: string,
     RFC: string,
     Email: string,
     JoinDate: Date,
     DisplayName: string,
     BirthDate: Date,
+    Type: 'Accountant' | 'Enterprise',
 }

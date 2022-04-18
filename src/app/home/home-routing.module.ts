@@ -5,11 +5,16 @@ import { HomePageComponent } from './home.page.component';
 import { InitialPageComponent } from './initial-page/initial-page.component';
 import { ProfileComponent } from './profile/profile.component';
 import { XmlsPageComponent } from './xmls-page/xmls-page.component';
+import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/compat/auth-guard';
+
+const redirectoToLanding = () => redirectUnauthorizedTo(['/']);
 
 const routes: Routes = [
   {
     path: '',
     component: HomePageComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: {authGuardPipe: redirectoToLanding },
     children:[
       {
         path: '',
@@ -30,12 +35,11 @@ const routes: Routes = [
       },
       {
         path: 'associates',
-        children: [
-          {
-            path: ':rfc', //Ver un solo 'socio'
-            component: InitialPageComponent,
-          },
-        ],
+        component: AssociatesComponent,
+      },
+      {
+        path: 'associates/:rfc', //Ver un solo 'socio'
+        component: InitialPageComponent,
       },
     ],
   },
