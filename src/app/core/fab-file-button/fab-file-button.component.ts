@@ -17,7 +17,7 @@ export class FabFileButtonComponent implements OnInit {
   @Input() iconName!: string | undefined;
   @Input() label: string | undefined;
 
-  @Output() documentsData = new EventEmitter<(Ingreso | Egreso | Traslado)[]>(); 
+  @Output() onDocumentsLoaded = new EventEmitter<(Ingreso | Egreso | Traslado)[]>(); 
 
   public CFDIArray: (Ingreso | Egreso | Traslado)[] = [];
 
@@ -46,7 +46,7 @@ export class FabFileButtonComponent implements OnInit {
             break;
         }
       }
-      this.documentsData.emit(this.CFDIArray);
+      this.onDocumentsLoaded.emit(this.CFDIArray);
 
       if(this.CFDIArray.length > 0){
         const message = this.CFDIArray.length == 1 ? 

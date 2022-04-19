@@ -21,6 +21,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { LandingModule } from '../landing/landing.module';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatIconModule,
     LandingModule,
     MatTabsModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class HomeModule { }

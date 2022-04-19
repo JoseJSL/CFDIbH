@@ -9,7 +9,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProgressSpinnerComponent } from 'src/app/core/progress-spinner/progress-spinner.component';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Client, Manager } from 'src/app/service/user';
 import { MatStepper } from '@angular/material/stepper';
 
 @Component({
@@ -60,7 +59,7 @@ export class UserRegisterStepperComponent implements OnInit {
           this.userData.controls['lastName'].value,
           this.isChildUser,        
         );
-        
+
         loading.close();
 
         if(this.routeAfterRegister){
@@ -72,6 +71,7 @@ export class UserRegisterStepperComponent implements OnInit {
         }
       }
     } catch(e){
+      console.log(e)
       loading.close();
       this.matSnackBar.open('Lo sentimos, ocurrió un error inesperado. Vueva a intentarlo más tarde', 'Ok');
     }

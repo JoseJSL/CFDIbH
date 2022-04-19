@@ -11,7 +11,9 @@
 
 <div *ngIf="!(inputData.length > 0 && tableColumns.length > 0)" class="noContent mat-elevation-z8">
     <a [routerLink]="onNoContentReRoute" >
-        <mat-card-title>{{noContentLabel}}</mat-card-title>
+        <div>
+            <mat-card-title>{{noContentLabel}}</mat-card-title>
+        </div>
         <mat-card-subtitle>{{noContentSubLabel}}</mat-card-subtitle>
     </a>
 </div>

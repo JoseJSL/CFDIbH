@@ -13,7 +13,10 @@ export class UserModuleService {
 
   async createAccountant(email: string, password: string, rfc: string, firstName: string, lastName: string, isChild?: boolean): Promise<Accountant | null>{
     try{
+      let currentUser: User | undefined = await this.getCurrentUser();
+
       const credentials = await this.auth.createUserWithEmailAndPassword(email, password);
+
       const birthDate = new Date(
         Number.parseInt(rfc.slice(4, 6)),
         Number.parseInt(rfc.slice(6, 8)),
@@ -36,7 +39,7 @@ export class UserModuleService {
       //credentials.user!.sendEmailVerification(); -Verificación por correo
 
       if(isChild){
-        await this.createClientManagerRelation((await this.getCurrentUser())!, accountant);
+        await this.createClientManagerRelation(currentUser!, accountant);
       }
 
       return accountant;
@@ -45,7 +48,7 @@ export class UserModuleService {
     }
   }
 
-  async createEnterprise(email: string, password: string, rfc: string, name: string): Promise<User | null>{
+  async createEnterprise(email: string, rfc: string, name: string): Promise<User | null>{
     try{
       const creationDate = new Date(
         Number.parseInt(rfc.slice(3, 5)),
@@ -78,17 +81,19 @@ export class UserModuleService {
     try{
       await this.afs.collection('User').doc(manager!.UID).collection('Client').doc(client!.UID).set(
         {
-          UID: client!.UID,
-          RFC: client!.RFC,
+          UID: client.UID,
+          RFC: client.RFC,
           AddedDate: client.JoinDate,
+          DisplayName: client.DisplayName,
         } as Client
       );
   
       await this.afs.collection('User').doc(client.UID).collection('Manager').doc(manager!.UID).set(
         {
-          UID: manager!.UID,
-          RFC: manager!.RFC,
+          UID: manager.UID,
+          RFC: manager.RFC,
           AddedDate: client.JoinDate,
+          DisplayName: manager.DisplayName,
         } as Manager
       );
 
@@ -127,6 +132,37 @@ export class UserModuleService {
         reject(undefined);
       }
     });
+  }
+
+  async getClientByRFC(managerUID: string, clientRFC: string): Promise<User | undefined>{
+    return new Promise((resolve, reject) => {
+      if(!managerUID || !clientRFC){
+        reject(undefined);
+      }
+
+      this.afs.collection('User').doc(managerUID).collection<Client>('Client', ref => ref.where('RFC', '==', clientRFC)).get().subscribe(doc => {
+        if(doc.empty){
+          reject(undefined);
+        } else {
+          this.afs.collection<User>('User').doc(doc.docs[0].data().UID).get().subscribe(client => {
+            client.exists ? resolve(client.data()) : reject(undefined);
+          });
+        }
+      });
+    })
+  }
+
+  async getUserClients(UID: string): Promise<User[]>{
+    return new Promise((resolve) => {
+      var clients: User[] = [];
+      this.afs.collection('User').doc(UID).collection<User>('Client').get().subscribe(clientsDoc => {
+        clientsDoc.docs.forEach(doc => {
+          clients.push(doc.data());
+        });
+      });
+
+      resolve(clients);
+    }); 
   }
 
   async logOut(){

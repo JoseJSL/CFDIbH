@@ -47,7 +47,6 @@ export class EnterpriseRegisterStepperComponent implements OnInit {
       } else {
         const enterprise = await this.userModule.createEnterprise(
           this.emailGroup.controls['email'].value,
-          this.emailGroup.controls['password'].value,
           this.enterpriseData.controls['RFC'].value,
           this.enterpriseData.controls['name'].value,
         );

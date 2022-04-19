@@ -4,13 +4,13 @@ import { environment } from "src/environments/environment";
 export class CustomValidators{
     public static equals(toCompare: AbstractControl): ValidatorFn{
         return (control: AbstractControl): ValidationErrors | null => {
-            return (control.value as string).localeCompare(toCompare.value) ? { equals: true } : null;
+            return String(control.value).localeCompare(String(toCompare.value)) ? { equals: true } : null;
         }
     }
 
     public static rfc(aceptarGenerico = true) {
         return (control: AbstractControl): ValidationErrors | null => {
-            var   validado = (control.value as string).match(environment.regex.RFC);
+            var   validado = String(control.value).match(environment.regex.RFC);
         
             if (!validado) return null;
         

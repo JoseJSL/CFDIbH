@@ -1,10 +1,12 @@
 export interface Client {
+    DisplayName: string,
     RFC: string,
     UID: string,
     AddedDate: Date,
 }
 
 export interface Manager{
+    DisplayName: string,
     RFC: string,
     UID: string,
     AddedDate: Date,

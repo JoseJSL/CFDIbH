@@ -1,3 +1,8 @@
-<app-card-table [inputData]="xmlsData" [tableColumns]="xmlsCols"></app-card-table>
+<app-card-table 
+    [inputData]="xmlsData" 
+    [tableColumns]="xmlsCols"
+    [noContentLabel]="selectedUser ? 'El usuario ' + selectedUser.DisplayName + ' no tiene ningún documento cargado.' : ''"
+    [noContentSubLabel]="selectedUser ? 'Utilice el botón inferior derecho para subir nuevos archivos para éste usuario.' : ''"
+></app-card-table>
 
-<fab-file-button buttonColor="primary" iconName="note_add" (documentsData)="onDocumentsLoad($event)"></fab-file-button>
+<fab-file-button buttonColor="primary" iconName="note_add" (onDocumentsLoaded)="onDocumentsLoad($event)"></fab-file-button>

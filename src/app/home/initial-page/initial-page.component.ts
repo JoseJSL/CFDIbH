@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
+import { User } from 'src/app/service/user';
+import { UserModuleService } from 'src/app/service/user-module.service';
 
 @Component({
   selector: 'app-initial-page',
@@ -8,27 +11,25 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class InitialPageComponent implements OnInit {
   public xmlsData: any[] = [];
-  public selectedPerson: string | undefined;
-  public xmlsCols: string[] = ['Concepto', 'Cantidad'];
+  public xmlsCols: string[] = [];
+  public selectedUser?: User;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private userModule: UserModuleService, private router: Router, private matSnackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.selectedPerson = params['rfc'] ? params['rfc'] : 'current';
-
-      if(this.selectedPerson == 'current'){
-        this.xmlsData = [
-          {Concepto: 'Uno', Cantidad: '$1000.00'},
-          {Concepto: 'Dos', Cantidad: '$2000.00'},
-          {Concepto: 'Tres', Cantidad: '$3000.00'},
-        ];
+    this.route.params.subscribe(async params => {
+      if(!params['rfc']){
+        this.selectedUser = await this.userModule.getCurrentUser();
       } else {
-        this.xmlsData = [
-          {Concepto: 'Cuatro', Cantidad: '$4000.00'},
-          {Concepto: 'Cinco', Cantidad: '$5000.00'},
-          {Concepto: 'Seis', Cantidad: '$6000.00'},
-        ];
+        const current = await this.userModule.getCurrentUser();
+        const paramUser = await this.userModule.getClientByRFC(current!.UID, params['rfc']);
+        
+        if(!paramUser){
+          this.matSnackBar.open('No tiene ningún asociado con el RFC: ' + params['rfc'], 'Ok', {duration: 1750});
+          this.router.navigate(['/app', 'associates']);
+        } else {
+          this.selectedUser = paramUser;
+        }
       }
     });
   }

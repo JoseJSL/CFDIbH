@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { Accountant } from '../service/user';
+import { Accountant, Client, User } from '../service/user';
 import { UserModuleService } from '../service/user-module.service';
 
 @Component({
@@ -12,13 +13,21 @@ export class HomePageComponent implements OnInit {
   public selectedPerson: string = 'current';
   public shouldDrawerOpen: boolean = window.innerWidth >= 768;
   public user: Accountant | undefined;
+  public userClients: Client[] = [];
 
-  constructor(private userModule: UserModuleService, private router: Router) { }
+  constructor(private userModule: UserModuleService, private afs: AngularFirestore, private router: Router) {
+    if(this.user === undefined){
+      this.userModule.getCurrentUser().then(async v => {
+        this.user = v;
+
+        this.afs.collection('User').doc(this.user!.UID).collection<Client>('Client').valueChanges().subscribe(docs => {
+          this.userClients = docs;
+        })
+      });
+    }
+  }
 
   ngOnInit(): void{
-    if(this.user === undefined){
-      this.userModule.getCurrentUser().then(v => this.user = v);
-    }
   }
 
   logOut(){

@@ -33,6 +33,7 @@
             </a>
 
             <mat-divider></mat-divider>
+            
             <div mat-subheader>
                 <label>Mis asociados</label>
                 <span class="spacer"></span>
@@ -42,25 +43,20 @@
                 </a>
             </div>
 
-
-            <a [routerLink]="['/app', 'associates', 'test']">
-                <mat-list-option value="test"> 
-                    <mat-icon mat-list-icon>folder_shared</mat-icon>
-                    <div mat-line>Nombre 1</div>
+            <a *ngFor="let client of userClients" [routerLink]="['/app', 'associates', client.RFC]">
+                <mat-list-option [value]="client.RFC">
+                    <mat-icon color="primary" mat-list-icon>folder_shared</mat-icon>
+                    <div mat-line>{{client.DisplayName}}</div>
                 </mat-list-option>
             </a>
 
-            <mat-list-option>
-                <mat-icon mat-list-icon>person</mat-icon>
-                <div mat-line>Nombre 2</div>
-            </mat-list-option>
-            <mat-list-option>
-                <mat-icon mat-list-icon>person</mat-icon>
-                <div mat-line>Nombre 3</div>
-            </mat-list-option>
+            <div *ngIf="userClients.length == 0" class="no-associates">
+                <mat-card-subtitle>
+                    No tienes ningún asociado. Puede agregarlos con el botón [<mat-icon>person_add</mat-icon>] de arriba.
+                </mat-card-subtitle>
+            </div>
         </mat-selection-list>
     </mat-drawer>
 
     <router-outlet></router-outlet>
-
 </mat-drawer-container>
