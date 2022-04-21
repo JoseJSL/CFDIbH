@@ -5,6 +5,11 @@ import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
 import { XMLReaderService } from 'src/app/service/xml-reader.service';
 import { DialogComponent } from '../dialog/dialog.component';
 
+export interface XMLExport{
+  RawFiles: File[],
+  ParsedFiles: (Ingreso | Egreso | Traslado)[],
+}
+
 @Component({
   selector: 'fab-file-button',
   templateUrl: './fab-file-button.component.html',
@@ -17,16 +22,16 @@ export class FabFileButtonComponent implements OnInit {
   @Input() iconName!: string | undefined;
   @Input() label: string | undefined;
 
-  @Output() onDocumentsLoaded = new EventEmitter<(Ingreso | Egreso | Traslado)[]>(); 
-
-  public CFDIArray: (Ingreso | Egreso | Traslado)[] = [];
+  @Output() onDocumentsLoaded = new EventEmitter<XMLExport>(); 
 
   constructor(private XMLReader: XMLReaderService, private matDialog: MatDialog, private matSnackBar: MatSnackBar) { }
 
   ngOnInit(): void {}
 
   async readFiles($ev: any){
-    this.CFDIArray = []
+    let CFDIArray: (Ingreso | Egreso | Traslado)[] = [];
+    let rawFiles: File[] = [];
+
     const files: File[] = $ev.target.files;
     const parsedFiles: any[] = await this.XMLReader.readMultiple(files);
     let i, n: number = 0;
@@ -36,28 +41,30 @@ export class FabFileButtonComponent implements OnInit {
         n = i;
         switch(parsedFiles[i]._TipoDeComprobante){
           case("I"):
-           this.CFDIArray.push(new Ingreso(parsedFiles[i]));
+           CFDIArray.push(new Ingreso(parsedFiles[i]));
+           rawFiles.push(files[i]);
             break;
           case("E"):
-            this.CFDIArray.push(new Egreso(parsedFiles[i]));
+            CFDIArray.push(new Egreso(parsedFiles[i]));
+            rawFiles.push(files[i]);
             break;
           case("T"):
-            this.CFDIArray.push(new Traslado(parsedFiles[i]));
+            CFDIArray.push(new Traslado(parsedFiles[i]));
+            rawFiles.push(files[i]);
             break;
         }
       }
-      this.onDocumentsLoaded.emit(this.CFDIArray);
+      this.onDocumentsLoaded.emit({
+        RawFiles: files,
+        ParsedFiles: CFDIArray,
+      });
 
-      if(this.CFDIArray.length > 0){
-        const message = this.CFDIArray.length == 1 ? 
-          'Se agregó 1 archivo con éxito.' :
-          `Se han agregado ${this.CFDIArray.length} archivos con éxito.`;
+      if(CFDIArray.length > 0){
+        const message = CFDIArray.length == 1 ? 
+          'Cargando 1 archivo...' :
+          `Cargando ${CFDIArray.length} archivos...`;
           
-        this.matSnackBar.open(
-          message,
-          undefined,
-          { duration: 2000, },
-        );
+        this.matSnackBar.open(message, undefined, { duration: 2000, });
       }
     } catch(e){
       const dialog = this.matDialog.open(DialogComponent, {

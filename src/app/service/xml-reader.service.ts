@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { XMLParser, X2jOptions, XMLBuilder } from 'fast-xml-parser';
-import { BucketService } from './bucket.service';
+import { Egreso, Ingreso, Traslado } from './cfdi';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class XMLReaderService {
     attributeNamePrefix : '_',
   };
 
-  constructor(private bucket: BucketService) {
+  constructor() {
     this.parser = new XMLParser(this.parserOptions);
   }
 
@@ -39,20 +39,22 @@ export class XMLReaderService {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        let res: string = '';
-
         if(reader.result){
-          res = reader.result.toString()
-            .replace(new RegExp('cfdi:', 'g'), '')
-            .replace(new RegExp('tfd:', 'g'), '');
+          resolve(this.prepareTextContent(reader.result.toString()));
+        } else {
+          reject('');
         }
-
-        resolve(res)
       };
 
-      reader.onerror = reject;
+      reader.onerror = () => { reject('') };
       reader.readAsText(file);
     });
+  }
+
+  private prepareTextContent(fileText: string){
+    return fileText
+      .replace(new RegExp('cfdi:', 'g'), '')
+      .replace(new RegExp('tfd:', 'g'), '');
   }
 
   public objectToXML(data: any){
@@ -63,4 +65,48 @@ export class XMLReaderService {
 
     return builder.build(data);
   }
+
+  public ParseMultipleText(data: string[]){
+    let result: any[] = [];
+
+    for(let i = 0; i < data.length; i++){
+      result.push(this.ParseText(data[i]));
+    }
+
+    return result;
+  }
+
+  public ParseText(data: string){
+    data = this.prepareTextContent(data);
+    const parsedData = this.parser.parse(data);
+    return parsedData['Comprobante'] ? parsedData['Comprobante'] : null;
+  } 
+ 
+  public JsonArrayToCFDI(data: any[]): (Ingreso | Egreso | Traslado)[]{
+    let CFDIArray: (Ingreso | Egreso | Traslado)[] = [];
+
+    try{
+      for(let i = 0; i < data.length; i ++){
+        console.log(data[i]._TipoDeComprobante);
+        switch(data[i]._TipoDeComprobante){
+          case("I"):
+           CFDIArray.push(new Ingreso(data[i]));
+            break;
+          case("E"):
+            CFDIArray.push(new Egreso(data[i]));
+            break;
+          case("T"):
+            CFDIArray.push(new Traslado(data[i]));
+            break;
+          default:
+            throw new Error();
+        }
+      }
+
+      return CFDIArray;
+  } catch(e) {
+    console.error(e);
+    return [];
+  }
+}
 }
