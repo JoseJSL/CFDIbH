@@ -87,7 +87,6 @@ export class XMLReaderService {
 
     try{
       for(let i = 0; i < data.length; i ++){
-        console.log(data[i]._TipoDeComprobante);
         switch(data[i]._TipoDeComprobante){
           case("I"):
            CFDIArray.push(new Ingreso(data[i]));

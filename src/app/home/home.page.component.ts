@@ -14,6 +14,7 @@ export class HomePageComponent implements OnInit {
   public shouldDrawerOpen: boolean = window.innerWidth >= 768;
   public user: Accountant | undefined;
   public userClients: Client[] = [];
+  public showLoadingClients: boolean = true;
 
   constructor(private userModule: UserModuleService, private afs: AngularFirestore, private router: Router) {
     if(this.user === undefined){
@@ -22,6 +23,7 @@ export class HomePageComponent implements OnInit {
 
         this.afs.collection('User').doc(this.user!.UID).collection<Client>('Client').valueChanges().subscribe(docs => {
           this.userClients = docs;
+          this.showLoadingClients = false;
         })
       });
     }

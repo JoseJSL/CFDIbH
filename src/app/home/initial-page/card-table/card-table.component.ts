@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
-import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
 
 @Component({
   selector: 'app-card-table',
@@ -19,4 +18,17 @@ export class CardTableComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  formatAsMoney(quantity: number) : string{
+    return '$' + quantity.toFixed(2);;
+  }
+
+  getConcepts(Conceptos: any[]): string{
+    let res = '';
+
+    for(let i = 0; i < Conceptos.length - 1; i++){
+      res += Conceptos[i]._Descripcion + ", ";
+    }
+
+    return res + Conceptos[Conceptos.length  -1]._Descripcion;
+  }
 }

@@ -24,7 +24,7 @@
 
 <mat-drawer-container autosize class="home-drawer" (window:resize)="handleResize($event);">
     <mat-drawer #drawer mode="side" [opened]="shouldDrawerOpen">
-        <mat-selection-list multiple="false" value="test">
+        <mat-selection-list multiple="false">
             <a [routerLink]="['/app']">
                 <mat-list-option value="current">
                     <mat-icon color="primary" mat-list-icon>folder</mat-icon>
@@ -43,20 +43,24 @@
                 </a>
             </div>
 
-            <a *ngFor="let client of userClients" [routerLink]="['/app', 'associates', client.RFC]">
-                <mat-list-option [value]="client.RFC">
-                    <mat-icon color="primary" mat-list-icon>folder_shared</mat-icon>
-                    <div mat-line>{{client.DisplayName}}</div>
-                </mat-list-option>
-            </a>
+            <mat-progress-bar mode="indeterminate" *ngIf="showLoadingClients"></mat-progress-bar>
 
-            <div *ngIf="userClients.length == 0" class="no-associates">
-                <mat-card-subtitle>
-                    No tienes ningún asociado. Puede agregarlos con el botón [<mat-icon>person_add</mat-icon>] de arriba.
-                </mat-card-subtitle>
+            <div  *ngIf="!showLoadingClients">
+                <a *ngFor="let client of userClients" [routerLink]="['/app', 'associates', client.RFC]">
+                    <mat-list-option [value]="client.RFC">
+                        <mat-icon color="primary" mat-list-icon>folder_shared</mat-icon>
+                        <div mat-line>{{client.DisplayName}}</div>
+                    </mat-list-option>
+                </a>
+    
+                <div *ngIf="userClients.length == 0" class="no-associates">
+                    <mat-card-subtitle>
+                        No tienes ningún asociado. Puede agregarlos con el botón [<mat-icon>person_add</mat-icon>] de arriba.
+                    </mat-card-subtitle>
+                </div>
             </div>
         </mat-selection-list>
     </mat-drawer>
-
+    
     <router-outlet></router-outlet>
 </mat-drawer-container>

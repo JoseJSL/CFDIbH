@@ -29,6 +29,12 @@ export class BucketService {
   }
 
   async uploadXML(userUID: string, file: File, _NoCertificado: string): Promise<string>{
+    if(!_NoCertificado){
+      throw new Error('_NoCertificado is undefined');
+    } else if(!(_NoCertificado.length > 0)){
+      throw new Error('_NoCertificado is undefined');
+    }
+
     const upload = await this.storage.upload(`XML/${userUID}/${_NoCertificado}`, file);
     const url = await upload.ref.getDownloadURL();
 

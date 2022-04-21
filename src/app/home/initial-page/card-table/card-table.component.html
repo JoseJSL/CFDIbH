@@ -1,15 +1,31 @@
-<table *ngIf="inputData.length > 0 && tableColumns.length > 0" #dataTable mat-table [dataSource]="inputData" class="mat-elevation-z8">
+<table *ngIf="inputData.length > 0 && tableColumns.length > 0" #dataTable mat-table [dataSource]="inputData">
     <tr class="row-header" mat-header-row *matHeaderRowDef="tableColumns"></tr> 
 
-    <ng-container *ngFor="let col of tableColumns; let i = index" [matColumnDef]="col">
-        <th mat-header-cell *matHeaderCellDef>{{col}}</th>
-        <td mat-cell *matCellDef="let data of inputData">{{data[col]}}</td>
+    <ng-container matColumnDef="Concepto"]>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por concepto">Concepto(s)</th>
+        <td [style]="'max-width: 15%;'" mat-cell *matCellDef="let cfdi">{{getConcepts(cfdi.Conceptos)}}</td>
     </ng-container>
+
+    <ng-container matColumnDef="Emisor">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por emisor">Emisor</th>
+        <td mat-cell *matCellDef="let cfdi">{{cfdi.Emisor._Nombre}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Receptor">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por receptor" >Receptor</th>
+        <td mat-cell *matCellDef="let cfdi">{{cfdi.Receptor._Nombre}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Subtotal">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por subtotal">Subtotal</th>
+        <td mat-cell *matCellDef="let cfdi">{{formatAsMoney(cfdi._SubTotal)}}</td>
+    </ng-container>
+
 
     <tr mat-row *matRowDef="let row; columns: tableColumns;"></tr>
 </table>
 
-<div *ngIf="!(inputData.length > 0 && tableColumns.length > 0)" class="noContent mat-elevation-z8">
+<div *ngIf="!(inputData.length > 0 && tableColumns.length > 0)" class="noContent">
     <a [routerLink]="onNoContentReRoute" >
         <div>
             <mat-card-title>{{noContentLabel}}</mat-card-title>

@@ -7,8 +7,12 @@ table{
         font-weight: 600;
     }
 
-    th:first-of-type{
-        width: 100%;
+    .mat-cell{
+        padding: 0.5vw;
+    }
+
+    .mat-cell:first-of-type{
+        padding: 1vw;
     }
 }
 
