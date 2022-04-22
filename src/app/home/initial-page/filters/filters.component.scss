@@ -8,10 +8,15 @@ mat-icon{
     margin-right: 8px;
 }
 
-::ng-deep .mat-expansion-panel-body {
-    padding-bottom: 0 !important;
-}
+::ng-deep{
+    .mat-expansion-panel-body {    
+        padding-bottom: 0 !important;
+    }
 
+    .mat-input-element:disabled{
+        color: inherit !important;
+    }
+}
 mat-form-field, mat-select{
     width: 92.5%;
 }

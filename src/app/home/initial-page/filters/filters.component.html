@@ -1,4 +1,4 @@
-<mat-accordion>
+<mat-accordion (window:resize)="handleResize($event)">
     <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
@@ -8,9 +8,9 @@
             <mat-panel-description>Cambia qué documentos se mostrarán aquí</mat-panel-description>
         </mat-expansion-panel-header>
 
-        <mat-grid-list [cols]="filterCols" rowHeight="60px">
+        <mat-grid-list [cols]="filterCols" rowHeight="75px">
             <mat-grid-tile>
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                     <mat-label>Receptores</mat-label>
                     <mat-select multiple (valueChange)="changeFilter($event, 'receptor')">
                         <mat-select-trigger>
@@ -21,13 +21,13 @@
                             </span>
                         </mat-select-trigger>
     
-                        <mat-option *ngFor="let cfdi of inputData" [value]="cfdi.Receptor._Nombre">{{cfdi.Receptor._Nombre}}</mat-option>
+                        <mat-option *ngFor="let r of Receptores" [value]="r">{{r}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
 
             <mat-grid-tile>
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                     <mat-label>Emisores</mat-label>
                     <mat-select multiple (valueChange)="changeFilter($event, 'emisor')">
                         <mat-select-trigger>
@@ -38,8 +38,44 @@
                             </span>
                         </mat-select-trigger>
     
-                        <mat-option *ngFor="let cfdi of inputData" [value]="cfdi.Emisor._Nombre">{{cfdi.Emisor._Nombre}}</mat-option>
+                        <mat-option *ngFor="let e of Emisores" [value]="e">{{e}}</mat-option>
                     </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha de inicio</mat-label>
+                    <input matInput [matDatepicker]="datePickerStart" disabled="true">
+                    <mat-hint>MM/AAAA</mat-hint>
+
+                    <mat-datepicker-toggle matSuffix [for]="datePickerStart"></mat-datepicker-toggle>
+
+                    <mat-datepicker
+                        #datePickerStart
+                        startView="multi-year"
+                        disabled="false"
+                        [touchUi]="useDateDialog"
+                        (monthSelected)="changeDate($event, datePickerStart, 'desdeFecha')">
+                    </mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha de fin</mat-label>
+                    <input matInput [matDatepicker]="datePickerEnd" disabled="true">
+                    <mat-hint>MM/AAAA</mat-hint>
+
+                    <mat-datepicker-toggle matSuffix [for]="datePickerEnd"></mat-datepicker-toggle>
+
+                    <mat-datepicker
+                        #datePickerEnd
+                        startView="multi-year"
+                        disabled="false"
+                        [touchUi]="useDateDialog"
+                        (monthSelected)="changeDate($event, datePickerEnd, 'hastaFecha')">
+                    </mat-datepicker>
                 </mat-form-field>
             </mat-grid-tile>
         </mat-grid-list>

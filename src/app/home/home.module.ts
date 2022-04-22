@@ -26,8 +26,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FiltersComponent } from './initial-page/filters/filters.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -60,6 +63,11 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
     MatExpansionModule,
     MatSelectModule,
     MatPaginatorModule,
-  ]
+    MatDatepickerModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatTooltipModule
+  ],
 })
 export class HomeModule { }

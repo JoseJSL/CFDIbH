@@ -3,4 +3,6 @@ export interface CFDIFilter{
     emisor?: string[],
     subtotalMayorQue?: number,
     subtotalMenorQue?: number,
+    desdeFecha?: Date,
+    hastaFecha?: Date,
 }
