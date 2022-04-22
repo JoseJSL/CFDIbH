@@ -13,6 +13,7 @@ import { UserModuleService } from 'src/app/service/user-module.service';
 })
 export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
+  public showLoading: boolean = false;
 
   constructor(private matDialog: MatDialog, private matSnackBar: MatSnackBar, private userModule: UserModuleService, private builder: FormBuilder, private router: Router) {
     this.loginForm = this.builder.group({
@@ -25,14 +26,12 @@ export class LoginComponent implements OnInit {
   }
 
   async tryLogin(){
-    const loading = this.matDialog.open(ProgressSpinnerComponent, { disableClose: true });
+    this.showLoading = true;
 
     const user = await this.userModule.loginWithEmailAndPassword(
       this.loginForm.controls['email'].value,
       this.loginForm.controls['password'].value,
     );
-
-    loading.close();
     
     if(user){
       this.matDialog.closeAll();
@@ -43,6 +42,7 @@ export class LoginComponent implements OnInit {
       this.matSnackBar.open('Bienvenido, ' + name, undefined, { duration: 2000 });
     } else{
       this.matSnackBar.open('El correo o la contraseña no son válidos.', 'Ok');
+      this.showLoading = false;
     }
   }
 

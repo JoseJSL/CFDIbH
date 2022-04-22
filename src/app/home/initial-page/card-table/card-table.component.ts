@@ -1,22 +1,29 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-card-table',
   templateUrl: './card-table.component.html',
   styleUrls: ['./card-table.component.scss']
 })
-export class CardTableComponent implements OnInit {
+export class CardTableComponent implements AfterViewInit {
   @ViewChild('dataTable') dataTable!: MatTable<any>;
-  @Input() inputData: any[] = [];
+  @Input() inputData!: any[];
+  @ViewChild('tablePaginator') tablePaginator!: MatPaginator;
+  public tableDataSource!: MatTableDataSource<any>;
+
   @Input() tableColumns: string[] = [];
   @Input() noContentLabel: string | undefined;
   @Input() noContentSubLabel: string | undefined;
   @Input() onNoContentReRoute: string | any[] | null | undefined;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
+  ngAfterViewInit(): void {
+    this.tableDataSource = new MatTableDataSource<any>(this.inputData);
+    this.tableDataSource.paginator = this.tablePaginator;
+  }
 
   formatAsMoney(quantity: number) : string{
     return '$' + quantity.toFixed(2);;

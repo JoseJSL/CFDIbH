@@ -44,6 +44,12 @@ export class InitialPageComponent implements OnInit {
       this.afs.collection('User').doc(this.selectedUser.UID).collection('XML').valueChanges().subscribe(async xmlsCollection => {        
         this.xmlsData = xmlsCollection.length > 0 ? await this.fullyParseRawXMLS() : [];
 
+        this.xmlsData.forEach(data => {
+          for(let i = 0; i < 30; i++){
+            this.xmlsData.push(data);
+          }
+        })
+        
         this.showLoadingTable = false;
       });
     }

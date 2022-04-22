@@ -10,11 +10,13 @@ import { UserModuleService } from '../service/user-module.service';
   styleUrls: ['./home.page.component.scss']
 })
 export class HomePageComponent implements OnInit {
-  public selectedPerson: string = 'current';
-  public shouldDrawerOpen: boolean = window.innerWidth >= 768;
   public user: Accountant | undefined;
   public userClients: Client[] = [];
   public showLoadingClients: boolean = true;
+
+  public shouldDrawerOpen: boolean = true;
+  public drawerBackdrop: boolean = window.innerWidth <= 768;;
+  public drawerMode: 'side' | 'over' = window.innerWidth >= 768 ? 'side' : 'over';
 
   constructor(private userModule: UserModuleService, private afs: AngularFirestore, private router: Router) {
     if(this.user === undefined){
@@ -41,7 +43,15 @@ export class HomePageComponent implements OnInit {
 
   handleResize(event: any){
     try{
-      this.shouldDrawerOpen = event.target.innerWidth >= 768;
+      if(event.target.innerWidth >= 768){
+        this.drawerBackdrop = false;
+        this.drawerMode = 'side';
+      } else {
+        this.shouldDrawerOpen = true;
+        this.drawerBackdrop = true;
+        this.drawerMode = 'over';
+      }
+
     } catch(e){}
   }
 }

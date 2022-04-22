@@ -1,0 +1,22 @@
+.mat-accordion .mat-expansion-panel {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: none;
+}
+
+mat-icon{
+    margin-right: 8px;
+}
+
+::ng-deep .mat-expansion-panel-body {
+    padding-bottom: 0 !important;
+}
+
+mat-form-field, mat-select{
+    width: 92.5%;
+}
+
+.additional-selection {
+    opacity: 0.75;
+    font-size: 0.75em;
+}

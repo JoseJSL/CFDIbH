@@ -22,11 +22,11 @@
 </mat-toolbar>
 
 
-<mat-drawer-container autosize class="home-drawer" (window:resize)="handleResize($event);">
-    <mat-drawer #drawer mode="side" [opened]="shouldDrawerOpen">
+<mat-drawer-container autosize class="home-drawer" (window:resize)="handleResize($event);" [hasBackdrop]="drawerBackdrop">
+    <mat-drawer #drawer [mode]="drawerMode" [opened]="shouldDrawerOpen">
         <mat-selection-list multiple="false">
             <a [routerLink]="['/app']">
-                <mat-list-option value="current">
+                <mat-list-option>
                     <mat-icon color="primary" mat-list-icon>folder</mat-icon>
                     <div mat-line>Mis documentos</div>
                 </mat-list-option>

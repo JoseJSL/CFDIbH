@@ -20,6 +20,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { EnterpriseRegisterStepperComponent } from './register/enterprise-register-stepper/enterprise-register-stepper.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { MatRadioModule } from '@angular/material/radio';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatRadioModule,
+    MatProgressBarModule
   ],
   exports: [
     UserRegisterStepperComponent,

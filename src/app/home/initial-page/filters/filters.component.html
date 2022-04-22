@@ -1,0 +1,47 @@
+<mat-accordion>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <mat-icon>filter_list</mat-icon>
+                Filtros
+            </mat-panel-title>
+            <mat-panel-description>Cambia qué documentos se mostrarán aquí</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-grid-list [cols]="filterCols" rowHeight="60px">
+            <mat-grid-tile>
+                <mat-form-field>
+                    <mat-label>Receptores</mat-label>
+                    <mat-select multiple (valueChange)="changeFilter($event, 'receptor')">
+                        <mat-select-trigger>
+                            {{Filters.receptor ? Filters.receptor[0] : ''}}
+    
+                            <span *ngIf="Filters.receptor && Filters.receptor.length > 1" class="additional-selection">
+                              (+{{Filters.receptor.length - 1}} {{Filters.receptor.length === 2 ? 'otro' : 'otros'}})
+                            </span>
+                        </mat-select-trigger>
+    
+                        <mat-option *ngFor="let cfdi of inputData" [value]="cfdi.Receptor._Nombre">{{cfdi.Receptor._Nombre}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field>
+                    <mat-label>Emisores</mat-label>
+                    <mat-select multiple (valueChange)="changeFilter($event, 'emisor')">
+                        <mat-select-trigger>
+                            {{Filters.emisor ? Filters.emisor[0] : ''}}
+    
+                            <span *ngIf="Filters.emisor && Filters.emisor.length > 1" class="additional-selection">
+                              (+{{Filters.emisor.length - 1}} {{Filters.emisor.length === 2 ? 'otro' : 'otros'}})
+                            </span>
+                        </mat-select-trigger>
+    
+                        <mat-option *ngFor="let cfdi of inputData" [value]="cfdi.Emisor._Nombre">{{cfdi.Emisor._Nombre}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-expansion-panel>
+</mat-accordion>

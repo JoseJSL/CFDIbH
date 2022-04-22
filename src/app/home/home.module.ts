@@ -23,6 +23,11 @@ import { LandingModule } from '../landing/landing.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FiltersComponent } from './initial-page/filters/filters.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+
 
 @NgModule({
   declarations: [
@@ -32,6 +37,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AssociatesComponent,
     InitialPageComponent,
     CardTableComponent,
+    FiltersComponent,
   ],
   imports: [
     CommonModule,
@@ -50,7 +56,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     LandingModule,
     MatTabsModule,
     MatProgressBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatExpansionModule,
+    MatSelectModule,
+    MatPaginatorModule,
   ]
 })
 export class HomeModule { }
