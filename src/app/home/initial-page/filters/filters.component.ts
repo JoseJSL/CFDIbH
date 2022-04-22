@@ -24,13 +24,9 @@ export const MY_FORMATS = {
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.scss'],
   providers: [
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },
-
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
   ],
 })
 export class FiltersComponent implements OnInit {
