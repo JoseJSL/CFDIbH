@@ -1,10 +1,24 @@
-<app-card-table 
-    *ngIf="!showLoadingTable"
-    [inputData]="xmlsData" 
-    [tableColumns]="xmlsCols"
-    [noContentLabel]="selectedUser ? 'El usuario ' + selectedUser.DisplayName + ' no tiene ningún documento cargado.' : ''"
-    [noContentSubLabel]="selectedUser ? 'Utilice el botón inferior derecho para subir nuevos archivos para éste usuario.' : ''"
-></app-card-table>
+<div *ngIf="!showLoadingTable">
+    <table-filters *ngIf="xmlsData.length > 0" [inputData]="xmlsData"></table-filters>
+
+    <swiper [config]="swiperConfig">
+        <ng-template swiperSlide>
+            <app-card-table 
+                [inputData]="xmlsData" 
+                [tableColumns]="xmlsCols"
+                [noContentLabel]="selectedUser ? 'El usuario ' + selectedUser.DisplayName + ' no tiene ningún documento cargado.' : ''"
+                [noContentSubLabel]="selectedUser ? 'Utilice el botón inferior derecho para subir nuevos archivos para éste usuario.' : ''"
+            ></app-card-table>
+        </ng-template>
+
+        <ng-template swiperSlide *ngIf="xmlsData.length > 0">
+            <app-card-charts
+                [rawInputData]="xmlsData"
+            ></app-card-charts>
+        </ng-template>
+    </swiper>
+</div>
 
 <mat-spinner *ngIf="showLoadingTable"></mat-spinner>
+
 <fab-file-button buttonColor="primary" iconName="note_add" (onDocumentsLoaded)="onDocumentsLoad($event)"></fab-file-button>

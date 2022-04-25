@@ -8,6 +8,9 @@ import { UserModuleService } from 'src/app/service/user-module.service';
 import { XMLReaderService } from 'src/app/service/xml-reader.service';
 import { firstValueFrom } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
+
+SwiperCore.use([Navigation, Pagination]);
 
 @Component({
   selector: 'app-initial-page',
@@ -20,12 +23,18 @@ export class InitialPageComponent implements OnInit {
   public selectedUser?: User;
   public showLoadingTable: boolean = true;
 
+  public swiperConfig: SwiperOptions = {
+    slidesPerView: 1,
+    allowTouchMove: window.innerWidth <= 768,
+    navigation: window.innerWidth <= 768,
+    pagination: window.innerWidth <= 768 ? false:  { clickable: true },
+  };
+
   constructor(private afs: AngularFirestore, private route: ActivatedRoute, private bucketService: BucketService, private XMLParser: XMLReaderService, private userModule: UserModuleService, private router: Router, private matSnackBar: MatSnackBar) { }
 
   async ngOnInit() {
     const params = await firstValueFrom(this.route.params);
     const current = await this.userModule.getCurrentUser();
-
 
     if(!params['rfc']){
       this.selectedUser = current;

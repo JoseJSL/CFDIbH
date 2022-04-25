@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { XmlsPageComponent } from './xmls-page.component';
+import { CardChartsComponent } from './card-charts.component';
 
-describe('XmlsPageComponent', () => {
-  let component: XmlsPageComponent;
-  let fixture: ComponentFixture<XmlsPageComponent>;
+describe('CardChartsComponent', () => {
+  let component: CardChartsComponent;
+  let fixture: ComponentFixture<CardChartsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ XmlsPageComponent ]
+      declarations: [ CardChartsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(XmlsPageComponent);
+    fixture = TestBed.createComponent(CardChartsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -8,7 +8,6 @@ import { HomePageComponent } from './home.page.component';
 import { CoreModule } from '../core/core.module';
 import { MatButtonModule } from '@angular/material/button';
 import { ProfileComponent } from './profile/profile.component';
-import { XmlsPageComponent } from './xmls-page/xmls-page.component';
 import { AssociatesComponent } from './associates/associates.component';
 import { InitialPageComponent } from './initial-page/initial-page.component';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -31,16 +30,19 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SwiperModule } from 'swiper/angular';
+import { NgChartsModule } from 'ng2-charts';
+import { CardChartsComponent } from './initial-page/card-charts/card-charts.component';
 
 @NgModule({
   declarations: [
     HomePageComponent, 
     ProfileComponent, 
-    XmlsPageComponent, 
     AssociatesComponent,
     InitialPageComponent,
     CardTableComponent,
     FiltersComponent,
+    CardChartsComponent,
   ],
   imports: [
     CommonModule,
@@ -67,7 +69,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    SwiperModule,
+    NgChartsModule,
   ],
 })
 export class HomeModule { }

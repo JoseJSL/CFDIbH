@@ -1,6 +1,4 @@
 <div *ngIf="inputData.length > 0 && tableColumns.length > 0">
-    <table-filters [inputData]="inputData"></table-filters>
-
     <table  #dataTable mat-table [dataSource]="tableDataSource">
         <tr class="row-header" mat-header-row *matHeaderRowDef="tableColumns"></tr> 
     

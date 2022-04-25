@@ -4,7 +4,6 @@ import { AssociatesComponent } from './associates/associates.component';
 import { HomePageComponent } from './home.page.component';
 import { InitialPageComponent } from './initial-page/initial-page.component';
 import { ProfileComponent } from './profile/profile.component';
-import { XmlsPageComponent } from './xmls-page/xmls-page.component';
 import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/compat/auth-guard';
 
 const redirectoToLanding = () => redirectUnauthorizedTo(['/']);
@@ -23,15 +22,6 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent,
-      },
-      {
-        path: 'xmls', //Qué podrá hacer aquí?
-        component: XmlsPageComponent,
-        children:[
-          {
-            path: ':cfdi', //Ver un solo CFDI ampliado
-          },
-        ],
       },
       {
         path: 'associates',
