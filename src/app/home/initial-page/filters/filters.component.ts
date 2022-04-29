@@ -66,15 +66,12 @@ export class FiltersComponent implements OnInit {
 
   changeFilter(data: any, filter: 'receptor' | 'emisor'){
     this.Filters[filter] = data;
-    console.log(this.Filters)
     this.filtersChanged.emit(this.Filters);
   }
 
   changeDate(monthAndYear: moment.Moment, datepicker: MatDatepicker<moment.Moment>, filter: 'desdeFecha' | 'hastaFecha'){
     this.Filters[filter] = monthAndYear.toDate();
     datepicker.select(monthAndYear);
-    datepicker.close();
-    console.log(this.Filters)
     this.filtersChanged.emit(this.Filters);
   }
 

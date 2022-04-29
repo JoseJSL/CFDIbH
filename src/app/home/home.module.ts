@@ -33,6 +33,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SwiperModule } from 'swiper/angular';
 import { NgChartsModule } from 'ng2-charts';
 import { CardChartsComponent } from './initial-page/card-charts/card-charts.component';
+import { XmlDetailsComponent } from './initial-page/card-table/xml-details/xml-details.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { CardChartsComponent } from './initial-page/card-charts/card-charts.comp
     CardTableComponent,
     FiltersComponent,
     CardChartsComponent,
+    XmlDetailsComponent,
   ],
   imports: [
     CommonModule,

@@ -25,6 +25,11 @@ export class CardTableComponent implements AfterViewInit {
     this.tableDataSource.paginator = this.tablePaginator;
   }
 
+  refreshTable(inputData: any[]){
+    this.tableDataSource.data = inputData;
+    this.dataTable.renderRows();
+  }
+
   formatAsMoney(quantity: number) : string{
     return '$' + quantity.toFixed(2);;
   }

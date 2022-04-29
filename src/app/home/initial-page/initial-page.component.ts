@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { XMLExport } from 'src/app/core/fab-file-button/fab-file-button.component';
@@ -6,9 +6,13 @@ import { BucketService } from 'src/app/service/bucket.service';
 import { User } from 'src/app/service/user';
 import { UserModuleService } from 'src/app/service/user-module.service';
 import { XMLReaderService } from 'src/app/service/xml-reader.service';
-import { firstValueFrom } from 'rxjs';
+import { filter, firstValueFrom } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
+import { CardTableComponent } from './card-table/card-table.component';
+import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
+import { CardChartsComponent } from './card-charts/card-charts.component';
+import { CFDIFilter } from './filters/filter';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -18,7 +22,10 @@ SwiperCore.use([Navigation, Pagination]);
   styleUrls: ['./initial-page.component.scss']
 })
 export class InitialPageComponent implements OnInit {
-  public xmlsData: any[] = [];
+  @ViewChild('cardTable') cardTable!: CardTableComponent;
+  @ViewChild('cardChart') cardChart!: CardChartsComponent;
+
+  public xmlsData: (Ingreso | Egreso | Traslado)[] = [];
   public xmlsCols: string[] = ['Concepto', 'Emisor', 'Receptor', 'Subtotal'];
   public selectedUser?: User;
   public showLoadingTable: boolean = true;
@@ -26,8 +33,7 @@ export class InitialPageComponent implements OnInit {
   public swiperConfig: SwiperOptions = {
     slidesPerView: 1,
     allowTouchMove: window.innerWidth <= 768,
-    navigation: window.innerWidth <= 768,
-    pagination: window.innerWidth <= 768 ? false:  { clickable: true },
+    navigation: true,
   };
 
   constructor(private afs: AngularFirestore, private route: ActivatedRoute, private bucketService: BucketService, private XMLParser: XMLReaderService, private userModule: UserModuleService, private router: Router, private matSnackBar: MatSnackBar) { }
@@ -50,15 +56,19 @@ export class InitialPageComponent implements OnInit {
     }
 
     if(this.selectedUser){
-      this.afs.collection('User').doc(this.selectedUser.UID).collection('XML').valueChanges().subscribe(async xmlsCollection => {        
-        this.xmlsData = xmlsCollection.length > 0 ? await this.fullyParseRawXMLS() : [];
-
-        this.xmlsData.forEach(data => {
-          for(let i = 0; i < 30; i++){
-            this.xmlsData.push(data);
+      this.afs.collection('User').doc(this.selectedUser.UID).collection('XML').valueChanges().subscribe(async xmlsCollection => {
+        console.log("Cambio detectado: " + xmlsCollection.length);
+        if(this.xmlsData.length !== xmlsCollection.length){
+          this.xmlsData = xmlsCollection.length > 0 ? await this.fullyParseRawXMLS() : [];
+          if(this.cardTable){
+            this.cardTable.refreshTable(this.xmlsData);            
           }
-        })
-        
+
+          if(this.cardChart){
+            this.cardChart.refreshData(this.xmlsData);
+          }
+        }
+
         this.showLoadingTable = false;
       });
     }
@@ -102,10 +112,38 @@ export class InitialPageComponent implements OnInit {
     }
   }
 
-  async fullyParseRawXMLS(): Promise<any[]>{
+  async fullyParseRawXMLS(): Promise<(Ingreso | Egreso | Traslado)[]>{
     const files = await this.bucketService.readAllUserRawXML(this.selectedUser!.UID);
     const parsedFiles = this.XMLParser.ParseMultipleText(files);
-
     return this.XMLParser.JsonArrayToCFDI(parsedFiles);
+  }
+
+  public updateChildrens(filters: CFDIFilter){
+    let filteredData: (Ingreso | Egreso | Traslado)[] = [];
+    this.xmlsData.forEach(d => filteredData.push(Object.assign({}, d)));
+
+    if(filters.receptor && filters.receptor.length > 0){
+      filteredData = filteredData.filter(data => filters.receptor!.indexOf(data.Receptor._Nombre) !== -1);
+    }
+
+    if(filters.emisor && filters.emisor.length > 0){
+      filteredData = filteredData.filter(data => filters.emisor!.indexOf(data.Emisor._Nombre) !== -1);
+    }
+
+    if(filters.desdeFecha){
+      filteredData = filteredData.filter(data => data._Fecha >= filters.desdeFecha!);
+    }
+
+    if(filters.hastaFecha){
+      filteredData = filteredData.filter(data => data._Fecha >= filters.hastaFecha!);
+    }
+
+    if(this.cardTable){
+      this.cardTable.refreshTable(filteredData);
+    }
+
+    if(this.cardChart){
+      this.cardChart.refreshData(filteredData);
+    }
   }
 }

@@ -1,9 +1,10 @@
 <div *ngIf="!showLoadingTable">
-    <table-filters *ngIf="xmlsData.length > 0" [inputData]="xmlsData"></table-filters>
+    <table-filters *ngIf="xmlsData.length > 0" [inputData]="xmlsData" (filtersChanged)="updateChildrens($event);"></table-filters>
 
     <swiper [config]="swiperConfig">
         <ng-template swiperSlide>
             <app-card-table 
+                #cardTable
                 [inputData]="xmlsData" 
                 [tableColumns]="xmlsCols"
                 [noContentLabel]="selectedUser ? 'El usuario ' + selectedUser.DisplayName + ' no tiene ningún documento cargado.' : ''"
@@ -13,6 +14,7 @@
 
         <ng-template swiperSlide *ngIf="xmlsData.length > 0">
             <app-card-charts
+                #cardChart
                 [rawInputData]="xmlsData"
             ></app-card-charts>
         </ng-template>

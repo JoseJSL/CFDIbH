@@ -1,7 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataset, } from 'chart.js';
-import {  } from 'ng2-charts';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChartDataset, ChartOptions } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
+
+interface CustomDataSet {
+  [index: string]: ChartDataset;
+}
 
 @Component({
   selector: 'app-card-charts',
@@ -9,44 +13,51 @@ import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
   styleUrls: ['./card-charts.component.scss']
 })
 export class CardChartsComponent implements OnInit {
+  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
   @Input() rawInputData: (Ingreso | Egreso | Traslado)[] = [];
-
-  public barChartOptions: ChartOptions = { responsive: true };
-  public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  public barChartType: ChartType = 'bar';
-  public barChartLegend = true;
-  public barChartPlugins = [];
-
-  public barChartData: ChartDataset[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
-  ];
-
+  
+  private minOfLabel: number = 0;
+  public isLabelInYears: boolean = true;
+  public barChartLabels: string[] = [];
+  public barChartData: ChartDataset[] = [];
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+    onClick: e => e.native?.stopImmediatePropagation(),
+  };
 
   constructor() { }
 
   ngOnInit(): void {
-    let barChartLabels: string[];
-    let batChartData: ChartDataset[] = [];
-    let cfdi: Ingreso | Egreso | Traslado;
-    
     this.rawInputData.sort((a, b) => a._Fecha.getTime() - b._Fecha.getTime());
+    this.setChartLabels();
+    this.convertInputDataToDataset();
   }
 
-  private setChartLabels(): string[]{
-    let barChartLabels: string[] = [];
+  public refreshData(inputData: (Ingreso | Egreso | Traslado)[]){
+    inputData.sort((a, b) => a._Fecha.getTime() - b._Fecha.getTime());
+    this.rawInputData = inputData;
+    this.setChartLabels();
+    this.convertInputDataToDataset();
+  }
+
+  private setChartLabels(){
+    this.barChartLabels.length = 0;
 
     if(this.rawInputData[0]._Fecha.getFullYear() === this.rawInputData[this.rawInputData.length - 1]._Fecha.getFullYear()){
       for(let i = this.rawInputData[0]._Fecha.getMonth(); i <= this.rawInputData[this.rawInputData.length - 1]._Fecha.getMonth(); i++){
-        barChartLabels.push(this.getReadableMonth(i));
+        this.barChartLabels.push(this.getReadableMonth(i));
+        this.isLabelInYears = false;
       }
+
+      this.minOfLabel = this.rawInputData[0]._Fecha.getMonth();
     } else {
       for(let i = this.rawInputData[0]._Fecha.getFullYear(); i <= this.rawInputData[this.rawInputData.length - 1]._Fecha.getFullYear(); i++){
-        barChartLabels.push(this.rawInputData[i]._Fecha.getFullYear().toString());
+        this.barChartLabels.push(this.rawInputData[i]._Fecha.getFullYear().toString());
+        this.isLabelInYears = true;
       }
-    }
 
-    return barChartLabels;
+      this.minOfLabel = this.rawInputData[0]._Fecha.getFullYear();
+    }
   }
 
   private getReadableMonth(month: number) : string{
@@ -66,4 +77,54 @@ export class CardChartsComponent implements OnInit {
       default: return '';
     }
   }
+
+  private convertInputDataToDataset(){
+    this.barChartData.length = 0;
+    let uniqueIdentifiers: string[] = [];
+    let fullData: CustomDataSet = {};
+    let indexName: string;
+    let trueIndex: number;
+
+    for(let i = 0; i < this.rawInputData.length; i++){
+      indexName = this.rawInputData[i].Emisor._Nombre;
+
+      if(!fullData[indexName]){
+        fullData[indexName] = {
+          data: [],
+          label: this.rawInputData[i].Emisor._Nombre + " - Subtotal",
+          stack: 'A',
+          type: 'bar'
+        }
+
+        fullData[`I ${indexName}`] = {
+          data: [],
+          label: this.rawInputData[i].Emisor._Nombre + " - Impuestos",
+          stack: 'A',
+          type: 'bar'
+        }
+
+        for(let j = 0; j < this.barChartLabels.length; j++){
+          fullData[indexName].data.push(0);
+          fullData[`I ${indexName}`].data.push(0);
+        }
+
+        uniqueIdentifiers.push(this.rawInputData[i].Emisor._Nombre);
+        uniqueIdentifiers.push(`I ${this.rawInputData[i].Emisor._Nombre}`);
+      }
+
+      trueIndex = this.isLabelInYears ? this.rawInputData[i]._Fecha.getFullYear() - this.minOfLabel : this.rawInputData[i]._Fecha.getMonth() - this.minOfLabel;
+
+      (fullData[indexName].data[trueIndex] as number) += this.rawInputData[i]._SubTotal;
+      (fullData[`I ${indexName}`].data[trueIndex] as number) -= Math.abs(this.rawInputData[i]._SubTotal - this.rawInputData[i]._Total);
+    }
+
+    uniqueIdentifiers.forEach(name => {
+      this.barChartData.push(fullData[name]);
+    });
+
+    if(this.chart){
+      this.chart.update();
+    }
+  }
 }
+

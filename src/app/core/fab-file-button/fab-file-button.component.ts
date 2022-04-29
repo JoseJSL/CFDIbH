@@ -54,10 +54,6 @@ export class FabFileButtonComponent implements OnInit {
             break;
         }
       }
-      this.onDocumentsLoaded.emit({
-        RawFiles: files,
-        ParsedFiles: CFDIArray,
-      });
 
       if(CFDIArray.length > 0){
         const message = CFDIArray.length == 1 ? 
@@ -65,6 +61,11 @@ export class FabFileButtonComponent implements OnInit {
           `Cargando ${CFDIArray.length} archivos...`;
           
         this.matSnackBar.open(message, undefined, { duration: 2000, });
+
+        this.onDocumentsLoaded.emit({
+          RawFiles: files,
+          ParsedFiles: CFDIArray,
+        });
       }
     } catch(e){
       const dialog = this.matDialog.open(DialogComponent, {

@@ -2,9 +2,8 @@
     <canvas baseChart 
         [datasets]="barChartData"
         [labels]="barChartLabels"
-        [options]="barChartOptions"
-        [plugins]="barChartPlugins"
-        [legend]="barChartLegend"
-        [type]="barChartType"
+        [options]=" { responsive: true }"
+        [legend]="true"
+        [type]="'bar'"
     ></canvas>
 </div>
