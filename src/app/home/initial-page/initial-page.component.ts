@@ -57,7 +57,6 @@ export class InitialPageComponent implements OnInit {
 
     if(this.selectedUser){
       this.afs.collection('User').doc(this.selectedUser.UID).collection('XML').valueChanges().subscribe(async xmlsCollection => {
-        console.log("Cambio detectado: " + xmlsCollection.length);
         if(this.xmlsData.length !== xmlsCollection.length){
           this.xmlsData = xmlsCollection.length > 0 ? await this.fullyParseRawXMLS() : [];
           if(this.cardTable){
@@ -135,7 +134,7 @@ export class InitialPageComponent implements OnInit {
     }
 
     if(filters.hastaFecha){
-      filteredData = filteredData.filter(data => data._Fecha >= filters.hastaFecha!);
+      filteredData = filteredData.filter(data => data._Fecha <= filters.hastaFecha!);
     }
 
     if(this.cardTable){

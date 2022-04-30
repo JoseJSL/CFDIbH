@@ -20,10 +20,7 @@ export class CardChartsComponent implements OnInit {
   public isLabelInYears: boolean = true;
   public barChartLabels: string[] = [];
   public barChartData: ChartDataset[] = [];
-  public barChartOptions: ChartOptions = {
-    responsive: true,
-    onClick: e => e.native?.stopImmediatePropagation(),
-  };
+  public barChartOptions: ChartOptions = { responsive: true, };
 
   constructor() { }
 
@@ -45,7 +42,7 @@ export class CardChartsComponent implements OnInit {
 
     if(this.rawInputData[0]._Fecha.getFullYear() === this.rawInputData[this.rawInputData.length - 1]._Fecha.getFullYear()){
       for(let i = this.rawInputData[0]._Fecha.getMonth(); i <= this.rawInputData[this.rawInputData.length - 1]._Fecha.getMonth(); i++){
-        this.barChartLabels.push(this.getReadableMonth(i));
+        this.barChartLabels.push(this.getReadableMonth(i + 1));
         this.isLabelInYears = false;
       }
 

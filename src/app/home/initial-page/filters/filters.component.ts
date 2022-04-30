@@ -70,6 +70,7 @@ export class FiltersComponent implements OnInit {
   }
 
   changeDate(monthAndYear: moment.Moment, datepicker: MatDatepicker<moment.Moment>, filter: 'desdeFecha' | 'hastaFecha'){
+    datepicker.close();
     this.Filters[filter] = monthAndYear.toDate();
     datepicker.select(monthAndYear);
     this.filtersChanged.emit(this.Filters);
