@@ -1,14 +1,40 @@
 table{
     width: 100%;
-
+    
     .mat-header-cell{
         font-size: medium;
         color: black;
         font-weight: 600;
     }
 
-    .mat-cell, .mat-header-cell{
+    .mat-header-cell{
         padding: 1.5vh !important;
+    }
+    
+    .element-row:hover, .element-row:active{
+        background: #00000018;
+        cursor: pointer;
+    }
+
+    tr.detail-row {
+        height: 0;
+    }
+
+    tr.element-row:not(.expanded-row):hover {
+        background: whitesmoke;
+    }
+     
+    tr.element-row:not(.expanded-row):active {
+        background: #efefef;
+    }
+
+    .element-row td {
+        border-bottom-width: 0;
+    }
+      
+    .element-detail {
+        overflow: hidden;
+        display: flex;
     }
 }
 
