@@ -7,11 +7,9 @@ import { FabFileButtonComponent } from './fab-file-button/fab-file-button.compon
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { DialogComponent } from './dialog/dialog.component';
-import { CfdiTableComponent } from './cfdi-table/cfdi-table.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { IconInputComponent } from './icon-input/icon-input.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -21,8 +19,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     IconButtonComponent,
     FabFileButtonComponent,
     DialogComponent,
-    CfdiTableComponent,
-    IconInputComponent,
     ProgressSpinnerComponent,
   ],
   imports: [
@@ -40,8 +36,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   exports: [
     IconButtonComponent,
     FabFileButtonComponent,
-    CfdiTableComponent,
-    IconInputComponent,
     ProgressSpinnerComponent,
   ]
 })
