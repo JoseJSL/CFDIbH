@@ -1,5 +1,5 @@
 <mat-toolbar>
-    <button mat-icon-button (click)="drawer.toggle()">
+    <button mat-icon-button (click)="drawer.toggle()" class="menu-button">
         <mat-icon>menu</mat-icon>
     </button>
 
@@ -8,7 +8,7 @@
     <span class="spacer"></span>
 
     <div class="user-button" *ngIf="user">
-        <icon-button [matMenuTriggerFor]="userMenu"  buttonColor="primary" [label]="user.DisplayName" iconName="person" iconColor="primary"></icon-button>
+        <icon-button [matMenuTriggerFor]="userMenu" [label]="user.DisplayName" iconName="person"></icon-button>
 
         <mat-menu #userMenu>
             <button [routerLink]="['/app', 'profile']" mat-menu-item>

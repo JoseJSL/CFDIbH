@@ -1,8 +1,16 @@
 mat-toolbar{
+    background: #3f51b5;
+
     .spacer{
         flex: 1 1 auto;
     }
     
+    icon-button{
+        ::ng-deep mat-icon, ::ng-deep label{
+            color: white;
+        }
+    }
+
     icon-button, .icon-button{
         height: 80%;
     }

@@ -3,7 +3,19 @@
 }
 
 mat-toolbar{
+    background: #3f51b5;
     height: 64px;
+
+    .menu-button{
+        color: white;
+    }
+
+    icon-button{
+        ::ng-deep mat-icon, ::ng-deep label{
+            color: white;
+        }
+    }
+
     icon-button, .icon-button, .user-button{
         height: 80%;
     }

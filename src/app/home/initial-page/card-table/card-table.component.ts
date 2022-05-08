@@ -58,6 +58,8 @@ export class CardTableComponent implements AfterViewInit {
   }
 
   changeExpandedElement(_NoCertificado: string){
+    console.log(this.expandedElement + ' -- ' + _NoCertificado);
+
     if(this.expandedElement === _NoCertificado){
       this.expandedElement = undefined; 
     } else {
