@@ -325,3 +325,63 @@ interface Complemento {
         _UUID: string,
     }
 }
+
+export class ReadableCFDI {
+    Receptor: string;
+    Emisor: string;
+    Fecha: string;
+    FormaPago?: 'Efectivo' | 'Cheque nominativo' | 'Transferencia electrónica de fondos' | 'Por definir';
+    MetodoPago?: 'En una sola excibición' | 'En parcialidades o diferido';
+    LugarExpedicion: string;
+    Subtotal: string;
+    Total: string;
+    Impuestos: string;
+    TipoComprobante: 'Ingreso' | 'Egreso' | 'Traslado';
+
+    constructor(data: any){
+        this.Receptor = data.Receptor._Nombre;
+        this.Emisor = data.Emisor._Nombre;
+        this.Fecha = this.getReadableDate(new Date(data._Fecha));
+
+        if(data._FormaPago){
+            this.FormaPago = 
+                data._FormaPago == '01' ? 'Efectivo' : 
+                data._FormaPago == '02' ? 'Cheque nominativo' : 
+                data._FormaPago == '03' ? 'Transferencia electrónica de fondos' : 'Por definir';
+        }
+
+        if(data._MetodoPago){
+            this.MetodoPago = data._MetodoPago == 'PUE' ? 'En una sola excibición' : 'En parcialidades o diferido';
+        }
+
+        this.LugarExpedicion = data._LugarExpedicion;
+        this.Subtotal = '$' + parseFloat(data._SubTotal).toFixed(2);
+        this.Total = '$' + parseFloat(data._Total).toFixed(2);
+        this.Impuestos = '$' + parseFloat(Math.abs(data._Total - data._SubTotal).toString()).toFixed(2);
+
+        this.TipoComprobante = data._TipoDeComprobante == 'I' ? 'Ingreso' : 
+            data._TipoDeComprobante == 'E' ? 'Egreso' : 'Traslado'; 
+    }
+
+    private getReadableDate(date: Date) : string{
+        let readableDate: string = date.getDay().toString().padStart(2, '0') + '/';
+
+        switch(date.getMonth()){
+          case 0: readableDate += 'Enero'; break;
+          case 1: readableDate += 'Febrero'; break;
+          case 2: readableDate += 'Marzo'; break;
+          case 3: readableDate += 'Abril'; break;
+          case 4: readableDate += 'Mayo'; break;
+          case 5: readableDate += 'Junio'; break;
+          case 6: readableDate += 'Julio'; break;
+          case 7: readableDate += 'Agosto'; break;
+          case 8: readableDate += 'Septiembre'; break;
+          case 9: readableDate += 'Octubre'; break;
+          case 10: readableDate += 'Noviembre'; break;
+          case 11: readableDate += 'Diciembre'; break;
+          default: readableDate += 'Diciembre';
+        }
+
+        return readableDate + '/' + date.getFullYear();
+    }
+}   

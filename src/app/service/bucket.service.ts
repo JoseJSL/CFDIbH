@@ -111,10 +111,15 @@ export class BucketService {
 
   async deleteXml(userUID: string, _NoCertificado: string): Promise<boolean>{
     return new Promise((resolve, reject) => {
-      this.storage.ref(`XML/${userUID}/${_NoCertificado}`).delete().subscribe(
-        s => { resolve(true) },
-        e => { reject(false) },
-      );
+      this.afs.collection('User').doc(userUID).collection<XMLReference>('XML').doc(_NoCertificado).delete().then(
+        deleted => {
+          this.storage.ref(`XML/${userUID}/${_NoCertificado}`).delete().subscribe(
+            success => resolve(true),
+            error => reject(false),
+          );   
+        },
+        failded => reject(false)
+      )
     });
   }
 }

@@ -114,6 +114,7 @@ export class InitialPageComponent implements OnInit {
   async fullyParseRawXMLS(): Promise<(Ingreso | Egreso | Traslado)[]>{
     const files = await this.bucketService.readAllUserRawXML(this.selectedUser!.UID);
     const parsedFiles = this.XMLParser.ParseMultipleText(files);
+    console.log(parsedFiles);
     return this.XMLParser.JsonArrayToCFDI(parsedFiles);
   }
 
@@ -143,6 +144,17 @@ export class InitialPageComponent implements OnInit {
 
     if(this.cardChart){
       this.cardChart.refreshData(filteredData);
+    }
+  }
+
+  async deleteDocument(_NoCertificado: string){
+    this.showLoadingTable = true;
+    const success = await this.bucketService.deleteXml(this.selectedUser!.UID, _NoCertificado);
+
+    if(success){
+      this.matSnackBar.open('Documento eliminado con éxito', undefined, { duration: 1750 });
+    } else {
+      this.matSnackBar.open('Ocurrió un error, vuelva a intentarlo más tarde.', undefined, { duration: 1750 });
     }
   }
 }

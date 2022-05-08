@@ -1,1 +1,8 @@
-<p>xml-details works!</p>
+<div class="details">
+    <pre>Facturado el día: {{Data.Fecha}}
+Subtotal:   {{Data.Subtotal}}
+Total:      {{Data.Total}}
+Impuestos:  {{Data.Impuestos}}</pre>
+    
+    <icon-button (click)="openDeleteDialog()" iconColor="warn" buttonColor="warn" label="Eliminar" iconName="delete"></icon-button>
+</div>

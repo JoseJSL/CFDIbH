@@ -3,11 +3,11 @@
         <mat-icon>menu</mat-icon>
     </button>
 
-    <a [routerLink]="['/app']"><button class="logo-icon" mat-button ><img src="../../favicon.ico"></button></a>
+    <a [routerLink]="['/app']" class="logo-icon"><button class="logo-icon" mat-button ><img src="../../favicon.ico"></button></a>
     
     <span class="spacer"></span>
 
-    <div *ngIf="user">
+    <div class="user-button" *ngIf="user">
         <icon-button [matMenuTriggerFor]="userMenu"  buttonColor="primary" [label]="user.DisplayName" iconName="person" iconColor="primary"></icon-button>
 
         <mat-menu #userMenu>

@@ -1,10 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProgressSpinnerComponent } from 'src/app/core/progress-spinner/progress-spinner.component';
-import { Client } from 'src/app/service/user';
 import { UserModuleService } from 'src/app/service/user-module.service';
 import { environment } from 'src/environments/environment.prod';
 import { CustomValidators } from '../CustomValidators';

@@ -25,19 +25,19 @@
         <ng-container matColumnDef="expandedDetail">
             <td mat-cell *matCellDef="let element" [attr.colspan]="tableColumns.length">
               <div 
-                [@detailExpand]="element._NoCertificado== expandedElement?._NoCertificado ? 'expanded' : 'collapsed'"
+                [@detailExpand]="expandedElement && expandedElement == element._NoCertificado ? 'expanded' : 'collapsed'"
                 class="element-detail">
 
-                {{getConcepts(element.Conceptos)}}
+                <table-xml-details (confirmDelete)="emitDeleteDocument($event)" [XmlData]="element"></table-xml-details>
               </div>
             </td>
         </ng-container>
 
         <tr 
             mat-row *matRowDef="let row; columns: tableColumns;"
-            [class.expanded-row]="expandedElement === row"
-            (click)="expandedElement = expandedElement?._NoCertificado === row._NoCertificado ? null : row"
-            [class.expanded-row]="expandedElement?._NoCertificado === row._NoCertificado"
+            [class.expanded-row]="expandedElement == row._NoCertificado"
+            (click)="changeExpandedElement(row._NoCertificado)"
+            [class.expanded-row]="expandedElement == row._NoCertificado"
             class="element-row"
         ></tr>
 

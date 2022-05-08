@@ -9,6 +9,7 @@
                 [tableColumns]="xmlsCols"
                 [noContentLabel]="selectedUser ? 'El usuario ' + selectedUser.DisplayName + ' no tiene ningún documento cargado.' : ''"
                 [noContentSubLabel]="selectedUser ? 'Utilice el botón inferior derecho para subir nuevos archivos para éste usuario.' : ''"
+                (deleteDocument)="deleteDocument($event)"
             ></app-card-table>
         </ng-template>
 

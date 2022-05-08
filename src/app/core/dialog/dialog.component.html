@@ -4,6 +4,6 @@
 </mat-dialog-content>
 
 <div mat-dialog-actions>
-  <button class="align-end" *ngIf="data.cancelText" mat-button [mat-dialog-close]="false">{{data.cancelText}}</button>
-  <button class="align-end" mat-button [mat-dialog-close]="true" cdkFocusInitial>{{data.acceptText}}</button>
+  <button class="align-end" [color]="data.cancelColor" *ngIf="data.cancelText" mat-button [mat-dialog-close]="false">{{data.cancelText}}</button>
+  <button class="align-end" [color]="data.acceptColor" mat-button [mat-dialog-close]="true" cdkFocusInitial>{{data.acceptText}}</button>
 </div>

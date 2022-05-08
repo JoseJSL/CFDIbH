@@ -1,11 +1,13 @@
-import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-interface DialogComponentData{
+export interface DialogComponentData{
   title?: string,
   content: string,
   cancelText?: string,
   acceptText?: string,
+  acceptColor?: 'primary' | 'warn',
+  cancelColor?: 'primary' | 'warn',
 }
 
 @Component({
@@ -15,7 +17,7 @@ interface DialogComponentData{
 })
 
 export class DialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogComponentData, private dialog: MatDialog, private dialogRef: MatDialogRef<DialogComponent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogComponentData) {
     this.data.acceptText ?? "Aceptar";
   }
 }

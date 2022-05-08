@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {animate, state, style, transition, trigger} from '@angular/animations';
@@ -26,8 +26,10 @@ export class CardTableComponent implements AfterViewInit {
   @Input() noContentSubLabel: string | undefined;
   @Input() onNoContentReRoute: string | any[] | null | undefined;
 
+  @Output() deleteDocument = new EventEmitter<string>();
+
   public tableDataSource!: MatTableDataSource<(Ingreso | Egreso | Traslado)>;
-  public expandedElement?: (Ingreso | Egreso | Traslado);
+  public expandedElement?: string;
   
   constructor() {}
 
@@ -53,5 +55,17 @@ export class CardTableComponent implements AfterViewInit {
     }
 
     return res + Conceptos[Conceptos.length  -1]._Descripcion;
+  }
+
+  changeExpandedElement(_NoCertificado: string){
+    if(this.expandedElement === _NoCertificado){
+      this.expandedElement = undefined; 
+    } else {
+      this.expandedElement = _NoCertificado;
+    }
+  }
+
+  emitDeleteDocument(_NoCertificado: string){
+    this.deleteDocument.emit(_NoCertificado);
   }
 }
