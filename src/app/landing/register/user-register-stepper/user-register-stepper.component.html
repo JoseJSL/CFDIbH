@@ -46,7 +46,7 @@
 
             <mat-form-field>
                 <mat-label>Clave RFC</mat-label>
-                <input autocomplete="none" matInput formControlName="RFC" placeholder="Ej. MELJ9505281J5" type="text" minlength="13" required>
+                <input autocomplete="none" matInput formControlName="RFC" placeholder="Ej. MELJ9505281J5" type="text" required>
                 <mat-error *ngIf="!userData.controls['RFC'].valid">Ingrese un RFC válido</mat-error>
             </mat-form-field>
 
