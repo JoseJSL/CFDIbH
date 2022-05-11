@@ -16,7 +16,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por receptor" >Receptor</th>
             <td mat-cell *matCellDef="let cfdi">{{cfdi.Receptor._Nombre}}</td>
         </ng-container>
-    
+
         <ng-container matColumnDef="Subtotal">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por subtotal">Subtotal</th>
             <td mat-cell *matCellDef="let cfdi">{{formatAsMoney(cfdi._SubTotal)}}</td>

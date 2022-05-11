@@ -2,10 +2,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LandingPage } from './landing.page.component';
 import { RegisterComponent } from './register/register.component';
+import { AngularFireAuthGuard, redirectLoggedInTo } from '@angular/fire/compat/auth-guard';
+
+const redirectToHome = () => redirectLoggedInTo(['/app'])
 
 const routes: Routes = [
   {
     path : '',
+    canActivate: [AngularFireAuthGuard],
+    data: {authGuardPipe: redirectToHome },
     children:[
       {
         path: '',

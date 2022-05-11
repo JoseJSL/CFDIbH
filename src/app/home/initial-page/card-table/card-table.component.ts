@@ -30,11 +30,13 @@ export class CardTableComponent implements AfterViewInit {
 
   public tableDataSource!: MatTableDataSource<(Ingreso | Egreso | Traslado)>;
   public expandedElement?: string;
+  public screenWidth = window.innerWidth;
   
   constructor() {}
 
   ngAfterViewInit(): void {
-    this.tableDataSource = new MatTableDataSource<any>(this.inputData);
+    if(this.screenWidth < 576) this.tableColumns.length = this.tableColumns.length - 1;
+      this.tableDataSource = new MatTableDataSource<any>(this.inputData);
     this.tableDataSource.paginator = this.tablePaginator;
   }
 
