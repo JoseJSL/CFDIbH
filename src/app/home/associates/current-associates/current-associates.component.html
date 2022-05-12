@@ -1,0 +1,13 @@
+<mat-accordion multi>
+    <mat-expansion-panel *ngFor="let client of currentUserAssociates">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{client.DisplayName}}
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div>
+            contenido
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>

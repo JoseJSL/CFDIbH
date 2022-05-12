@@ -6,7 +6,7 @@ import { BucketService } from 'src/app/service/bucket.service';
 import { User } from 'src/app/service/user';
 import { UserModuleService } from 'src/app/service/user-module.service';
 import { XMLReaderService } from 'src/app/service/xml-reader.service';
-import { filter, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
 import { CardTableComponent } from './card-table/card-table.component';
@@ -29,6 +29,7 @@ export class InitialPageComponent implements OnInit {
   public xmlsCols: string[] = ['Concepto', 'Emisor', 'Receptor', 'Subtotal'];
   public selectedUser?: User;
   public showLoadingTable: boolean = true;
+  public showReloadingTable: boolean = false;
 
   public swiperConfig: SwiperOptions = {
     slidesPerView: 1,
@@ -69,6 +70,7 @@ export class InitialPageComponent implements OnInit {
         }
 
         this.showLoadingTable = false;
+        this.showReloadingTable = false;
       });
     }
   }
@@ -78,6 +80,7 @@ export class InitialPageComponent implements OnInit {
 
     try{
       for(let i = 0; i < docs.RawFiles.length; i++){
+        this.showReloadingTable = true;
         const url = await this.bucketService.uploadXML(this.selectedUser!.UID, docs.RawFiles[i], docs.ParsedFiles[i]._NoCertificado);
         
         if(url.length == 0 ){
@@ -108,6 +111,7 @@ export class InitialPageComponent implements OnInit {
       }
     } catch(e){
       this.matSnackBar.open('Ocurrió un error al tratar de subir los archivos', 'Ok');
+      this.showLoadingTable = false;
     }
   }
 
@@ -148,7 +152,7 @@ export class InitialPageComponent implements OnInit {
   }
 
   async deleteDocument(_NoCertificado: string){
-    this.showLoadingTable = true;
+    this.showReloadingTable = true;
     const success = await this.bucketService.deleteXml(this.selectedUser!.UID, _NoCertificado);
 
     if(success){

@@ -1,6 +1,6 @@
 <div *ngIf="!showLoadingTable">
     <table-filters *ngIf="xmlsData.length > 0" [inputData]="xmlsData" (filtersChanged)="updateChildrens($event);"></table-filters>
-
+    <mat-progress-bar *ngIf="showReloadingTable" mode="indeterminate"></mat-progress-bar>
     <swiper [config]="swiperConfig">
         <ng-template swiperSlide>
             <app-card-table 
@@ -23,5 +23,4 @@
 </div>
 
 <mat-spinner *ngIf="showLoadingTable"></mat-spinner>
-
 <fab-file-button buttonColor="primary" iconName="note_add" (onDocumentsLoaded)="onDocumentsLoad($event)"></fab-file-button>

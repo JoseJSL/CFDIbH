@@ -1,3 +1,7 @@
 icon-button{
     pointer-events: none;
-  }
+}
+
+::ng-deep .mat-tab-body-content{
+  overflow-y: hidden !important;
+}

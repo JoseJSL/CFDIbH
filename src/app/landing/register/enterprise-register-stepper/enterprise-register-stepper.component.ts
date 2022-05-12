@@ -36,27 +36,25 @@ export class EnterpriseRegisterStepperComponent implements OnInit {
   ngOnInit(): void { }
 
   async createNewEnterprise(){
-    console.log(this.enterpriseData.controls);
-    return;
+    const loading = this.matDialog.open(ProgressSpinnerComponent, { disableClose: true});
 
-    // const loading = this.matDialog.open(ProgressSpinnerComponent, { disableClose: true});
-
-    // try{
-    //   if(!this.emailGroup.valid || !this.enterpriseData.valid){
-    //     loading.close();
-    //     this.matSnackBar.open('Revise los campos de registro antes de continuar', 'Ok');
-    //   } else {
-    //     const enterprise = await this.userModule.createEnterprise(
-    //       this.emailGroup.controls['email'].value,
-    //       this.enterpriseData.controls['RFC'].value,
-    //       this.enterpriseData.controls['name'].value,
-    //     );
+    try{
+      if(!this.emailGroup.valid || !this.enterpriseData.valid){
+        loading.close();
+        this.matSnackBar.open('Revise los campos de registro antes de continuar', 'Ok');
+      } else {
+        const enterprise = await this.userModule.createEnterprise(
+          this.emailGroup.controls['email'].value,
+          this.enterpriseData.controls['RFC'].value,
+          this.enterpriseData.controls['name'].value,
+        );
     
-    //     this.matSnackBar.open('Empresa ' + enterprise!.DisplayName + ' creada con éxito.', undefined, { duration: 1750});
-    //   }  
-    // } catch(e){
-    //   loading.close();
-    //   this.matSnackBar.open('Lo sentimos, ocurrió un error inesperado. Vueva a intentarlo más tarde', 'Ok');
-    // }
+        loading.close();
+        this.matSnackBar.open('Empresa ' + enterprise!.DisplayName + ' creada con éxito.', undefined, { duration: 1750});
+      }  
+    } catch(e){
+      loading.close();
+      this.matSnackBar.open('Lo sentimos, ocurrió un error inesperado. Vueva a intentarlo más tarde', 'Ok');
+    }
   }
 }

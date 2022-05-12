@@ -11,11 +11,21 @@ export class UserModuleService {
 
   constructor(private afs: AngularFirestore, private auth: AngularFireAuth) { }
 
+  async getCurrentUserUID(): Promise<string | undefined>{
+    return new Promise((resolve, reject) => {
+      this.auth.user.subscribe(user => {
+        user ? resolve(user.uid) : reject(undefined);
+      })
+    });
+  }
+
   async createAccountant(email: string, password: string, rfc: string, firstName: string, lastName: string, isChild?: boolean): Promise<Accountant | null>{
     try{
       let currentUser: User | undefined = await this.getCurrentUser();
 
-      const credentials = await this.auth.createUserWithEmailAndPassword(email, password);
+      const credentials = !isChild ? 
+        await this.auth.createUserWithEmailAndPassword(email, password) :
+        { user: { uid: this.afs.createId()}};
 
       const birthDate = new Date(
         Number.parseInt(rfc.slice(4, 6)),
@@ -152,10 +162,10 @@ export class UserModuleService {
     })
   }
 
-  async getUserClients(UID: string): Promise<User[]>{
+  async getUserClients(UID: string): Promise<Client[]>{
     return new Promise((resolve) => {
-      var clients: User[] = [];
-      this.afs.collection('User').doc(UID).collection<User>('Client').get().subscribe(clientsDoc => {
+      var clients: Client[] = [];
+      this.afs.collection('User').doc(UID).collection<Client>('Client').get().subscribe(clientsDoc => {
         clientsDoc.docs.forEach(doc => {
           clients.push(doc.data());
         });

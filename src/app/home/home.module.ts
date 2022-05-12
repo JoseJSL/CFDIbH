@@ -34,6 +34,7 @@ import { SwiperModule } from 'swiper/angular';
 import { NgChartsModule } from 'ng2-charts';
 import { CardChartsComponent } from './initial-page/card-charts/card-charts.component';
 import { XmlDetailsComponent } from './initial-page/card-table/xml-details/xml-details.component';
+import { CurrentAssociatesComponent } from './associates/current-associates/current-associates.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { XmlDetailsComponent } from './initial-page/card-table/xml-details/xml-d
     FiltersComponent,
     CardChartsComponent,
     XmlDetailsComponent,
+    CurrentAssociatesComponent,
   ],
   imports: [
     CommonModule,

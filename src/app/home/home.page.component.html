@@ -35,11 +35,14 @@
             <mat-divider></mat-divider>
             
             <div mat-subheader>
-                <label>Mis asociados</label>
+                <a [routerLink]="['/app', 'associates']">
+                    Mis asociados
+                </a>
+                
                 <span class="spacer"></span>
 
                 <a mat-icon-button [routerLink]="['/app', 'associates']">
-                    <mat-icon mat-list-icon>person_add</mat-icon>
+                    <mat-icon mat-list-icon>supervisor_account</mat-icon>
                 </a>
             </div>
 

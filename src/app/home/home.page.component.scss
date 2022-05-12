@@ -45,9 +45,10 @@ mat-toolbar{
         height: 100%;
 
         a{
+            cursor: pointer !important;
             text-decoration: none;
         }
-
+        
         .no-associates{
             padding: 16px;
             text-align: center;

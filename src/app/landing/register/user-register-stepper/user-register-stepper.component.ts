@@ -44,38 +44,36 @@ export class UserRegisterStepperComponent implements OnInit {
   ngOnInit(): void { }
 
   async createNewAccountant(){
-    console.log(this.userData.controls);
-    return;
-    // const loading = this.matDialog.open(ProgressSpinnerComponent, { disableClose: true});
+    const loading = this.matDialog.open(ProgressSpinnerComponent, { disableClose: true});
 
-    // try{
-    //   if(!this.emailGroup.valid || !this.userData.valid){
-    //     this.matSnackBar.open('Revise los campos de registro antes de continuar', 'Ok');
-    //     loading.close();
-    //   } else {  
-    //     const accountant = await this.userModule.createAccountant(
-    //       this.emailGroup.controls['email'].value,
-    //       this.emailGroup.controls['password'].value,
-    //       this.userData.controls['RFC'].value,
-    //       this.userData.controls['firstName'].value,
-    //       this.userData.controls['lastName'].value,
-    //       this.isChildUser,        
-    //     );
+    try{
+      if(!this.emailGroup.valid || !this.userData.valid){
+        loading.close();
+        this.matSnackBar.open('Revise los campos de registro antes de continuar', 'Ok');
+      } else {  
+        const accountant = await this.userModule.createAccountant(
+          this.emailGroup.controls['email'].value,
+          this.emailGroup.controls['password'].value,
+          this.userData.controls['RFC'].value,
+          this.userData.controls['firstName'].value,
+          this.userData.controls['lastName'].value,
+          this.isChildUser,        
+        );
 
-    //     loading.close();
+        loading.close();
 
-    //     if(this.routeAfterRegister){
-    //       this.matSnackBar.open('Bienvenido, ' + accountant!.FirstName + '.', undefined, { duration: 1750 });
-    //       this.router.navigate(this.routeAfterRegister);
-    //     } else {
-    //       this.matSnackBar.open('Usuario ' + (accountant!.FirstName + ' ' + accountant!.LastName) + ' registrado con éxito.');
-    //       this.stepper!.reset();
-    //     }
-    //   }
-    // } catch(e){
-    //   console.log(e)
-    //   loading.close();
-    //   this.matSnackBar.open('Lo sentimos, ocurrió un error inesperado. Vueva a intentarlo más tarde', 'Ok');
-    // }
+        if(this.routeAfterRegister){
+          this.matSnackBar.open('Bienvenido, ' + accountant!.FirstName + '.', undefined, { duration: 1750 });
+          this.router.navigate(this.routeAfterRegister);
+        } else {
+          this.matSnackBar.open('Usuario ' + (accountant!.FirstName + ' ' + accountant!.LastName) + ' registrado con éxito.');
+          this.stepper!.reset();
+        }
+      }
+    } catch(e){
+      console.log(e)
+      loading.close();
+      this.matSnackBar.open('Lo sentimos, ocurrió un error inesperado. Vueva a intentarlo más tarde', 'Ok');
+    }
   }
 }
