@@ -1,4 +1,4 @@
-<mat-accordion multi>
+<mat-accordion multi *ngIf="currentUserAssociates.length > 0">
     <mat-expansion-panel *ngFor="let client of currentUserAssociates">
         <mat-expansion-panel-header>
             <mat-panel-title>
@@ -6,8 +6,27 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
 
-        <div>
-            contenido
-        </div>
+        <edit-accountant 
+            *ngIf="client.Type === 'Accountant' else enterprise" 
+            [accountantData]="asAccountant(client)"
+            (deleteUser)="deleteUser($event);"
+            (editUserData)="editUserData($event);"
+        ></edit-accountant>
+
+        <ng-template #enterprise>
+            <edit-enterprise 
+                [enterpriseData]="client"
+                (deleteUser)="deleteUser($event);"
+                (editUserData)="editUserData($event);"
+            ></edit-enterprise>
+        </ng-template>
     </mat-expansion-panel>
 </mat-accordion>
+
+
+<div class="noContent">
+    <div *ngIf="currentUserAssociates.length <= 0">
+        <mat-card-title>Aún no has agregado asociados.</mat-card-title>
+    </div>
+    <mat-card-subtitle>Puedes agregar personas físicas y morales en las pestañas a la izquierda.</mat-card-subtitle>
+</div>

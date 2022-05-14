@@ -15,11 +15,11 @@
     </mat-tab>
 
     <mat-tab>
-        <ng-template mat-tab-label="">
+        <ng-template mat-tab-label>
             <icon-button iconName="edit" buttonColor="primary" iconColor="primary" label="Editar asociados" ></icon-button>
         </ng-template>
 
-        <current-associates></current-associates>
+        <current-associates #currentAssociates></current-associates>
     </mat-tab>
 </mat-tab-group>
 

@@ -1,0 +1,37 @@
+<mat-grid-list (window:resize)="handleResize($event)" [cols]="Cols" rowHeight="75px">
+    <form class="registerForm" [formGroup]="userData" (ngSubmit)="confirmEdit()">        
+        <mat-grid-tile>
+            <mat-form-field>
+                <mat-label>Nombre(s)</mat-label>
+                <input autocomplete="given-name" matInput formControlName="firstName" placeholder="Nombre(s)" type="text" required>
+                <mat-error *ngIf="userData.controls['firstName'].hasError('required')">Ingrese un nombre</mat-error>
+                <mat-error *ngIf="userData.controls['firstName'].hasError('pattern') && !userData.controls['firstName'].hasError('required')">El nombre no puede contener números ni símbolos</mat-error>
+            </mat-form-field>
+        </mat-grid-tile>
+        
+        <mat-grid-tile>
+            <mat-form-field>
+                <mat-label>Apellido(s)</mat-label>
+                <input autocomplete="family-name" matInput formControlName="lastName" placeholder="Apellido(s)" type="text" required>
+                <mat-error *ngIf="userData.controls['lastName'].hasError('required')">Ingrese un apellido</mat-error>
+                <mat-error *ngIf="userData.controls['lastName'].hasError('pattern') && !userData.controls['firstName'].hasError('required')">El apellido no puede contener números ni símbolos</mat-error>
+            </mat-form-field>
+        </mat-grid-tile>
+        
+        <mat-grid-tile>
+            <mat-form-field>
+                <mat-label>Clave RFC</mat-label>
+                <input autocomplete="none" matInput formControlName="RFC" placeholder="Ej. MELJ9505281J5" type="text" required>
+                <mat-error *ngIf="!userData.controls['RFC'].valid">Ingrese un RFC válido</mat-error>
+            </mat-form-field>
+        </mat-grid-tile>
+        
+        <mat-grid-tile>
+            <button mat-raised-button type="submit" color="primary">Editar usuario</button>
+        </mat-grid-tile>
+    </form>    
+
+    <mat-grid-tile>
+        <icon-button (click)="openDeleteDialog();" iconName="delete" label="Eliminar" iconColor="warn" buttonColor="warn"></icon-button>
+    </mat-grid-tile>
+</mat-grid-list>

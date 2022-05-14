@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { firstValueFrom } from 'rxjs';
 import { Accountant, Client, Manager, User } from './user';
 
 @Injectable({
@@ -42,6 +43,7 @@ export class UserModuleService {
         UID: credentials.user!.uid,
         BirthDate: birthDate,
         DisplayName: firstName,
+        FullName: firstName + ' ' + lastName,
         Type: 'Accountant',
       }
 
@@ -73,6 +75,7 @@ export class UserModuleService {
         UID: this.afs.createId(), 
         BirthDate: creationDate,
         DisplayName: name,
+        FullName: name,
         Type: 'Enterprise',
       }
 
@@ -89,26 +92,25 @@ export class UserModuleService {
 
   async createClientManagerRelation(manager: User, client: User): Promise<boolean>{
     try{
-      await this.afs.collection('User').doc(manager!.UID).collection('Client').doc(client!.UID).set(
-        {
+      await this.afs.collection('User').doc(manager.UID).collection<Client>('Client').doc(client.UID).set({
           UID: client.UID,
           RFC: client.RFC,
           AddedDate: client.JoinDate,
           DisplayName: client.DisplayName,
-        } as Client
-      );
+          Type: client.Type,
+      });
   
-      await this.afs.collection('User').doc(client.UID).collection('Manager').doc(manager!.UID).set(
-        {
+      await this.afs.collection('User').doc(client.UID).collection<Manager>('Manager').doc(manager.UID).set({
           UID: manager.UID,
           RFC: manager.RFC,
           AddedDate: client.JoinDate,
           DisplayName: manager.DisplayName,
-        } as Manager
-      );
+      });
 
       return true;
     } catch(e){
+      this.afs.collection('User').doc(manager.UID).collection<Client>('Client').doc(client.UID).delete();
+      this.afs.collection('User').doc(client.UID).collection<Manager>(',amager').doc(manager.UID).delete();
       return false;
     }
   }
@@ -169,10 +171,51 @@ export class UserModuleService {
         clientsDoc.docs.forEach(doc => {
           clients.push(doc.data());
         });
+        
+        resolve(clients);
       });
-
-      resolve(clients);
     }); 
+  }
+
+  async getUserData(UID: string): Promise<User | undefined>{
+    return new Promise((resolve, reject) => {
+      this.afs.collection<User>('User').doc(UID).get().subscribe(user => {
+        user.exists ? resolve(user.data()) : reject(undefined); 
+      });
+    })
+  }
+
+  async editUserData(user: Accountant | User):  Promise<boolean>{
+    try{
+      await this.afs.collection<Accountant | User>('User').doc(user.UID).update(user);
+      const users = await firstValueFrom(this.afs.collection('User').get());
+      
+      let clientRef: firebase.default.firestore.DocumentSnapshot;
+      for(let i  = 0; i < users.docs.length; i++){
+        clientRef = await users.docs[i].ref.collection('Client').doc(user.UID).get();
+        if(clientRef.exists){
+          await clientRef.ref.update({
+            DisplayName: user.DisplayName,
+          })
+        }
+      }
+
+      return true;
+    } catch(e){
+      console.error(e);
+      return false;
+    }
+  }
+  
+  async deleteClientManagerRelation(manager: User, client: User): Promise<boolean>{
+    try{
+      await this.afs.collection('User').doc(manager.UID).collection<Client>('Client').doc(client.UID).delete();
+      await this.afs.collection('User').doc(client.UID).collection<Manager>('Manager').doc(manager.UID).delete();
+      return true;
+    } catch(e){
+      this.createClientManagerRelation(manager, client);
+      return false;
+    }
   }
 
   async logOut(){

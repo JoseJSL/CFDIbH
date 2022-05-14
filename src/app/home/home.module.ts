@@ -35,6 +35,8 @@ import { NgChartsModule } from 'ng2-charts';
 import { CardChartsComponent } from './initial-page/card-charts/card-charts.component';
 import { XmlDetailsComponent } from './initial-page/card-table/xml-details/xml-details.component';
 import { CurrentAssociatesComponent } from './associates/current-associates/current-associates.component';
+import { EditAccountantComponent } from './associates/current-associates/edit-accountant/edit-accountant.component';
+import { EditEnterpriseComponent } from './associates/current-associates/edit-enterprise/edit-enterprise.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { CurrentAssociatesComponent } from './associates/current-associates/curr
     CardChartsComponent,
     XmlDetailsComponent,
     CurrentAssociatesComponent,
+    EditAccountantComponent,
+    EditEnterpriseComponent,
   ],
   imports: [
     CommonModule,

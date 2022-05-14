@@ -14,49 +14,48 @@ export class CustomValidators{
     public static rfc(moral: boolean) {
         return (control: AbstractControl): ValidationErrors | null => {       
             const length = moral ? 12 : 13;
-            console.clear()
             if(!control.value) return { RFC: true };
-            console.log('Not empty');
             if(control.value.length !== length) return { RFC: true };
-            console.log('Of length ' + length);
+
             let i: number = -1;
             try{
                 if(!isLetter.test(control.value.charAt(i+=1))) return { RFC: true };
-                console.log(i + ': ' + control.value.charAt(i));
                 if(!isLetter.test(control.value.charAt(i+=1))) return { RFC: true };
-                console.log(i + ': ' + control.value.charAt(i));
                 if(!isLetter.test(control.value.charAt(i+=1))) return { RFC: true };
-                console.log(i + ': ' + control.value.charAt(i));
                 if(!moral){
                     if(!isLetter.test(control.value.charAt(i+=1))) return { RFC: true };
-                    console.log(i + ': ' + control.value.charAt(i));    
                 }
 
                 if(!isNumeric.test(control.value.charAt(i+=1))) return { RFC: true };
-                console.log(i + ': ' + control.value.charAt(i));
                 if(!isNumeric.test(control.value.charAt(i+=1))) return { RFC: true };
-                console.log(i + ': ' + control.value.charAt(i));
                 if(!isNumeric.test(control.value.charAt(i+=1))) return { RFC: true };
-                console.log(i + ': ' + control.value.charAt(i));
                 if(!isNumeric.test(control.value.charAt(i+=1))) return { RFC: true };
-                console.log(i + ': ' + control.value.charAt(i));
                 if(!isNumeric.test(control.value.charAt(i+=1))) return { RFC: true };
-                console.log(i + ': ' + control.value.charAt(i));
                 if(!isNumeric.test(control.value.charAt(i+=1))) return { RFC: true };
-                console.log(i + ': ' + control.value.charAt(i));
 
                 if(!isAlphanumeric.test(control.value.charAt(i+=1))) return { RFC: true };
-                console.log(i + ': ' + control.value.charAt(i));
                 if(!isAlphanumeric.test(control.value.charAt(i+=1))) return { RFC: true };
-                console.log(i + ': ' + control.value.charAt(i));
                 if(!isAlphanumeric.test(control.value.charAt(i+=1))) return { RFC: true };
-                console.log(i + ': ' + control.value.charAt(i));
             } catch(e){
-                console.error(e);
                 return { RFC: true };
             }
-            console.log('IS VALID');
             return null;
         }
+    }
+
+    public static getEnterpriseCreationDate(rfc: string): Date{
+        return new Date(
+            Number.parseInt(rfc.slice(3, 5)),
+            Number.parseInt(rfc.slice(5, 7)),
+            Number.parseInt(rfc.slice(7, 9)),
+          );
+    }
+
+    public static getPersonBirthDate(rfc: string): Date{
+        return new Date(
+            Number.parseInt(rfc.slice(4, 6)),
+            Number.parseInt(rfc.slice(6, 8)),
+            Number.parseInt(rfc.slice(8, 10)),
+        );
     }
 }
