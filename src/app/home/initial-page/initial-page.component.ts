@@ -6,7 +6,6 @@ import { BucketService } from 'src/app/service/bucket.service';
 import { User } from 'src/app/service/user';
 import { UserModuleService } from 'src/app/service/user-module.service';
 import { XMLReaderService } from 'src/app/service/xml-reader.service';
-import { firstValueFrom } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
 import { CardTableComponent } from './card-table/card-table.component';
@@ -39,40 +38,42 @@ export class InitialPageComponent implements OnInit {
 
   constructor(private afs: AngularFirestore, private route: ActivatedRoute, private bucketService: BucketService, private XMLParser: XMLReaderService, private userModule: UserModuleService, private router: Router, private matSnackBar: MatSnackBar) { }
 
-  async ngOnInit() {
-    const params = await firstValueFrom(this.route.params);
-    const current = await this.userModule.getCurrentUser();
+  ngOnInit(): void {
+    this.route.params.subscribe(async params => {
+      this.showLoadingTable = true;
+      const current = await this.userModule.getCurrentUser();
 
-    if(!params['rfc']){
-      this.selectedUser = current;
-    } else {
-      const paramUser = await this.userModule.getClientByRFC(current!.UID, params['rfc']);
-
-      if(!paramUser){
-        this.matSnackBar.open('No tiene ningún asociado con el RFC: ' + params['rfc'], 'Ok', {duration: 1750});
-        this.router.navigate(['/app', 'associates']);
+      if(!params['rfc']){
+        this.selectedUser = current;
       } else {
-        this.selectedUser = paramUser;
-      }
-    }
-
-    if(this.selectedUser){
-      this.afs.collection('User').doc(this.selectedUser.UID).collection('XML').valueChanges().subscribe(async xmlsCollection => {
-        if(this.xmlsData.length !== xmlsCollection.length){
-          this.xmlsData = xmlsCollection.length > 0 ? await this.fullyParseRawXMLS() : [];
-          if(this.cardTable){
-            this.cardTable.refreshTable(this.xmlsData);            
-          }
-
-          if(this.cardChart){
-            this.cardChart.refreshData(this.xmlsData);
-          }
+        const paramUser = await this.userModule.getClientByRFC(current!.UID, params['rfc']);
+  
+        if(!paramUser){
+          this.matSnackBar.open('No tiene ningún asociado con el RFC: ' + params['rfc'], 'Ok', {duration: 1750});
+          this.router.navigate(['/app', 'associates']);
+        } else {
+          this.selectedUser = paramUser;
         }
-
-        this.showLoadingTable = false;
-        this.showReloadingTable = false;
-      });
-    }
+      }
+  
+      if(this.selectedUser){
+        this.afs.collection('User').doc(this.selectedUser.UID).collection('XML').valueChanges().subscribe(async xmlsCollection => {
+          if(this.xmlsData.length !== xmlsCollection.length){
+            this.xmlsData = xmlsCollection.length > 0 ? await this.fullyParseRawXMLS() : [];
+            if(this.cardTable){
+              this.cardTable.refreshTable(this.xmlsData);            
+            }
+  
+            if(this.cardChart){
+              this.cardChart.refreshData(this.xmlsData);
+            }
+          }
+  
+          this.showLoadingTable = false;
+          this.showReloadingTable = false;
+        });
+      }
+    })
   }
 
   async onDocumentsLoad(docs: XMLExport){
