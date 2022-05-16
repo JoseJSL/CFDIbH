@@ -10,9 +10,9 @@ import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
   styleUrls: ['./card-table.component.scss'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('collapsed', style({height: '0'})),
       state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 0.5)')),
     ]),
   ],
 })
@@ -62,10 +62,10 @@ export class CardTableComponent implements AfterViewInit {
   changeExpandedElement(_NoCertificado: string){
     console.log(this.expandedElement + ' -- ' + _NoCertificado);
 
-    if(this.expandedElement === _NoCertificado){
-      this.expandedElement = undefined; 
-    } else {
+    if(this.expandedElement !== _NoCertificado){
       this.expandedElement = _NoCertificado;
+    } else {
+      this.expandedElement = undefined; 
     }
   }
 

@@ -27,6 +27,9 @@
 <div class="noContent">
     <div *ngIf="currentUserAssociates.length <= 0">
         <mat-card-title>Aún no has agregado asociados.</mat-card-title>
+        <mat-card-subtitle>Puedes agregar personas físicas y morales en las pestañas a la izquierda.</mat-card-subtitle>
     </div>
-    <mat-card-subtitle>Puedes agregar personas físicas y morales en las pestañas a la izquierda.</mat-card-subtitle>
+    <div *ngIf="currentUserAssociates.length > 0 ">
+        <mat-card-subtitle>Eliminar un usuario no eliminará sus documentos, solo lo quitará de tu lista de asociados.</mat-card-subtitle>        
+    </div>
 </div>
