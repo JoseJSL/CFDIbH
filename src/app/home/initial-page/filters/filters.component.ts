@@ -65,15 +65,29 @@ export class FiltersComponent implements OnInit {
   }
 
   changeFilter(data: any, filter: 'receptor' | 'emisor'){
-    this.Filters[filter] = data;
-    this.filtersChanged.emit(this.Filters);
+    if(data !== this.Filters[filter]){
+      this.Filters[filter] = data;
+      this.filtersChanged.emit(this.Filters);
+    }
   }
 
   changeDate(monthAndYear: moment.Moment, datepicker: MatDatepicker<moment.Moment>, filter: 'desdeFecha' | 'hastaFecha'){
     datepicker.close();
-    this.Filters[filter] = monthAndYear.toDate();
-    datepicker.select(monthAndYear);
-    this.filtersChanged.emit(this.Filters);
+
+    const date = monthAndYear.toDate();
+    if(date !== this.Filters[filter]){
+      this.Filters[filter] = date
+      datepicker.select(monthAndYear);
+      this.filtersChanged.emit(this.Filters);
+    }
+  }
+
+  removeDate(datePickerInput: HTMLInputElement, filter: 'desdeFecha' | 'hastaFecha'){
+    if(this.Filters[filter]){
+      datePickerInput.value = '';
+      this.Filters[filter] = undefined;
+      this.filtersChanged.emit(this.Filters);
+    }
   }
 
 }

@@ -12,6 +12,7 @@ import { CardTableComponent } from './card-table/card-table.component';
 import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
 import { CardChartsComponent } from './card-charts/card-charts.component';
 import { CFDIFilter } from './filters/filter';
+import { FiltersComponent } from './filters/filters.component';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -23,6 +24,7 @@ SwiperCore.use([Navigation, Pagination]);
 export class InitialPageComponent implements OnInit {
   @ViewChild('cardTable') cardTable!: CardTableComponent;
   @ViewChild('cardChart') cardChart!: CardChartsComponent;
+  @ViewChild('filters') filters!: FiltersComponent;
 
   public xmlsData: (Ingreso | Egreso | Traslado)[] = [];
   public xmlsCols: string[] = ['Concepto', 'Emisor', 'Receptor', 'Subtotal'];
@@ -58,19 +60,17 @@ export class InitialPageComponent implements OnInit {
   
       if(this.selectedUser){
         this.afs.collection('User').doc(this.selectedUser.UID).collection('XML').valueChanges().subscribe(async xmlsCollection => {
+          this.showReloadingTable = true;
           if(this.xmlsData.length !== xmlsCollection.length){
             this.xmlsData = xmlsCollection.length > 0 ? await this.fullyParseRawXMLS() : [];
-            if(this.cardTable){
-              this.cardTable.refreshTable(this.xmlsData);            
-            }
-  
-            if(this.cardChart){
-              this.cardChart.refreshData(this.xmlsData);
+            
+            if(this.filters){
+              this.updateChildrens(this.filters.Filters);
             }
           }
-  
-          this.showLoadingTable = false;
+          
           this.showReloadingTable = false;
+          this.showLoadingTable = false;
         });
       }
     })
@@ -111,8 +111,14 @@ export class InitialPageComponent implements OnInit {
         }
       }
     } catch(e){
-      this.matSnackBar.open('Ocurrió un error al tratar de subir los archivos', 'Ok');
+      const error = e as Error;
+      if(error.message.indexOf('_NoCertificado is undefined') > -1){
+        this.matSnackBar.open('Uno de los archivos no cuenta con No. de Certificado.', 'Ok');
+      } else {
+        this.matSnackBar.open('Ocurrió un error al tratar de subir los archivos', 'Ok');
+      }
       this.showLoadingTable = false;
+      this.showReloadingTable = false;
     }
   }
 

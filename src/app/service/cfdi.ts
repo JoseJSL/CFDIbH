@@ -13,17 +13,17 @@ export class Ingreso implements CFDIIngreso {
     public _Sello: string;
     public _Serie: string;
     public _SubTotal: number;
-    public _TipoDeComprobante: "I" | "E" | "T";
+    public _TipoDeComprobante: "I" | "E" | "T" | "P" | "N";
     public _Total: number;
     public _Version: string;
 
     constructor(originalData: any){
-        const data = this.asIncome(originalData);
+        const data = asIncome(originalData);
 
         this.Conceptos = data.Conceptos;
-        this.Emisor = data.Emisor;
+        this.Emisor = getEmisor(data.Emisor);
         this.Impuestos = data.Impuestos;
-        this.Receptor = data.Receptor;
+        this.Receptor = getReceptor(data.Receptor);
         this._Certificado = data._Certificado;
         this._Exportacion = data._Exportacion;
         this._Fecha = data._Fecha;
@@ -37,42 +37,6 @@ export class Ingreso implements CFDIIngreso {
         this._TipoDeComprobante = data._TipoDeComprobante;
         this._Total = data._Total;
         this._Version = data._Version;
-    }
-
-    private asIncome(data: any): CFDIIngreso {   
-
-        if(data.Impuestos){
-            if(!data.Impuestos[0]){
-                data.Impuestos = [ data.Impuestos, ];
-            }
-
-            for(let i = 0; i < data.Impuestos.length; i++){
-                if(data.Impuestos[i].Traslados){
-                    if(!data.Impuestos[i].Traslados[0]){
-                        data.Impuestos[i].Traslados = [ data.Impuestos[i].Traslados.Traslado ]
-                    }
-                }
-            }
-        }
-
-        if(data.Conceptos){
-            if(!data.Conceptos[0]){
-                if(!data.Conceptos.Concepto.length){
-                    data.Conceptos = [ data.Conceptos.Concepto ];
-                } else {
-                    const tmp = data.Conceptos.Concepto;
-                    data.Conceptos = [];
-                    for(let i = 0; i < tmp.length; i++){
-                        data.Conceptos.push(tmp[i]);
-                    }
-                }
-            }
-        }
-
-        data._SubTotal = Number.parseFloat(data._SubTotal);
-        data._Fecha = new Date(data._Fecha);
-
-        return data;
     }
 }
 
@@ -92,18 +56,18 @@ export class Egreso implements CFDIEgreso {
     public _Sello: string;
     public _Serie: string;
     public _SubTotal: number;
-    public _TipoDeComprobante: "I" | "E" | "T";
+    public _TipoDeComprobante: "I" | "E" | "T" | "P" | "N";
     public _Total: number;
     public _Version: string;
 
     constructor(originalData: any){
-        const data = this.asExpenditure(originalData);
+        const data = asExpenditure(originalData);
 
         this.CfdiRelacionados = data.CfdiRelacionados;
         this.Conceptos = data.Conceptos;
-        this.Emisor = data.Emisor;
+        this.Emisor = getEmisor(data.Emisor);
         this.Impuestos = data.Impuestos;
-        this.Receptor = data.Receptor;
+        this.Receptor = getReceptor(data.Receptor);
         this._Certificado = data._Certificado;
         this._Exportacion = data._Exportacion;
         this._Fecha = data._Fecha;
@@ -117,49 +81,6 @@ export class Egreso implements CFDIEgreso {
         this._TipoDeComprobante = data._TipoDeComprobante;
         this._Total = data._Total;
         this._Version = data._Version;
-    }
-
-    public asExpenditure(data: any): CFDIEgreso {
-        if(data.Impuestos){
-            if(!data.Impuestos[0]){
-                data.Impuestos = [ data.Impuestos, ];
-            }
-
-            for(let i = 0; i < data.Impuestos.length; i++){
-                if(data.Impuestos[i]){
-                    if(!data.Impuestos[i].Traslados[0]){
-                        data.Impuestos[i].Traslados = [ data.Impuestos[i].Traslados.Traslado ]
-                    }   
-                }
-            }
-        }
-        
-        if(data.Conceptos){
-            if(!data.Conceptos[0]){
-                if(!data.Conceptos.Concepto.length){
-                    data.Conceptos = [ data.Conceptos.Concepto ];
-                } else {
-                    const tmp = data.Conceptos.Concepto;
-                    data.Conceptos = [];
-                    for(let i = 0; i < tmp.length; i++){
-                        data.Conceptos.push(tmp[i]);
-                    }
-                }
-            }
-        }
-
-        if(data.CfdiRelacionados){
-            if(data.CfdiRelacionados.CfdiRelacionado){
-                if(!data.CfdiRelacionados.CfdiRelacionado[0]){
-                    data.CfdiRelacionados.CfdiRelacionado = [ data.CfdiRelacionados.CfdiRelacionado, ];
-                } 
-            }
-        }
-
-        data._SubTotal = Number.parseFloat(data._SubTotal);
-        data._Fecha = new Date(data._Fecha);
-
-        return data;
     }
 }
 
@@ -178,12 +99,12 @@ export class Traslado implements CFDITraslado {
     public _Sello: string;
     public _Serie: string;
     public _SubTotal: number;
-    public _TipoDeComprobante: "I" | "E" | "T";
+    public _TipoDeComprobante: "I" | "E" | "T" | "P" | "N";
     public _Total: number;
     public _Version: string;
 
     constructor(originalData: any){
-        const data = this.asTransfer(originalData);
+        const data = asTransfer(originalData);
 
         this.Complemento = {
             TimbreFiscalDigital: {
@@ -197,8 +118,8 @@ export class Traslado implements CFDITraslado {
         };
         
         this.Conceptos = data.Conceptos;
-        this.Emisor = data.Emisor;
-        this.Receptor = data.Receptor;
+        this.Emisor = getEmisor(data.Emisor);
+        this.Receptor = getReceptor(data.Receptor);
         this._Certificado = data._Certificado;
         this._Exportacion = data._Exportacion;
         this._Fecha = data._Fecha;
@@ -212,28 +133,6 @@ export class Traslado implements CFDITraslado {
         this._TipoDeComprobante = data._TipoDeComprobante;
         this._Total = data._Total;
         this._Version = data._Version;
-    }
-    
-    public asTransfer(data: any): CFDITraslado {
-        if(data.Conceptos){
-            if(!data.Conceptos[0]){
-                if(!data.Conceptos.Concepto.length){
-                    data.Conceptos = [ data.Conceptos.Concepto ];
-                } else {
-                    const tmp = data.Conceptos.Concepto;
-                    data.Conceptos = [];
-                    for(let i = 0; i < tmp.length; i++){
-                        data.Conceptos.push(tmp[i]);
-                    }
-                }
-            }
-        }
-
-        data._Fecha = new Date(data._Fecha);
-        data._SubTotal = Number.parseFloat(data._SubTotal);
-        data.Complemento.TimbreFiscalDigital._FechaTimbrado = new Date(data.Complemento.TimbreFiscalDigital._FechaTimbrado);
-
-        return data;
     }
 }
 
@@ -265,7 +164,7 @@ interface CFDI {
     _Sello: string,
     _Serie: string,
     _SubTotal: number
-    _TipoDeComprobante: "I" | "E" | "T",
+    _TipoDeComprobante: "I" | "E" | "T" | "P" | "N",
     _Total: number,
     _Version: string,
 }
@@ -384,4 +283,123 @@ export class ReadableCFDI {
 
         return readableDate + '/' + date.getFullYear();
     }
-}   
+}
+
+function asIncome(data: any): CFDIIngreso {   
+    if(data.Impuestos){
+        if(!data.Impuestos[0]){
+            data.Impuestos = [ data.Impuestos, ];
+        }
+
+        for(let i = 0; i < data.Impuestos.length; i++){
+            if(data.Impuestos[i].Traslados){
+                if(!data.Impuestos[i].Traslados[0]){
+                    data.Impuestos[i].Traslados = [ data.Impuestos[i].Traslados.Traslado ]
+                }
+            }
+        }
+    }
+
+    if(data.Conceptos){
+        if(!data.Conceptos[0]){
+            if(!data.Conceptos.Concepto.length){
+                data.Conceptos = [ data.Conceptos.Concepto ];
+            } else {
+                const tmp = data.Conceptos.Concepto;
+                data.Conceptos = [];
+                for(let i = 0; i < tmp.length; i++){
+                    data.Conceptos.push(tmp[i]);
+                }
+            }
+        }
+    }
+
+    data._SubTotal = Number.parseFloat(data._SubTotal);
+    data._Fecha = new Date(data._Fecha);
+
+    return data;
+}
+
+function asExpenditure(data: any): CFDIEgreso {
+    if(data.Impuestos){
+        if(!data.Impuestos[0]){
+            data.Impuestos = [ data.Impuestos, ];
+        }
+
+        for(let i = 0; i < data.Impuestos.length; i++){
+            if(data.Impuestos[i]){
+                if(!data.Impuestos[i].Traslados[0]){
+                    data.Impuestos[i].Traslados = [ data.Impuestos[i].Traslados.Traslado ]
+                }   
+            }
+        }
+    }
+    
+    if(data.Conceptos){
+        if(!data.Conceptos[0]){
+            if(!data.Conceptos.Concepto.length){
+                data.Conceptos = [ data.Conceptos.Concepto ];
+            } else {
+                const tmp = data.Conceptos.Concepto;
+                data.Conceptos = [];
+                for(let i = 0; i < tmp.length; i++){
+                    data.Conceptos.push(tmp[i]);
+                }
+            }
+        }
+    }
+
+    if(data.CfdiRelacionados){
+        if(data.CfdiRelacionados.CfdiRelacionado){
+            if(!data.CfdiRelacionados.CfdiRelacionado[0]){
+                data.CfdiRelacionados.CfdiRelacionado = [ data.CfdiRelacionados.CfdiRelacionado, ];
+            } 
+        }
+    }
+
+    data._SubTotal = Number.parseFloat(data._SubTotal);
+    data._Fecha = new Date(data._Fecha);
+
+    return data;
+}
+
+function asTransfer(data: any): CFDITraslado {
+    if(data.Conceptos){
+        if(!data.Conceptos[0]){
+            if(!data.Conceptos.Concepto.length){
+                data.Conceptos = [ data.Conceptos.Concepto ];
+            } else {
+                const tmp = data.Conceptos.Concepto;
+                data.Conceptos = [];
+                for(let i = 0; i < tmp.length; i++){
+                    data.Conceptos.push(tmp[i]);
+                }
+            }
+        }
+    }
+
+    data._Fecha = new Date(data._Fecha);
+    data._SubTotal = Number.parseFloat(data._SubTotal);
+    data.Complemento.TimbreFiscalDigital._FechaTimbrado = new Date(data.Complemento.TimbreFiscalDigital._FechaTimbrado);
+
+    return data;
+}
+
+
+function getReceptor(data: Receptor): Receptor{
+    return {
+        _DomicilioFiscalReceptor: data._DomicilioFiscalReceptor,
+        _Nombre: data._Nombre ? data._Nombre : 'S/R',
+        _RegimenFiscalReceptor: data._RegimenFiscalReceptor,
+        _Rfc: data._Rfc,
+        _UsoCFDI: data._UsoCFDI,
+    }
+}
+
+function getEmisor(data: Emisor): Emisor{
+    return {
+        _Nombre: data._Nombre ? data._Nombre : 'S/E',
+        _RegimenFiscal: data._RegimenFiscal,
+        _Rfc: data._Rfc,
+    }
+}

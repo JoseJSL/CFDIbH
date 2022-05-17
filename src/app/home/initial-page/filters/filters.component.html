@@ -46,7 +46,7 @@
             <mat-grid-tile>
                 <mat-form-field appearance="outline">
                     <mat-label>Fecha de inicio</mat-label>
-                    <input matInput [matDatepicker]="datePickerStart" disabled="true">
+                    <input matInput disabled #datePickerStartInput [matDatepicker]="datePickerStart">
                     <mat-hint>MM/AAAA</mat-hint>
 
                     <mat-datepicker-toggle matSuffix [for]="datePickerStart"></mat-datepicker-toggle>
@@ -57,6 +57,10 @@
                         disabled="false"
                         [touchUi]="useDateDialog"
                         (monthSelected)="changeDate($event, datePickerStart, 'desdeFecha')">
+
+                        <mat-datepicker-actions>
+                            <button (click)="removeDate(datePickerStartInput, 'desdeFecha')" mat-button matDatepickerCancel color="warn">Remover</button>
+                        </mat-datepicker-actions>
                     </mat-datepicker>
                 </mat-form-field>
             </mat-grid-tile>
@@ -64,7 +68,7 @@
             <mat-grid-tile>
                 <mat-form-field appearance="outline">
                     <mat-label>Fecha de fin</mat-label>
-                    <input matInput [matDatepicker]="datePickerEnd" disabled="true">
+                    <input matInput #datePickerEndInput [matDatepicker]="datePickerEnd" disabled="true">
                     <mat-hint>MM/AAAA</mat-hint>
 
                     <mat-datepicker-toggle matSuffix [for]="datePickerEnd"></mat-datepicker-toggle>
@@ -75,6 +79,10 @@
                         disabled="false"
                         [touchUi]="useDateDialog"
                         (monthSelected)="changeDate($event, datePickerEnd, 'hastaFecha')">
+
+                        <mat-datepicker-actions>
+                            <button (click)="removeDate(datePickerEndInput, 'hastaFecha')" mat-button matDatepickerCancel color="warn">Remover</button>
+                        </mat-datepicker-actions>
                     </mat-datepicker>
                 </mat-form-field>
             </mat-grid-tile>

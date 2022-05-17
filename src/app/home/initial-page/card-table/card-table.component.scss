@@ -19,13 +19,23 @@ table{
     tr.detail-row {
         height: 0;
     }
+    
+    tr.element-row.I{
+        background: rgba(225, 255, 225, 0.5);
+    }
+    tr.element-row.E{
+        background: rgba(255, 225, 225, 0.5);
+    }
+    tr.element-row.T{
+        background: rgba(225, 225, 255, 0.5);
+    }
 
     tr.element-row:not(.expanded-row):hover {
-        background: whitesmoke;
+        opacity: 0.75;
     }
      
     tr.element-row:not(.expanded-row):active {
-        background: #efefef;
+        opacity: 0.75;
     }
 
     .element-row td {

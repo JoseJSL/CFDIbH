@@ -1,5 +1,5 @@
 <div *ngIf="!showLoadingTable">
-    <table-filters *ngIf="xmlsData.length > 0" [inputData]="xmlsData" (filtersChanged)="updateChildrens($event);"></table-filters>
+    <table-filters #filters *ngIf="xmlsData.length > 0" [inputData]="xmlsData" (filtersChanged)="updateChildrens($event);"></table-filters>
     <mat-progress-bar *ngIf="showReloadingTable" mode="indeterminate"></mat-progress-bar>
     <swiper [config]="swiperConfig">
         <ng-template swiperSlide>
