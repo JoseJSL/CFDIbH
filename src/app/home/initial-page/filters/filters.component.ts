@@ -40,6 +40,9 @@ export class FiltersComponent implements OnInit {
   public Filters: CFDIFilter = {};
   public Receptores: string[] = [];
   public Emisores: string[] = [];
+  public Tipos: string[] = []
+  public FormasPago: string[] = [];
+  public MetodosPago: string[] = [];
 
   constructor() {}
 
@@ -51,22 +54,49 @@ export class FiltersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    for(let i = 0; i < this.inputData.length; i++){
-      if(this.Receptores.lastIndexOf(this.inputData[i].Receptor._Nombre) == -1){
-        this.Receptores.push(this.inputData[i].Receptor._Nombre);
-      }
+    this.updatePosibleIndexes();
+  }
+
+  updatePosibleIndexes(data?: (Ingreso | Egreso | Traslado)[]){
+    if(data){
+      this.inputData = data;
     }
 
     for(let i = 0; i < this.inputData.length; i++){
-      if(this.Emisores.lastIndexOf(this.inputData[i].Emisor._Nombre) == -1){
+      if(this.Receptores.lastIndexOf(this.inputData[i].Receptor._Nombre) === -1){
+        this.Receptores.push(this.inputData[i].Receptor._Nombre);
+      }
+
+      if(this.Emisores.lastIndexOf(this.inputData[i].Emisor._Nombre) === -1){
         this.Emisores.push(this.inputData[i].Emisor._Nombre);
+      }
+
+      if(this.Tipos.lastIndexOf(this.inputData[i]._TipoDeComprobante) === -1){
+        this.Tipos.push(this.inputData[i]._TipoDeComprobante);
+      }
+
+      if(this.inputData[i]._MetodoPago){
+        if(this.MetodosPago.lastIndexOf(this.inputData[i]._MetodoPago!) === -1){
+          this.MetodosPago.push(this.inputData[i]._MetodoPago!);
+        }
+      }
+      
+      if(this.inputData[i]._FormaPago){
+        if(this.FormasPago.lastIndexOf(this.inputData[i]._FormaPago!) == -1){
+          this.FormasPago.push(this.inputData[i]._FormaPago!);
+        }
       }
     }
   }
 
-  changeFilter(data: any, filter: 'receptor' | 'emisor'){
+  changeFilter(data: any, filter: 'receptor' | 'emisor' | 'tipo' | 'formaPago' | 'metodoPago'){
     if(data !== this.Filters[filter]){
-      this.Filters[filter] = data;
+      if(data.length > 0){
+        this.Filters[filter] = data;
+      } else {
+        this.Filters[filter] = undefined;
+      }
+
       this.filtersChanged.emit(this.Filters);
     }
   }
@@ -90,4 +120,31 @@ export class FiltersComponent implements OnInit {
     }
   }
 
+  readableTipoComprobante(tipo: string): string{
+    switch(tipo){
+      case('I'): return 'Ingreso';
+      case('E'): return 'Egreso';
+      case('T'): return 'Traslado';
+      case('N'): return 'Nomina';
+      default: return 'Pago';
+    }
+  }
+
+  readableFormaPago(formaPago: string): string{
+    switch(formaPago){
+      case('01'): return 'Efectivo';
+      case('02'): return 'Cheque nominativo';
+      case('03'): return 'Transferencia electrónica de fondos';
+      case('04'): return 'Tarjeta de crédito';
+      default: return 'Por definir';
+    }
+  }
+
+  readableMetodoPago(metodoPago: string): string{
+    switch(metodoPago){
+      case('PUE'): return 'Una sola exhibicion';
+      default: return 'En parcialidades o diferido';
+    }
+
+  }
 }

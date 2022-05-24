@@ -1,8 +1,15 @@
 <div class="details">
-    <pre>Facturado el día: {{Data.Fecha}}
-Subtotal:   {{Data.Subtotal}}
-Impuestos:  {{Data.Impuestos}}
-Total:      {{Data.Total}}</pre>
-    
+    <div class="segment">
+        <pre>Facturado el día: {{Data.Fecha}}
+Subtotal:   ${{Data.Subtotal}}
+Impuestos:  $-{{Data.Impuestos}}
+Total:      ${{Data.Total}}</pre>
+    </div>
+
+    <div class="segment">
+        <pre>Tipo de comprobante: {{Data.TipoComprobante}}
+Forma de pago: {{Data.FormaPago}}
+Metodo de pago: {{Data.MetodoPago}}</pre>
+    </div>    
     <icon-button (click)="openDeleteDialog()" iconColor="warn" buttonColor="warn" label="Eliminar" iconName="delete"></icon-button>
 </div>

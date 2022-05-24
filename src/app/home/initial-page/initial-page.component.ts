@@ -125,7 +125,6 @@ export class InitialPageComponent implements OnInit {
   async fullyParseRawXMLS(): Promise<(Ingreso | Egreso | Traslado)[]>{
     const files = await this.bucketService.readAllUserRawXML(this.selectedUser!.UID);
     const parsedFiles = this.XMLParser.ParseMultipleText(files);
-    console.log(parsedFiles);
     return this.XMLParser.JsonArrayToCFDI(parsedFiles);
   }
 
@@ -133,11 +132,11 @@ export class InitialPageComponent implements OnInit {
     let filteredData: (Ingreso | Egreso | Traslado)[] = [];
     this.xmlsData.forEach(d => filteredData.push(Object.assign({}, d)));
 
-    if(filters.receptor && filters.receptor.length > 0){
+    if(filters.receptor){
       filteredData = filteredData.filter(data => filters.receptor!.indexOf(data.Receptor._Nombre) !== -1);
     }
 
-    if(filters.emisor && filters.emisor.length > 0){
+    if(filters.emisor){
       filteredData = filteredData.filter(data => filters.emisor!.indexOf(data.Emisor._Nombre) !== -1);
     }
 
@@ -149,12 +148,28 @@ export class InitialPageComponent implements OnInit {
       filteredData = filteredData.filter(data => data._Fecha <= filters.hastaFecha!);
     }
 
-    if(this.cardTable){
+    if(filters.tipo){ 
+      filteredData = filteredData.filter(data => filters.tipo!.indexOf(data._TipoDeComprobante) !== -1);
+    }
+
+    if(filters.formaPago){
+      filteredData = filteredData.filter(data => data._FormaPago && filters.formaPago!.indexOf(data._FormaPago) !== -1);
+    }
+
+    if(filters.metodoPago){
+      filteredData = filteredData.filter(data => data._MetodoPago && filters.metodoPago!.indexOf(data._MetodoPago) !== -1);
+    }
+
+    if(this.cardTable){ 
       this.cardTable.refreshTable(filteredData);
     }
 
     if(this.cardChart){
       this.cardChart.refreshData(filteredData);
+    }
+
+    if(this.filters){
+      this.filters.updatePosibleIndexes(filteredData);
     }
   }
 

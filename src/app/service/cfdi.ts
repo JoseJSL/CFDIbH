@@ -16,6 +16,8 @@ export class Ingreso implements CFDIIngreso {
     public _TipoDeComprobante: "I" | "E" | "T" | "P" | "N";
     public _Total: number;
     public _Version: string;
+    public _FormaPago: string | undefined;
+    public _MetodoPago: string | undefined;
 
     constructor(originalData: any){
         const data = asIncome(originalData);
@@ -37,6 +39,8 @@ export class Ingreso implements CFDIIngreso {
         this._TipoDeComprobante = data._TipoDeComprobante;
         this._Total = data._Total;
         this._Version = data._Version;
+        this._FormaPago = data._FormaPago;
+        this._MetodoPago = data._MetodoPago;
     }
 }
 
@@ -59,6 +63,8 @@ export class Egreso implements CFDIEgreso {
     public _TipoDeComprobante: "I" | "E" | "T" | "P" | "N";
     public _Total: number;
     public _Version: string;
+    public _FormaPago: string | undefined;
+    public _MetodoPago: string | undefined;
 
     constructor(originalData: any){
         const data = asExpenditure(originalData);
@@ -77,10 +83,12 @@ export class Egreso implements CFDIEgreso {
         this._NoCertificado = data._NoCertificado;
         this._Sello = data._Sello;
         this._Serie = data._Serie;
-        this._SubTotal = data._SubTotal;
+        this._SubTotal = - data._SubTotal;
         this._TipoDeComprobante = data._TipoDeComprobante;
-        this._Total = data._Total;
+        this._Total = - data._Total;
         this._Version = data._Version;
+        this._FormaPago = data._FormaPago;
+        this._MetodoPago = data._MetodoPago
     }
 }
 
@@ -102,6 +110,8 @@ export class Traslado implements CFDITraslado {
     public _TipoDeComprobante: "I" | "E" | "T" | "P" | "N";
     public _Total: number;
     public _Version: string;
+    public _FormaPago: string | undefined;
+    public _MetodoPago: string | undefined;
 
     constructor(originalData: any){
         const data = asTransfer(originalData);
@@ -133,6 +143,8 @@ export class Traslado implements CFDITraslado {
         this._TipoDeComprobante = data._TipoDeComprobante;
         this._Total = data._Total;
         this._Version = data._Version;
+        this._FormaPago = data._FormaPago;
+        this._MetodoPago = data._MetodoPago;
     }
 }
 
@@ -156,6 +168,8 @@ interface CFDI {
 
     _Certificado: string,
     _Exportacion: string,
+    _FormaPago: string | undefined,
+    _MetodoPago: string | undefined,
     _Fecha: Date,
     _Folio: string,
     _LugarExpedicion: string,
@@ -229,8 +243,8 @@ export class ReadableCFDI {
     Receptor: string;
     Emisor: string;
     Fecha: string;
-    FormaPago?: 'Efectivo' | 'Cheque nominativo' | 'Transferencia electrónica de fondos' | 'Por definir';
-    MetodoPago?: 'En una sola excibición' | 'En parcialidades o diferido';
+    FormaPago: 'Efectivo' | 'Cheque nominativo' | 'Transferencia electrónica de fondos' | 'Tarjeta de crédito' | 'Por definir' | 'N/A';
+    MetodoPago: 'En una sola exhibición' | 'En parcialidades o diferido' | 'N/A';
     LugarExpedicion: string;
     Subtotal: string;
     Total: string;
@@ -246,17 +260,22 @@ export class ReadableCFDI {
             this.FormaPago = 
                 data._FormaPago == '01' ? 'Efectivo' : 
                 data._FormaPago == '02' ? 'Cheque nominativo' : 
-                data._FormaPago == '03' ? 'Transferencia electrónica de fondos' : 'Por definir';
+                data._FormaPago == '03' ? 'Transferencia electrónica de fondos' : 
+                data.formaPago == '04' ? 'Tarjeta de crédito' : 'Por definir';
+        } else {
+            this.FormaPago = 'N/A';
         }
 
         if(data._MetodoPago){
-            this.MetodoPago = data._MetodoPago == 'PUE' ? 'En una sola excibición' : 'En parcialidades o diferido';
+            this.MetodoPago = data._MetodoPago == 'PUE' ? 'En una sola exhibición' : 'En parcialidades o diferido';
+        } else {
+            this.MetodoPago = 'N/A';
         }
 
         this.LugarExpedicion = data._LugarExpedicion;
-        this.Subtotal = '$' + parseFloat(data._SubTotal).toFixed(2);
-        this.Total = '$' + parseFloat(data._Total).toFixed(2);
-        this.Impuestos = '$' + parseFloat(Math.abs(data._Total - data._SubTotal).toString()).toFixed(2);
+        this.Subtotal = parseFloat(data._SubTotal).toFixed(2);
+        this.Total = parseFloat(data._Total).toFixed(2);
+        this.Impuestos = parseFloat(Math.abs(data._Total - data._SubTotal).toString()).toFixed(2);
 
         this.TipoComprobante = data._TipoDeComprobante == 'I' ? 'Ingreso' : 
             data._TipoDeComprobante == 'E' ? 'Egreso' : 'Traslado'; 

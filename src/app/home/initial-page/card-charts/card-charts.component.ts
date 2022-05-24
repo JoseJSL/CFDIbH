@@ -83,7 +83,7 @@ export class CardChartsComponent implements OnInit {
         fullData[indexName] = {
           data: [],
           label: this.rawInputData[i].Emisor._Nombre + ' - ' + type,
-          stack: this.rawInputData[i]._TipoDeComprobante,
+          stack: this.rawInputData[i].Emisor._Nombre,
           backgroundColor: color,
           hoverBackgroundColor: hover,
           type: 'bar'

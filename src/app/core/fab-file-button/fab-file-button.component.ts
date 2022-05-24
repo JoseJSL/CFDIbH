@@ -39,19 +39,15 @@ export class FabFileButtonComponent implements OnInit {
     try{
       for(i = 0; i < files.length; i ++){
         n = i;
-        switch(parsedFiles[i]._TipoDeComprobante){
-          case("I"):
-           CFDIArray.push(new Ingreso(parsedFiles[i]));
-           rawFiles.push(files[i]);
-            break;
-          case("E"):
-            CFDIArray.push(new Egreso(parsedFiles[i]));
-            rawFiles.push(files[i]);
-            break;
-          case("T"):
-            CFDIArray.push(new Traslado(parsedFiles[i]));
-            rawFiles.push(files[i]);
-            break;
+        if(parsedFiles[i]._TipoDeComprobante === 'I' || parsedFiles[i]._TipoDeComprobante === 'N'){
+          CFDIArray.push(new Ingreso(parsedFiles[i]));
+          rawFiles.push(files[i]);
+        } else if(parsedFiles[i]._TipoDeComprobante === 'E' || parsedFiles[i]._TipoDeComprobante === 'N'){
+          CFDIArray.push(new Egreso(parsedFiles[i]));
+          rawFiles.push(files[i]);
+        } else {
+          CFDIArray.push(new Traslado(parsedFiles[i]));
+          rawFiles.push(files[i]);
         }
       }
 
@@ -68,6 +64,7 @@ export class FabFileButtonComponent implements OnInit {
         });
       }
     } catch(e){
+      console.error(e);
       const dialog = this.matDialog.open(DialogComponent, {
         data: {
           title: 'Error al agregar archivos.',

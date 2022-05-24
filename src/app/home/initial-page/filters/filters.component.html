@@ -86,6 +86,57 @@
                     </mat-datepicker>
                 </mat-form-field>
             </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Tipo de CFDI</mat-label>
+                    <mat-select multiple (valueChange)="changeFilter($event, 'tipo')">
+                        <mat-select-trigger>
+                            {{Filters.tipo ? Filters.tipo[0] : ''}}
+    
+                            <span *ngIf="Filters.tipo && Filters.tipo.length > 1" class="additional-selection">
+                              (+{{Filters.tipo.length - 1}} {{Filters.tipo.length === 2 ? 'otro' : 'otros'}})
+                            </span>
+                        </mat-select-trigger>
+    
+                        <mat-option *ngFor="let t of Tipos" [value]="t">{{readableTipoComprobante(t)}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Método de pago</mat-label>
+                    <mat-select multiple (valueChange)="changeFilter($event, 'metodoPago')">
+                        <mat-select-trigger>
+                            {{Filters.metodoPago ? Filters.metodoPago[0] : ''}}
+    
+                            <span *ngIf="Filters.metodoPago && Filters.metodoPago.length > 1" class="additional-selection">
+                              (+{{Filters.metodoPago.length - 1}} {{Filters.metodoPago.length === 2 ? 'otro' : 'otros'}})
+                            </span>
+                        </mat-select-trigger>
+    
+                        <mat-option *ngFor="let m of MetodosPago" [value]="m">{{readableMetodoPago(m)}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Forma de pago</mat-label>
+                    <mat-select multiple (valueChange)="changeFilter($event, 'formaPago')">
+                        <mat-select-trigger>
+                            {{Filters.formaPago ? Filters.formaPago[0] : ''}}
+    
+                            <span *ngIf="Filters.formaPago && Filters.formaPago.length > 1" class="additional-selection">
+                              (+{{Filters.formaPago.length - 1}} {{Filters.formaPago.length === 2 ? 'otro' : 'otros'}})
+                            </span>
+                        </mat-select-trigger>
+    
+                        <mat-option *ngFor="let f of FormasPago" [value]="f">{{readableFormaPago(f)}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
         </mat-grid-list>
     </mat-expansion-panel>
 </mat-accordion>
