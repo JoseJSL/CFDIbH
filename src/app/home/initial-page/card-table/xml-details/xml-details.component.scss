@@ -4,7 +4,9 @@
     align-items: center;
     padding: 1.5vh;
 
-
+    .firstSegment{
+        width: 100%;
+    }
 
     .segment{
         margin-right: 3vw;
@@ -15,5 +17,27 @@
 
     icon-button{
         margin-left: auto;
+    }
+}
+
+.showOnLarge{
+    display: none;
+}
+
+.hideOnSmall{
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .firstSegment{
+        width: auto;
+    }
+
+    .hideOnSmall{
+        display: none;   
+    }
+
+    .showOnLarge{
+        display: block;
     }
 }

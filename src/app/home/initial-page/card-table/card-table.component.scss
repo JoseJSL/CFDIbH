@@ -1,5 +1,6 @@
 table{
     width: 100%;
+    table-layout: fixed;
     
     .mat-header-cell{
         font-size: medium;
@@ -64,7 +65,11 @@ table-xml-details{
 }
 
 @media (min-width: 576px){
-    .noContent{
+    table{
+        table-layout: auto;   
+    }
+
+    .noContent{       
         height: 100%;
     }
 }
