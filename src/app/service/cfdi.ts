@@ -1,3 +1,5 @@
+export type CFDI = Ingreso | Egreso | Traslado;
+
 export class Ingreso implements CFDIIngreso {
     public Impuestos: Impuesto[];
     public Emisor: Emisor;
@@ -148,20 +150,20 @@ export class Traslado implements CFDITraslado {
     }
 }
 
-interface CFDIIngreso extends CFDI{
+interface CFDIIngreso extends CFDIData{
     Impuestos: Impuesto[],
 }
 
-interface CFDIEgreso extends CFDI {
+interface CFDIEgreso extends CFDIData {
     CfdiRelacionados: CfdiRelacionados,
     Impuestos: Impuesto[],
 }
 
-interface CFDITraslado extends CFDI {
+interface CFDITraslado extends CFDIData {
     Complemento: Complemento,
 }
 
-interface CFDI {
+interface CFDIData {
     Emisor: Emisor,
     Receptor: Receptor,
     Conceptos: Concepto[],
@@ -334,6 +336,7 @@ function asIncome(data: any): CFDIIngreso {
     }
 
     data._SubTotal = Number.parseFloat(data._SubTotal);
+    data._Total = Number.parseFloat(data._Total);
     data._Fecha = new Date(data._Fecha);
 
     return data;
@@ -377,6 +380,7 @@ function asExpenditure(data: any): CFDIEgreso {
     }
 
     data._SubTotal = Number.parseFloat(data._SubTotal);
+    data._Total = Number.parseFloat(data._Total);
     data._Fecha = new Date(data._Fecha);
 
     return data;
@@ -399,6 +403,7 @@ function asTransfer(data: any): CFDITraslado {
 
     data._Fecha = new Date(data._Fecha);
     data._SubTotal = Number.parseFloat(data._SubTotal);
+    data._Total = Number.parseFloat(data._Total);
     data.Complemento.TimbreFiscalDigital._FechaTimbrado = new Date(data.Complemento.TimbreFiscalDigital._FechaTimbrado);
 
     return data;

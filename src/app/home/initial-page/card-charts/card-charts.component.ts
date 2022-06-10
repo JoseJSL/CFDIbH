@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ChartDataset, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
+import { CFDI } from 'src/app/service/cfdi';
 
 interface CustomDataSet {
   [index: string]: ChartDataset;
@@ -14,7 +14,7 @@ interface CustomDataSet {
 })
 export class CardChartsComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
-  @Input() rawInputData: (Ingreso | Egreso | Traslado)[] = [];
+  @Input() rawInputData: CFDI[] = [];
   
   public barChartLabels: string[] = [];
   public barChartData: ChartDataset[] = [];
@@ -28,7 +28,7 @@ export class CardChartsComponent implements OnInit {
     this.convertInputDataToDataset();
   }
 
-  public refreshData(inputData: (Ingreso | Egreso | Traslado)[]){
+  public refreshData(inputData: CFDI[]){
     inputData.sort((a, b) => b._Fecha.getTime() - a._Fecha.getTime());
     this.rawInputData = inputData;
     this.setChartLabels();

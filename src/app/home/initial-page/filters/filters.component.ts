@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
+import { CFDI } from 'src/app/service/cfdi';
 import { CFDIFilter } from './filter';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -34,7 +34,7 @@ export class FiltersComponent implements OnInit {
 
   @Output() filtersChanged = new EventEmitter<CFDIFilter>();
 
-  @Input() inputData!: (Ingreso | Egreso | Traslado)[];
+  @Input() inputData!: CFDI[];
   public filterCols: number = window.innerWidth <= 768 ? window.innerWidth <= 576 ? 2 : 3 : 4;
   public useDateDialog: boolean = window.innerWidth <= 576;
   public Filters: CFDIFilter = {};
@@ -57,7 +57,7 @@ export class FiltersComponent implements OnInit {
     this.updatePosibleIndexes();
   }
 
-  updatePosibleIndexes(data?: (Ingreso | Egreso | Traslado)[]){
+  updatePosibleIndexes(data?: CFDI[]){
     if(data){
       this.inputData = data;
     }

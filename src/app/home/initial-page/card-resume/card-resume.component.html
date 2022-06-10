@@ -1,0 +1,25 @@
+<table #dataTable mat-table [dataSource]="tableDataSource">
+    <tr class="row-header" mat-header-row *matHeaderRowDef="tableColumns"></tr> 
+
+    <ng-container matColumnDef="Emisor"]>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por emisor">Emisor</th>
+        <td mat-cell *matCellDef="let cfdi" >{{cfdi.Emisor}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Subtotal">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por subtotal">Subtotal</th>
+        <td class="align-right" mat-cell *matCellDef="let cfdi">{{formatAsCurrency(cfdi.Subtotal)}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Impuestos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por impuestos">Impuestos</th>
+        <td class="align-right" mat-cell *matCellDef="let cfdi">{{formatAsCurrency(cfdi.Impuestos)}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Total">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por total">Total</th>
+        <td class="align-right" mat-cell *matCellDef="let cfdi">{{formatAsCurrency(cfdi.Total)}}</td>
+    </ng-container>
+
+    <tr mat-row *matRowDef="let row; columns: tableColumns" [class]="'element-row ' + row.Tipo"></tr>
+</table>

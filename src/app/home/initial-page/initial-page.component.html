@@ -19,6 +19,13 @@
                 [rawInputData]="xmlsData"
             ></app-card-charts>
         </ng-template>
+
+        <ng-template swiperSlide *ngIf="xmlsData.length > 0">
+            <app-card-resume
+                #cardResume
+                [inputData]="xmlsData"
+            ></app-card-resume>
+        </ng-template>
     </swiper>
 </div>
 

@@ -1,14 +1,14 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent, DialogComponentData } from 'src/app/core/dialog/dialog.component';
-import { Egreso, Ingreso, ReadableCFDI, Traslado } from 'src/app/service/cfdi';
+import { CFDI, ReadableCFDI } from 'src/app/service/cfdi';
 @Component({
   selector: 'table-xml-details',
   templateUrl: './xml-details.component.html',
   styleUrls: ['./xml-details.component.scss']
 })
 export class XmlDetailsComponent implements OnInit {
-  @Input() XmlData!: (Ingreso | Egreso | Traslado);
+  @Input() XmlData!: CFDI;
   @Output() confirmDelete = new EventEmitter<string>();
   public Data!: ReadableCFDI;
 

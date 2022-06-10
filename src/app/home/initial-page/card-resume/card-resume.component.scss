@@ -1,0 +1,38 @@
+table{
+    width: 100%;
+    table-layout: fixed;
+
+    .mat-header-cell, tr:last-child{
+        font-size: medium;
+        color: black;
+        font-weight: 600;
+    }
+
+    .mat-header-cell{
+        text-align: end;
+    }
+
+    .mat-header-cell:first-child{
+        text-align: start;
+    }
+
+    .align-right{
+        text-align: end;
+    }
+
+    tr.element-row.I{
+        background: rgba(225, 255, 225, 0.5);
+    }
+    tr.element-row.E{
+        background: rgba(255, 225, 225, 0.5);
+    }
+    tr.element-row.T{
+        background: rgba(225, 225, 255, 0.5);
+    }
+}
+
+@media (min-width: 576px){
+    table{
+        table-layout: auto;   
+    }
+}

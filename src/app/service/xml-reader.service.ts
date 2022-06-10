@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { XMLParser, X2jOptions, XMLBuilder } from 'fast-xml-parser';
-import { Egreso, Ingreso, Traslado } from './cfdi';
+import { CFDI, Egreso, Ingreso, Traslado } from './cfdi';
 
 @Injectable({
   providedIn: 'root'
@@ -82,8 +82,8 @@ export class XMLReaderService {
     return parsedData['Comprobante'] ? parsedData['Comprobante'] : null;
   } 
  
-  public JsonArrayToCFDI(data: any[]): (Ingreso | Egreso | Traslado)[]{
-    let CFDIArray: (Ingreso | Egreso | Traslado)[] = [];
+  public JsonArrayToCFDI(data: any[]): CFDI[]{
+    let CFDIArray: CFDI[] = [];
 
     try{
       for(let i = 0; i < data.length; i ++){

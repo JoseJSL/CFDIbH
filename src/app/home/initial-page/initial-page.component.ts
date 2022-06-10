@@ -9,10 +9,11 @@ import { XMLReaderService } from 'src/app/service/xml-reader.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
 import { CardTableComponent } from './card-table/card-table.component';
-import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
+import { CFDI } from 'src/app/service/cfdi';
 import { CardChartsComponent } from './card-charts/card-charts.component';
 import { CFDIFilter } from './filters/filter';
 import { FiltersComponent } from './filters/filters.component';
+import { CardResumeComponent } from './card-resume/card-resume.component';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -24,9 +25,10 @@ SwiperCore.use([Navigation, Pagination]);
 export class InitialPageComponent implements OnInit {
   @ViewChild('cardTable') cardTable!: CardTableComponent;
   @ViewChild('cardChart') cardChart!: CardChartsComponent;
+  @ViewChild('cardResume') cardResume!: CardResumeComponent;
   @ViewChild('filters') filters!: FiltersComponent;
 
-  public xmlsData: (Ingreso | Egreso | Traslado)[] = [];
+  public xmlsData: CFDI[] = [];
   public xmlsCols: string[] = ['Concepto', 'Emisor', 'Receptor', 'Subtotal'];
   public selectedUser?: User;
   public showLoadingTable: boolean = true;
@@ -122,14 +124,16 @@ export class InitialPageComponent implements OnInit {
     }
   }
 
-  async fullyParseRawXMLS(): Promise<(Ingreso | Egreso | Traslado)[]>{
+  async fullyParseRawXMLS(): Promise<CFDI[]>{
     const files = await this.bucketService.readAllUserRawXML(this.selectedUser!.UID);
     const parsedFiles = this.XMLParser.ParseMultipleText(files);
-    return this.XMLParser.JsonArrayToCFDI(parsedFiles);
+    const CFDIArray = this.XMLParser.JsonArrayToCFDI(parsedFiles);
+    console.log(CFDIArray)
+    return CFDIArray;
   }
 
   public updateChildrens(filters: CFDIFilter){
-    let filteredData: (Ingreso | Egreso | Traslado)[] = [];
+    let filteredData: CFDI[] = [];
     this.xmlsData.forEach(d => filteredData.push(Object.assign({}, d)));
 
     if(filters.receptor){
@@ -166,6 +170,10 @@ export class InitialPageComponent implements OnInit {
 
     if(this.cardChart){
       this.cardChart.refreshData(filteredData);
+    }
+
+    if(this.cardResume){
+      this.cardResume.refreshData(filteredData);
     }
 
     if(this.filters){

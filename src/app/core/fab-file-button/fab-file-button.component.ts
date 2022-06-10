@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Egreso, Ingreso, Traslado } from 'src/app/service/cfdi';
+import { Egreso, Ingreso, Traslado, CFDI } from 'src/app/service/cfdi';
 import { XMLReaderService } from 'src/app/service/xml-reader.service';
 import { DialogComponent } from '../dialog/dialog.component';
 
 export interface XMLExport{
   RawFiles: File[],
-  ParsedFiles: (Ingreso | Egreso | Traslado)[],
+  ParsedFiles: CFDI[],
 }
 
 @Component({
@@ -29,7 +29,7 @@ export class FabFileButtonComponent implements OnInit {
   ngOnInit(): void {}
 
   async readFiles($ev: any){
-    let CFDIArray: (Ingreso | Egreso | Traslado)[] = [];
+    let CFDIArray: CFDI[] = [];
     let rawFiles: File[] = [];
 
     const files: File[] = $ev.target.files;

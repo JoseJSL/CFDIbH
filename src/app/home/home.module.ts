@@ -37,6 +37,7 @@ import { XmlDetailsComponent } from './initial-page/card-table/xml-details/xml-d
 import { CurrentAssociatesComponent } from './associates/current-associates/current-associates.component';
 import { EditAccountantComponent } from './associates/current-associates/edit-accountant/edit-accountant.component';
 import { EditEnterpriseComponent } from './associates/current-associates/edit-enterprise/edit-enterprise.component';
+import { CardResumeComponent } from './initial-page/card-resume/card-resume.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { EditEnterpriseComponent } from './associates/current-associates/edit-en
     CurrentAssociatesComponent,
     EditAccountantComponent,
     EditEnterpriseComponent,
+    CardResumeComponent,
   ],
   imports: [
     CommonModule,
