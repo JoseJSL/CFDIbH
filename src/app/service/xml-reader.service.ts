@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { XMLParser, X2jOptions, XMLBuilder } from 'fast-xml-parser';
-import { CFDI, Egreso, Ingreso, Traslado } from './cfdi';
+import { CFDI } from '../model/cfdi3.3';
 
 @Injectable({
   providedIn: 'root'
@@ -10,36 +10,36 @@ export class XMLReaderService {
   private parser: XMLParser;
   private parserOptions: Partial<X2jOptions> = {
     ignoreAttributes: false,
-    attributeNamePrefix : '_',
+    attributeNamePrefix: '_',
   };
 
   constructor() {
     this.parser = new XMLParser(this.parserOptions);
   }
 
-  public async readOne(file: File): Promise<any>{
+  public async readOne(file: File): Promise<any> {
     const data = file.type === 'text/xml' ? this.parser.parse(await this.getFileData(file)) : null;
     return data['Comprobante'] ? data['Comprobante'] : null;
   }
 
-  public async readMultiple(files: File[]): Promise<any[]>{
+  public async readMultiple(files: File[]): Promise<any[]> {
     let filesData: any[] = [];
-    
-    for(let i = 0; i < files.length; i++){
-      if(files[i].type === 'text/xml'){
+
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].type === 'text/xml') {
         filesData.push(await this.readOne(files[i]));
       }
     }
 
     return filesData;
   }
-  
-  private async getFileData(file: File): Promise<string>{
+
+  private async getFileData(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        if(reader.result){
+        if (reader.result) {
           resolve(this.prepareTextContent(reader.result.toString()));
         } else {
           reject('');
@@ -51,13 +51,13 @@ export class XMLReaderService {
     });
   }
 
-  private prepareTextContent(fileText: string){
+  private prepareTextContent(fileText: string) {
     return fileText
       .replace(new RegExp('cfdi:', 'g'), '')
       .replace(new RegExp('tfd:', 'g'), '');
   }
 
-  public objectToXML(data: any){
+  public objectToXML(data: any) {
     const builder = new XMLBuilder({
       ignoreAttributes: false,
       attributeNamePrefix: '_',
@@ -66,46 +66,35 @@ export class XMLReaderService {
     return builder.build(data);
   }
 
-  public ParseMultipleText(data: string[]){
+  public ParseMultipleText(data: string[]) {
     let result: any[] = [];
 
-    for(let i = 0; i < data.length; i++){
+    for (let i = 0; i < data.length; i++) {
       result.push(this.ParseText(data[i]));
     }
 
     return result;
   }
 
-  public ParseText(data: string){
+  public ParseText(data: string) {
     data = this.prepareTextContent(data);
     const parsedData = this.parser.parse(data);
     return parsedData['Comprobante'] ? parsedData['Comprobante'] : null;
-  } 
- 
-  public JsonArrayToCFDI(data: any[]): CFDI[]{
+  }
+
+  public JsonArrayToCFDI(data: any[]): CFDI[] {
     let CFDIArray: CFDI[] = [];
 
-    try{
-      for(let i = 0; i < data.length; i ++){
-        switch(data[i]._TipoDeComprobante){
-          case("I"):
-           CFDIArray.push(new Ingreso(data[i]));
-            break;
-          case("E"):
-            CFDIArray.push(new Egreso(data[i]));
-            break;
-          case("T"):
-            CFDIArray.push(new Traslado(data[i]));
-            break;
-          default:
-            throw new Error();
-        }
+    try {
+      for (let i = 0; i < data.length; i++) {
+        const cfdi = new CFDI(data[i])
+        CFDIArray.push(cfdi);
       }
-
+      
       return CFDIArray;
-  } catch(e) {
-    console.error(e);
-    return [];
+    } catch (e) {
+      console.error(e);
+      return CFDIArray;
+    }
   }
-}
 }

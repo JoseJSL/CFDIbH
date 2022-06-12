@@ -1,6 +1,7 @@
 export type CFDI = Ingreso | Egreso | Traslado;
 
 export class Ingreso implements CFDIIngreso {
+    public Complemento: Complemento;
     public Impuestos: Impuesto[];
     public Emisor: Emisor;
     public Receptor: Receptor;
@@ -23,6 +24,17 @@ export class Ingreso implements CFDIIngreso {
 
     constructor(originalData: any){
         const data = asIncome(originalData);
+
+        this.Complemento = {
+            TimbreFiscalDigital: {
+                _FechaTimbrado: data.Complemento.TimbreFiscalDigital._FechaTimbrado,
+                _NoCertificadoSAT: data.Complemento.TimbreFiscalDigital._NoCertificadoSAT,
+                _RfcProvCertif: data.Complemento.TimbreFiscalDigital._RfcProvCertif,
+                _SelloCFD: data.Complemento.TimbreFiscalDigital._SelloCFD,
+                _SelloSAT: data.Complemento.TimbreFiscalDigital._SelloSAT,
+                _UUID: data.Complemento.TimbreFiscalDigital._UUID,
+            }
+        };
 
         this.Conceptos = data.Conceptos;
         this.Emisor = getEmisor(data.Emisor);
@@ -47,6 +59,7 @@ export class Ingreso implements CFDIIngreso {
 }
 
 export class Egreso implements CFDIEgreso {
+    public Complemento: Complemento;
     public CfdiRelacionados: CfdiRelacionados;
     public Impuestos: Impuesto[];
     public Emisor: Emisor;
@@ -70,6 +83,17 @@ export class Egreso implements CFDIEgreso {
 
     constructor(originalData: any){
         const data = asExpenditure(originalData);
+
+        this.Complemento = {
+            TimbreFiscalDigital: {
+                _FechaTimbrado: data.Complemento.TimbreFiscalDigital._FechaTimbrado,
+                _NoCertificadoSAT: data.Complemento.TimbreFiscalDigital._NoCertificadoSAT,
+                _RfcProvCertif: data.Complemento.TimbreFiscalDigital._RfcProvCertif,
+                _SelloCFD: data.Complemento.TimbreFiscalDigital._SelloCFD,
+                _SelloSAT: data.Complemento.TimbreFiscalDigital._SelloSAT,
+                _UUID: data.Complemento.TimbreFiscalDigital._UUID,
+            }
+        };
 
         this.CfdiRelacionados = data.CfdiRelacionados;
         this.Conceptos = data.Conceptos;
@@ -160,13 +184,13 @@ interface CFDIEgreso extends CFDIData {
 }
 
 interface CFDITraslado extends CFDIData {
-    Complemento: Complemento,
 }
 
 interface CFDIData {
     Emisor: Emisor,
     Receptor: Receptor,
     Conceptos: Concepto[],
+    Complemento: Complemento,
 
     _Certificado: string,
     _Exportacion: string,
@@ -251,7 +275,7 @@ export class ReadableCFDI {
     Subtotal: string;
     Total: string;
     Impuestos: string;
-    TipoComprobante: 'Ingreso' | 'Egreso' | 'Traslado';
+    TipoComprobante: 'Ingreso' | 'Egreso' | 'Traslado' | 'Pago' | 'Nomina';
 
     constructor(data: any){
         this.Receptor = data.Receptor._Nombre;
@@ -279,8 +303,18 @@ export class ReadableCFDI {
         this.Total = parseFloat(data._Total).toFixed(2);
         this.Impuestos = parseFloat(Math.abs(data._Total - data._SubTotal).toString()).toFixed(2);
 
-        this.TipoComprobante = data._TipoDeComprobante == 'I' ? 'Ingreso' : 
-            data._TipoDeComprobante == 'E' ? 'Egreso' : 'Traslado'; 
+        switch(data._TipoDeComprobante){
+            case('I'):
+                this.TipoComprobante = 'Ingreso'; break;
+            case('E'):
+                this.TipoComprobante = 'Egreso'; break;
+            case('T'):
+                this.TipoComprobante = 'Traslado'; break;
+            case('P'):
+                this.TipoComprobante = 'Pago'; break;         
+            default:
+                this.TipoComprobante = 'Nomina'; break;             
+        };
     }
 
     private getReadableDate(date: Date) : string{
@@ -338,6 +372,7 @@ function asIncome(data: any): CFDIIngreso {
     data._SubTotal = Number.parseFloat(data._SubTotal);
     data._Total = Number.parseFloat(data._Total);
     data._Fecha = new Date(data._Fecha);
+    data.Complemento.TimbreFiscalDigital._FechaTimbrado = new Date(data.Complemento.TimbreFiscalDigital._FechaTimbrado);
 
     return data;
 }
@@ -382,6 +417,7 @@ function asExpenditure(data: any): CFDIEgreso {
     data._SubTotal = Number.parseFloat(data._SubTotal);
     data._Total = Number.parseFloat(data._Total);
     data._Fecha = new Date(data._Fecha);
+    data.Complemento.TimbreFiscalDigital._FechaTimbrado = new Date(data.Complemento.TimbreFiscalDigital._FechaTimbrado);
 
     return data;
 }
@@ -408,7 +444,6 @@ function asTransfer(data: any): CFDITraslado {
 
     return data;
 }
-
 
 function getReceptor(data: Receptor): Receptor{
     return {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { firstValueFrom } from 'rxjs';
-import { Accountant, Client, Manager, User } from './user';
+import { Accountant, Client, Manager, User } from '../model/user';
 
 @Injectable({
   providedIn: 'root'

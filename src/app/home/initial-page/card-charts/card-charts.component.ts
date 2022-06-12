@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ChartDataset, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { CFDI } from 'src/app/service/cfdi';
+import { CFDI } from 'src/app/model/cfdi3.3';
 
 interface CustomDataSet {
   [index: string]: ChartDataset;
@@ -92,7 +92,7 @@ export class CardChartsComponent implements OnInit {
         fullData[`I ${indexName}`] = {
           data: [],
           label: this.rawInputData[i].Emisor._Nombre + " - Imp.",
-          stack: 'Imp',
+          stack: this.rawInputData[i].Emisor._Nombre + " - Imp.",
           backgroundColor: 'rgba(255, 100, 100, 0.65)',
           hoverBackgroundColor: 'rgba(255, 100, 100, 1)',
           type: 'bar'

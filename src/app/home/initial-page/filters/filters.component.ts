@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { CFDI } from 'src/app/service/cfdi';
+import { CFDI, getFormaDePago } from 'src/app/model/cfdi3.3';
 import { CFDIFilter } from './filter';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -87,6 +87,12 @@ export class FiltersComponent implements OnInit {
         }
       }
     }
+
+    this.Emisores.sort();
+    this.Receptores.sort();
+    this.Tipos.sort();
+    this.FormasPago.sort();
+    this.MetodosPago.sort();    
   }
 
   changeFilter(data: any, filter: 'receptor' | 'emisor' | 'tipo' | 'formaPago' | 'metodoPago'){
@@ -131,13 +137,7 @@ export class FiltersComponent implements OnInit {
   }
 
   readableFormaPago(formaPago: string): string{
-    switch(formaPago){
-      case('01'): return 'Efectivo';
-      case('02'): return 'Cheque nominativo';
-      case('03'): return 'Transferencia electrónica de fondos';
-      case('04'): return 'Tarjeta de crédito';
-      default: return 'Por definir';
-    }
+    return getFormaDePago(formaPago)
   }
 
   readableMetodoPago(metodoPago: string): string{

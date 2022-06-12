@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { CFDI } from 'src/app/service/cfdi';
+import { CFDI } from 'src/app/model/cfdi3.3';
 
 interface CompiledCFDI {
   Emisor: string,
@@ -20,16 +21,19 @@ interface CustomCompiledCFDIArray {
   templateUrl: './card-resume.component.html',
   styleUrls: ['./card-resume.component.scss']
 })
-export class CardResumeComponent implements OnInit {
+export class CardResumeComponent implements AfterViewInit {
   @Input() inputData!: CFDI[];
+
+  @ViewChild('tablePaginator') tablePaginator!: MatPaginator;
 
   public tableDataSource!: MatTableDataSource<CompiledCFDI>;
   public tableColumns: string[] = ['Emisor', 'Subtotal', 'Impuestos', 'Total']
   constructor() { }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     const compiledData = this.compileData(this.inputData);
     this.tableDataSource = new MatTableDataSource<CompiledCFDI>(compiledData);
+    this.tableDataSource.paginator = this.tablePaginator;
   }
 
   refreshData(data: CFDI[]) {
@@ -47,7 +51,7 @@ export class CardResumeComponent implements OnInit {
         parsedData[index] = {
           Emisor: data[i].Emisor._Nombre,
           Subtotal: data[i]._SubTotal,
-          Total: data[i]._SubTotal,
+          Total: data[i]._Total,
           Tipo: data[i]._TipoDeComprobante,
           Impuestos: 0,
         }

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent, DialogComponentData } from 'src/app/core/dialog/dialog.component';
-import { CFDI, ReadableCFDI } from 'src/app/service/cfdi';
+import { CFDI, ReadableCFDI } from 'src/app/model/cfdi3.3';
 @Component({
   selector: 'table-xml-details',
   templateUrl: './xml-details.component.html',

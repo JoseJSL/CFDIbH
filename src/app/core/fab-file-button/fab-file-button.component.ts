@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Egreso, Ingreso, Traslado, CFDI } from 'src/app/service/cfdi';
+import { CFDI } from 'src/app/model/cfdi3.3';
 import { XMLReaderService } from 'src/app/service/xml-reader.service';
 import { DialogComponent } from '../dialog/dialog.component';
 
@@ -39,16 +39,8 @@ export class FabFileButtonComponent implements OnInit {
     try{
       for(i = 0; i < files.length; i ++){
         n = i;
-        if(parsedFiles[i]._TipoDeComprobante === 'I' || parsedFiles[i]._TipoDeComprobante === 'N'){
-          CFDIArray.push(new Ingreso(parsedFiles[i]));
-          rawFiles.push(files[i]);
-        } else if(parsedFiles[i]._TipoDeComprobante === 'E' || parsedFiles[i]._TipoDeComprobante === 'N'){
-          CFDIArray.push(new Egreso(parsedFiles[i]));
-          rawFiles.push(files[i]);
-        } else {
-          CFDIArray.push(new Traslado(parsedFiles[i]));
-          rawFiles.push(files[i]);
-        }
+        const cfdi = new CFDI(parsedFiles[i]);
+        CFDIArray.push(cfdi);
       }
 
       if(CFDIArray.length > 0){

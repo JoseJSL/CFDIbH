@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent, DialogComponentData } from 'src/app/core/dialog/dialog.component';
 import { CustomValidators } from 'src/app/landing/register/CustomValidators';
-import { Accountant } from 'src/app/service/user';
+import { Accountant } from 'src/app/model/user';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({

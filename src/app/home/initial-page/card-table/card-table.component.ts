@@ -2,7 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { CFDI } from 'src/app/service/cfdi';
+import { CFDI } from 'src/app/model/cfdi3.3';
 
 @Component({
   selector: 'app-card-table',
@@ -36,7 +36,7 @@ export class CardTableComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.screenWidth < 576) this.tableColumns.length = this.tableColumns.length - 1;
-    this.tableDataSource = new MatTableDataSource<any>(this.inputData);
+    this.tableDataSource = new MatTableDataSource<CFDI>(this.inputData);
     this.tableDataSource.paginator = this.tablePaginator;
   }
 

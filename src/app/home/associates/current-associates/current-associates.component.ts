@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Accountant, User } from 'src/app/service/user';
+import { Accountant, User } from 'src/app/model/user';
 import { UserModuleService } from 'src/app/service/user-module.service';
 
 @Component({

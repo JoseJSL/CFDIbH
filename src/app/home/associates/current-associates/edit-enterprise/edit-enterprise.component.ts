@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent, DialogComponentData } from 'src/app/core/dialog/dialog.component';
 import { CustomValidators } from 'src/app/landing/register/CustomValidators';
-import { User } from 'src/app/service/user';
+import { User } from 'src/app/model/user';
 
 @Component({
   selector: 'edit-enterprise',
