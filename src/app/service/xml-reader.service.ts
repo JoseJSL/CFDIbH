@@ -87,7 +87,7 @@ export class XMLReaderService {
 
     try {
       for (let i = 0; i < data.length; i++) {
-        const cfdi = new CFDI(data[i])
+        const cfdi = new CFDI(data[i]);
         CFDIArray.push(cfdi);
       }
       

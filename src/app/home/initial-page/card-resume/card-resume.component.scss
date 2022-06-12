@@ -2,7 +2,7 @@ table{
     width: 100%;
     table-layout: fixed;
 
-    .mat-header-cell, tr:last-child{
+    .mat-header-cell, tr.element-row.X{
         font-size: medium;
         color: black;
         font-weight: 600;

@@ -28,7 +28,7 @@ export class XmlDetailsComponent implements OnInit {
     }
     this.matDialog.open(DialogComponent, {data: data}).afterClosed().subscribe(accepted => {
       if(accepted){
-        this.confirmDelete.emit(this.XmlData._NoCertificado);
+        this.confirmDelete.emit(this.XmlData._ID);
       }
     })
   }

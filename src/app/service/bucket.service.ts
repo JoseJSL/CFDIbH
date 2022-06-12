@@ -6,7 +6,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { firstValueFrom } from 'rxjs';
 
 export interface XMLReference {
-  _NoCertificado: string,
+  _ID: string,
   URL: string,
   userUID:  string,
   addedAt: Date,
@@ -19,28 +19,28 @@ export class BucketService {
 
   constructor(private afs: AngularFirestore, private storage: AngularFireStorage, private http: HttpClient, private auth: AngularFireAuth) { }
 
-  async uploadXMLToCurrentUser(file: File, _NoCertificado: string):  Promise<string>{
+  async uploadXMLToCurrentUser(file: File, _ID: string):  Promise<string>{
     return new Promise((resolve, reject) => {
       this.auth.user.subscribe(async user => {
-        user ? resolve(await this.uploadXML(user.uid, file, _NoCertificado)) : reject('');
+        user ? resolve(await this.uploadXML(user.uid, file, _ID)) : reject('');
       });
     });
   }
 
-  async uploadXML(userUID: string, file: File, _NoCertificado: string): Promise<string>{
-    if(!_NoCertificado){
-      throw new Error('_NoCertificado is undefined');
-    } else if(!(_NoCertificado.length > 0)){
-      throw new Error('_NoCertificado is undefined');
+  async uploadXML(userUID: string, file: File, _ID: string): Promise<string>{
+    if(!_ID){
+      throw new Error('UUID is undefined');
+    } else if(!(_ID.length > 0)){
+      throw new Error('UUID is undefined');
     }
 
-    const upload = await this.storage.upload(`XML/${userUID}/${_NoCertificado}`, file);
+    const upload = await this.storage.upload(`XML/${userUID}/${_ID}`, file);
     const url = await upload.ref.getDownloadURL();
 
-    await this.afs.collection('User').doc(userUID).collection<XMLReference>('XML').doc(_NoCertificado).set(
+    await this.afs.collection('User').doc(userUID).collection<XMLReference>('XML').doc(_ID).set(
       {
         URL: url,
-        _NoCertificado: _NoCertificado,
+        _ID: _ID,
         addedAt: new Date(),
         userUID: userUID,
       }
@@ -49,16 +49,16 @@ export class BucketService {
     return url;
   }
 
-  async getCurrentUserXmlUrl(_NoCertificado: string): Promise<string>{
+  async getCurrentUserXmlUrl(_ID: string): Promise<string>{
     return new Promise((resolve, reject) => {
       this.auth.user.subscribe(async user => {
-        user ? resolve(await this.getUserXmlUrl(user.uid, _NoCertificado)) : reject('');
+        user ? resolve(await this.getUserXmlUrl(user.uid, _ID)) : reject('');
       });
     });
   }
 
-  async getUserXmlUrl(userUID: string, _NoCertificado: string): Promise<string>{
-    const observer = this.storage.ref('XML').child(userUID).child(_NoCertificado).getDownloadURL();
+  async getUserXmlUrl(userUID: string, _ID: string): Promise<string>{
+    const observer = this.storage.ref('XML').child(userUID).child(_ID).getDownloadURL();
 
     return new Promise((resolve, reject) => {
       observer.subscribe(url => url? resolve(url) : reject(url));
@@ -108,11 +108,11 @@ export class BucketService {
     return response ? response : '';
   }
 
-  async deleteXml(userUID: string, _NoCertificado: string): Promise<boolean>{
+  async deleteXml(userUID: string, _ID: string): Promise<boolean>{
     return new Promise((resolve, reject) => {
-      this.afs.collection('User').doc(userUID).collection<XMLReference>('XML').doc(_NoCertificado).delete().then(
+      this.afs.collection('User').doc(userUID).collection<XMLReference>('XML').doc(_ID).delete().then(
         deleted => {
-          this.storage.ref(`XML/${userUID}/${_NoCertificado}`).delete().subscribe(
+          this.storage.ref(`XML/${userUID}/${_ID}`).delete().subscribe(
             success => resolve(true),
             error => reject(false),
           );   

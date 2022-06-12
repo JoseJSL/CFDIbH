@@ -6,6 +6,7 @@ export class CFDI implements BaseCFDI{
     public Receptor: Receptor;
     public Conceptos: Concepto[];
     public Complemento: Complemento | undefined;
+    public _ID: string;
     public _Certificado: string;
     public _Exportacion: string;
     public _FormaPago: string | undefined;
@@ -30,10 +31,6 @@ export class CFDI implements BaseCFDI{
         };
 
         if(data.Impuestos){
-            if(!data.Impuestos[0]){
-                data.Impuestos = [ data.Impuestos, ];
-            }
-    
             for(let i = 0; i < data.Impuestos.length; i++){
                 if(data.Impuestos[i].Traslados){
                     if(!data.Impuestos[i].Traslados[0]){
@@ -42,10 +39,10 @@ export class CFDI implements BaseCFDI{
 
                     for(let j = 0; j < data.Impuestos[i].Traslados.length; j++){
                         data.Impuestos[i].Traslados[j] = {
-                            _Base: parseFloat(data.Impuestos[i].Traslados[j]._Base),
-                            _Importe: parseFloat(data.Impuestos[i].Traslados[j]._Importe),
-                            _Impuesto: parseFloat(data.Impuestos[i].Traslados[j]._Impuesto),
-                            _TasaOCuota: parseFloat(data.Impuestos[i].Traslados[j]._TasaOCuota),
+                            _Base: data.Impuestos[i].Traslados[j]._Base ? parseFloat(data.Impuestos[i].Traslados[j]._Base) : 0,
+                            _Importe: data.Impuestos[i].Traslados[j]._Importe ? parseFloat(data.Impuestos[i].Traslados[j]._Importe) : 0,
+                            _Impuesto: data.Impuestos[i].Traslados[j]._Impuesto,
+                            _TasaOCuota: data.Impuestos[i].Traslados[j]._TasaOCuota ? parseFloat(data.Impuestos[i].Traslados[j]._TasaOCuota) : 0,
                             _TipoFactor: data.Impuestos[i].Traslados[j]._TipoFactor,
                         }
                     }
@@ -69,25 +66,29 @@ export class CFDI implements BaseCFDI{
             _UsoCFDI: data.Receptor._UsoCFDI,
         };
 
-        if(data.Conceptos){
-            if(!data.Conceptos[0]){
-                if(!data.Conceptos.Concepto.length){
-                    data.Conceptos = [ data.Conceptos.Concepto ];
-                } else {
-                    const tmp = data.Conceptos.Concepto;
-                    data.Conceptos = [];
-                    for(let i = 0; i < tmp.length; i++){
-                        data.Conceptos.push(tmp[i]);
+        data.Conceptos = tryConvertFromObjectToArray(data.Conceptos, 'Concepto');
+        if(data.Conceptos.length > 0 ){
+            for(let i = 0; i < data.Conceptos.length; i++){
+                if(data.Conceptos[i].Impuestos){
+                    data.Conceptos[i].Impuestos.Traslados = tryConvertFromObjectToArray(data.Conceptos[i].Impuestos.Traslados, 'Traslado');
+                    
+                    for(let j = 0; j < data.Conceptos[i].Impuestos.Traslados.length; j++){
+                        const traslado = data.Conceptos[i].Impuestos.Traslados[j];
+
+                        data.Conceptos[i].Impuestos.Traslados[j] = {
+                            _Base: traslado._Base ? parseFloat(traslado._Base) : 0,
+                            _Importe: traslado._Importe ? parseFloat(traslado._Importe) : 0,
+                            _Impuesto: traslado._Impuesto,
+                            _TasaOCuota: traslado._TasaOCuota ? parseFloat(traslado._TasaOCuota) : 0,
+                            _TipoFactor: traslado._TipoFactor,
+                        }
                     }
                 }
             }
-
-            this.Conceptos = data.Conceptos;
-        } else {
-            this.Conceptos = [];
         }
 
-     
+        this.Conceptos = data.Conceptos;
+
         if(data.Complemento){
             this.Complemento = {
                 TimbreFiscalDigital: {
@@ -120,14 +121,10 @@ export class CFDI implements BaseCFDI{
         this._SubTotal = Number.parseFloat(data._SubTotal);
         this._Total = Number.parseFloat(data._Total);
         this._Fecha = new Date(data._Fecha);
-    }
 
-    private tryConvertFromObjectToArray(data: any): any[]{
-        if(!Array.isArray(data)){
-            return [ data ];
-        } else {
-            return data;
-        }
+        this._ID = this.Complemento?.TimbreFiscalDigital?._UUID ?
+            this.Complemento!.TimbreFiscalDigital!._UUID : 
+            this._NoCertificado + '-' + this._Folio
     }
 }
 
@@ -138,6 +135,7 @@ interface BaseCFDI{
     Conceptos: Concepto[],
     Complemento: Complemento | undefined,
 
+    _ID: string,
     _Certificado: string,
     _Exportacion: string,
     _FormaPago: string | undefined,
@@ -170,7 +168,9 @@ interface Receptor {
 }
 
 interface Concepto {
-    Impuestos: Impuesto[],
+    Impuestos: {
+        Traslados: Traslado[];
+    },
     _Cantidad: number,
     _ClaveProdServ: string,
     _ClaveUnidad: string,
@@ -243,7 +243,8 @@ export class ReadableCFDI {
         this.LugarExpedicion = data._LugarExpedicion;
         this.Subtotal = data._SubTotal.toFixed(2);
         this.Total = data._Total.toFixed(2);
-        this.Impuestos = (data._Total - data._SubTotal).toFixed(2);
+        const impuestos = getTotalImpuestos(data);
+        this.Impuestos = impuestos > 0 ? impuestos.toFixed(2) : '0.00';
 
         switch(data._TipoDeComprobante){
             case('I'):
@@ -314,4 +315,29 @@ const formasDePago: {[key:string]: string} = {
 
 export function getFormaDePago(formaPago: string): string{
     return formasDePago[formaPago] ? formasDePago[formaPago] : formaPago;
+}
+
+function tryConvertFromObjectToArray(data: any, child?: any): any[]{
+    if(data){
+        if(child && data[child]){
+            return Array.isArray(data[child]) ? data[child] : [data[child], ];
+        }
+
+        return Array.isArray(data) ? data : [data, ];
+    }
+
+    return [];
+}
+
+export function getTotalImpuestos(data: CFDI): number{
+    let impuestos: number = 0;
+    for(let i = 0; i < data.Conceptos.length; i++){
+        if(data.Conceptos[i].Impuestos){
+            for(let j = 0; j < data.Conceptos[i].Impuestos.Traslados.length; j++){
+                impuestos += data.Conceptos[i].Impuestos.Traslados[j]._Importe;
+            }
+        }
+    }
+
+    return impuestos;
 }

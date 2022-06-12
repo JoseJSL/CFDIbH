@@ -30,7 +30,6 @@ export class FabFileButtonComponent implements OnInit {
 
   async readFiles($ev: any){
     let CFDIArray: CFDI[] = [];
-    let rawFiles: File[] = [];
 
     const files: File[] = $ev.target.files;
     const parsedFiles: any[] = await this.XMLReader.readMultiple(files);

@@ -59,15 +59,15 @@ export class CardTableComponent implements AfterViewInit {
     return res + Conceptos[Conceptos.length - 1]._Descripcion;
   }
 
-  changeExpandedElement(_NoCertificado: string) {
-    if (this.expandedElement !== _NoCertificado) {
-      this.expandedElement = _NoCertificado;
+  changeExpandedElement(_ID: string) {
+    if (this.expandedElement !== _ID) {
+      this.expandedElement = _ID;
     } else {
       this.expandedElement = undefined;
     }
   }
 
-  emitDeleteDocument(_NoCertificado: string) {
-    this.deleteDocument.emit(_NoCertificado);
+  emitDeleteDocument(_ID: string) {
+    this.deleteDocument.emit(_ID);
   }
 }

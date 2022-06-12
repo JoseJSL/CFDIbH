@@ -71,7 +71,7 @@ export class UserRegisterStepperComponent implements OnInit {
         }
       }
     } catch(e){
-      console.log(e)
+      console.error(e)
       loading.close();
       this.matSnackBar.open('Lo sentimos, ocurrió un error inesperado. Vueva a intentarlo más tarde', 'Ok');
     }

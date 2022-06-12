@@ -84,7 +84,7 @@ export class InitialPageComponent implements OnInit {
     try{
       for(let i = 0; i < docs.RawFiles.length; i++){
         this.showReloadingTable = true;
-        const url = await this.bucketService.uploadXML(this.selectedUser!.UID, docs.RawFiles[i], docs.ParsedFiles[i]._NoCertificado);
+        const url = await this.bucketService.uploadXML(this.selectedUser!.UID, docs.RawFiles[i], docs.ParsedFiles[i]._ID);
         
         if(url.length == 0 ){
           index.push(i);
@@ -114,7 +114,7 @@ export class InitialPageComponent implements OnInit {
       }
     } catch(e){
       const error = e as Error;
-      if(error.message.indexOf('_NoCertificado is undefined') > -1){
+      if(error.message.indexOf('UUID is undefined') > -1){
         this.matSnackBar.open('Uno de los archivos no cuenta con No. de Certificado.', 'Ok');
       } else {
         this.matSnackBar.open('Ocurrió un error al tratar de subir los archivos', 'Ok');
@@ -128,7 +128,6 @@ export class InitialPageComponent implements OnInit {
     const files = await this.bucketService.readAllUserRawXML(this.selectedUser!.UID);
     const parsedFiles = this.XMLParser.ParseMultipleText(files);
     const CFDIArray = this.XMLParser.JsonArrayToCFDI(parsedFiles);
-    console.log(CFDIArray)
     return CFDIArray;
   }
 
@@ -181,9 +180,9 @@ export class InitialPageComponent implements OnInit {
     }
   }
 
-  async deleteDocument(_NoCertificado: string){
+  async deleteDocument(UUID: string){
     this.showReloadingTable = true;
-    const success = await this.bucketService.deleteXml(this.selectedUser!.UID, _NoCertificado);
+    const success = await this.bucketService.deleteXml(this.selectedUser!.UID, UUID);
 
     if(success){
       this.matSnackBar.open('Documento eliminado con éxito', undefined, { duration: 1750 });

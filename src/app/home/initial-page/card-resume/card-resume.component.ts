@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { CFDI } from 'src/app/model/cfdi3.3';
+import { CFDI, getTotalImpuestos } from 'src/app/model/cfdi3.3';
 
 interface CompiledCFDI {
   Emisor: string,
@@ -47,28 +47,29 @@ export class CardResumeComponent implements AfterViewInit {
 
     for (let i = 0; i < data.length; i++) {
       const index = data[i].Emisor._Nombre + data[i]._TipoDeComprobante;
+      const indexImpuestos = getTotalImpuestos(data[i]);
+
       if (!parsedData[index]) {
         parsedData[index] = {
           Emisor: data[i].Emisor._Nombre,
           Subtotal: data[i]._SubTotal,
           Total: data[i]._Total,
           Tipo: data[i]._TipoDeComprobante,
-          Impuestos: 0,
+          Impuestos: indexImpuestos,
         }
       } else {
         parsedData[index].Subtotal += data[i]._SubTotal;
         parsedData[index].Total += data[i]._Total;
+        parsedData[index].Impuestos += indexImpuestos;
       }
 
       Subtotal += data[i]._SubTotal;
+      Impuestos += indexImpuestos;
       Total += data[i]._Total;
     }
 
-    Impuestos = Total - Subtotal;
-
     const compiledData: CompiledCFDI[] = [];
     for(var key in parsedData){
-      parsedData[key].Impuestos = parsedData[key].Total - parsedData[key].Subtotal;
       compiledData.push(parsedData[key]);
     }
 
@@ -84,10 +85,6 @@ export class CardResumeComponent implements AfterViewInit {
   }
 
   formatAsCurrency(currency: number): string {
-    if(currency >= 0 ){
-      return '$' + currency.toFixed(2);
-    } else {
-      return '-$' + Math.abs(currency).toFixed(2);
-    }
+    return '$' + Math.abs(currency).toFixed(2);
   }
 }
